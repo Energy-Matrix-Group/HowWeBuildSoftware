@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>How we build the Energy Matrix Group app</title>
+<meta name="description" content="A plain-English, animated guide to how our team of people and AI agents builds, tests and releases the Energy Matrix Group app.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --font-body:"Barlow","Segoe UI","Helvetica Neue",Arial,sans-serif;
+  --font-display:"Barlow Condensed","Arial Narrow","Roboto Condensed","Helvetica Neue",Arial,sans-serif;
+  --bg:#E7EDF2; --sheet:#F4F7FA; --panel:#FFFFFF; --ink:#0F2236; --muted:#4C6177; --faint:#7F93A8;
+  --wire:#BCCAD7; --rule:#CBD7E2; --gridline:rgba(15,34,54,.055);
+  --feature:#6446D2; --test:#08879B; --live:#C27500; --ok:#138A55; --trip:#CF3B33;
+  --feature-ink:#5236B4; --test-ink:#066B7B; --live-ink:#8A5300; --ok-ink:#0F7547; --trip-ink:#B02E27;
+  --spark:rgba(255,255,255,.96); --focus:#1C64D8;
+  --shadow:0 1px 0 rgba(15,34,54,.04), 0 18px 44px -22px rgba(15,34,54,.28);
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0A1522; --sheet:#0E1C2E; --panel:#13253A; --ink:#E4ECF5; --muted:#9BAEC3; --faint:#687F98;
+    --wire:#2A405A; --rule:#20354C; --gridline:rgba(150,190,235,.05);
+    --feature:#A68CFF; --test:#3CCFE3; --live:#FFB443; --ok:#4ADB99; --trip:#FF6B62;
+    --feature-ink:#BCA8FF; --test-ink:#6ADCEB; --live-ink:#FFC56B; --ok-ink:#6BE6AE; --trip-ink:#FF8C85;
+    --spark:rgba(255,255,255,.92); --focus:#7DB4FF;
+    --shadow:0 1px 0 rgba(0,0,0,.25), 0 24px 54px -26px rgba(0,0,0,.75);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0A1522; --sheet:#0E1C2E; --panel:#13253A; --ink:#E4ECF5; --muted:#9BAEC3; --faint:#687F98;
+  --wire:#2A405A; --rule:#20354C; --gridline:rgba(150,190,235,.05);
+  --feature:#A68CFF; --test:#3CCFE3; --live:#FFB443; --ok:#4ADB99; --trip:#FF6B62;
+  --feature-ink:#BCA8FF; --test-ink:#6ADCEB; --live-ink:#FFC56B; --ok-ink:#6BE6AE; --trip-ink:#FF8C85;
+  --spark:rgba(255,255,255,.92); --focus:#7DB4FF;
+  --shadow:0 1px 0 rgba(0,0,0,.25), 0 24px 54px -26px rgba(0,0,0,.75);
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 76px);scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:18px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img,svg{max-width:100%}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:4px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip{position:absolute;left:12px;top:-60px;background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:8px;z-index:50;text-decoration:none;font-weight:600}
+.skip:focus{top:calc(env(safe-area-inset-top,0px) + 10px)}
+.wrap{max-width:1260px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
+
+/* Top bar */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:saturate(1.2) blur(10px);-webkit-backdrop-filter:saturate(1.2) blur(10px);border-bottom:1px solid var(--rule)}
+.topbar .wrap{display:flex;align-items:center;gap:28px;height:60px}
+.brand{display:flex;align-items:baseline;gap:12px;text-decoration:none;white-space:nowrap}
+.brand strong{font-family:var(--font-display);font-weight:600;font-size:22px;letter-spacing:.005em}
+.brand span{color:var(--muted);font-size:15px}
+.nav{display:flex;gap:22px;margin-left:auto;font-size:15px}
+.nav a{text-decoration:none;color:var(--muted);padding:6px 0;border-bottom:2px solid transparent}
+.nav a:hover{color:var(--ink);border-bottom-color:var(--rule)}
+.theme-btn{margin-left:8px;display:grid;place-items:center;width:40px;height:40px;border-radius:10px;border:1px solid var(--rule);background:var(--panel);cursor:pointer}
+.theme-btn svg{width:20px;height:20px}
+@media (max-width:1020px){.nav{display:none}.theme-btn{margin-left:auto}}
+@media (max-width:520px){.brand span{display:none}}
+
+/* Hero */
+.hero{padding:clamp(36px,6vw,64px) 0 28px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:24px 56px;align-items:end}
+h1{font-family:var(--font-display);font-weight:600;font-size:clamp(46px,6.4vw,92px);line-height:.93;letter-spacing:-.012em;margin:0;text-wrap:balance}
+.hero-copy p{margin:0 0 20px;font-size:19px;color:var(--muted);max-width:44ch}
+.hero-copy p strong{color:var(--ink);font-weight:600}
+.btns{display:flex;flex-wrap:wrap;gap:10px}
+@media (max-width:860px){.hero-grid{grid-template-columns:1fr}}
+
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:10px 18px;border-radius:10px;border:1px solid var(--rule);background:var(--panel);color:var(--ink);font-weight:600;font-size:16px;cursor:pointer;text-decoration:none;transition:background .2s,border-color .2s,transform .12s}
+.btn:hover{border-color:var(--faint)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.btn.primary:hover{background:color-mix(in srgb,var(--ink) 88%,var(--bg))}
+.btn[disabled]{opacity:.38;cursor:default;transform:none}
+.btn[hidden]{display:none}
+.btn svg{width:16px;height:16px}
+
+/* Stage */
+.stage-sec{padding-bottom:clamp(56px,8vw,96px)}
+.stage{position:relative;scroll-margin-top:calc(env(safe-area-inset-top,0px) + 68px);background-color:var(--sheet);background-image:linear-gradient(var(--gridline) 1px,transparent 1px),linear-gradient(90deg,var(--gridline) 1px,transparent 1px);background-size:24px 24px;border:1px solid var(--rule);border-radius:20px;box-shadow:var(--shadow);overflow:hidden}
+.stage-top{display:flex;align-items:center;gap:8px 18px;flex-wrap:wrap;padding:8px 12px;border-bottom:1px solid var(--rule);background:color-mix(in srgb,var(--sheet) 80%,transparent)}
+.stage-top .lbl{font-size:15px;color:var(--muted);padding-left:6px}
+.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{display:inline-flex;align-items:center;gap:9px;white-space:nowrap;min-height:40px;padding:8px 14px;border-radius:10px;border:1px solid transparent;background:transparent;color:var(--muted);font-weight:600;font-size:16px;cursor:pointer}
+.tab:hover{color:var(--ink);background:color-mix(in srgb,var(--panel) 60%,transparent)}
+.tab i{width:10px;height:10px;border-radius:50%;background:var(--tone);flex:none}
+.tab[aria-selected="true"]{background:var(--panel);color:var(--ink);border-color:var(--rule);box-shadow:0 1px 0 rgba(15,34,54,.05)}
+.stage-top .spacer{flex:1}
+.ov-btn{background:none;border:0;color:var(--muted);font-weight:600;font-size:15px;cursor:pointer;padding:8px 10px;border-radius:8px}
+.ov-btn:hover{color:var(--ink)}
+.swipe{display:none;margin:10px 16px 0;font-size:14px;color:var(--muted)}
+.map-scroll{overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+#map{display:block;width:100%;height:auto;max-height:max(540px,calc(100vh - 332px));margin:0 auto}
+@media (max-width:860px){#map{width:940px;max-width:none;max-height:none}.swipe{display:block}}
+
+/* Panel */
+.panel{--tone:var(--ink);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px 40px;align-items:end;padding:16px 24px 18px;border-top:1px solid var(--rule);background:var(--panel);min-height:184px}
+.p-meta{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:600;color:var(--muted)}
+.p-meta i{width:22px;height:4px;border-radius:2px;background:var(--tone)}
+.p-title{font-family:var(--font-display);font-weight:600;font-size:clamp(26px,2.4vw,31px);line-height:1.04;margin:4px 0 6px;letter-spacing:-.005em}
+.p-body{margin:0;max-width:70ch;font-size:17.5px;line-height:1.5}
+.p-tech{margin:8px 0 0;max-width:72ch;font-size:15px;color:var(--muted)}
+.p-tech b{font-weight:600;color:var(--ink)}
+.p-text.swap{animation:swap .45s ease-out}
+@keyframes swap{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.p-ctrl{display:flex;flex-direction:column;align-items:flex-end;gap:14px}
+.prog{display:flex;gap:4px}
+.prog[hidden]{display:none}
+.seg{width:30px;height:20px;padding:0;border:0;background:none;cursor:pointer;display:grid;align-items:center}
+.seg::before{content:"";height:6px;border-radius:3px;background:var(--wire);transition:background .3s}
+.seg.done::before{background:color-mix(in srgb,var(--tone) 45%,var(--wire))}
+.seg.now::before{background:var(--tone)}
+.ctrl-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+@media (max-width:860px){.panel{grid-template-columns:1fr}.p-ctrl{align-items:flex-start}.ctrl-row{justify-content:flex-start}}
+
+/* Map drawing */
+#map text{font-family:var(--font-body)}
+.t-head{font-family:var(--font-display);font-weight:600;font-size:22px;fill:var(--ink)}
+.t-sub{font-size:13.5px;fill:var(--muted)}
+.t-title{font-weight:600;font-size:15px;fill:var(--ink)}
+.t-label{font-weight:600;font-size:13px;fill:var(--ink)}
+.t-note{font-size:12.5px;fill:var(--muted)}
+.t-chip{font-weight:600;font-size:13.5px;fill:var(--ink)}
+.t-chipsub{font-size:12px;fill:var(--muted)}
+.t-plus{font-size:17px;font-weight:600;fill:var(--muted)}
+.rule{stroke:var(--rule);stroke-width:1.5}
+.band{fill:var(--tone);fill-opacity:.05;stroke:var(--tone);stroke-opacity:.38;stroke-width:1.2;stroke-dasharray:14 5 2 5}
+.k{color:var(--tone);transition:opacity .45s ease}
+.m-line{fill:none;stroke:var(--tone);stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;transition:stroke .45s ease,opacity .45s ease}
+.m-flow{fill:none;stroke:var(--spark);stroke-width:2.4;stroke-linecap:round;stroke-dasharray:.01 15;opacity:0;pointer-events:none;transition:opacity .45s ease}
+.powered .m-flow{opacity:.5;animation:flow 1.05s linear infinite}
+.touring .m-flow{opacity:0}
+.touring .m-flow.on{opacity:.95}
+.touring .m-line:not(.on){stroke:var(--wire)}
+.touring .m-line.on{filter:url(#glow)}
+.touring .k:not(.m-line):not(.m-flow):not(.on){opacity:.34}
+#map .only{opacity:0}
+.touring #map .only.on{opacity:1}
+.touring #map .m-flow.only.on{opacity:.95}
+.dot{fill:var(--sheet);stroke:var(--tone);stroke-width:2.5}
+.human{color:var(--ink)}
+.m-box .frame{fill:var(--sheet);stroke:var(--tone);stroke-width:2;transition:stroke .45s,stroke-width .3s}
+.m-box .tint{fill:var(--tone);opacity:.07;transition:opacity .45s}
+.m-box .chip{fill:var(--panel);stroke:var(--tone);stroke-opacity:.5;stroke-width:1.2}
+.touring .m-box:not(.on) .frame{stroke:var(--wire)}
+.m-box.on .frame{stroke-width:2.6}
+.touring .m-box.on .tint{opacity:.16}
+.m-box.warn .frame{stroke:var(--trip)}
+.m-box.warn .tint{fill:var(--trip);animation:alarm 1.1s ease-in-out infinite}
+.m-box.warn .chip{stroke:var(--trip)}
+.m-box.flash .tint{animation:flash 1.1s ease-out}
+.task .tbox{fill:none;stroke:var(--wire);stroke-width:1.5}
+.task .tline{fill:var(--wire)}
+.task.on .first{fill:var(--tone);stroke:var(--tone)}
+.badge{fill:var(--sheet);stroke:var(--tone);stroke-width:2}
+.brk .brk-box{fill:var(--sheet);stroke:var(--tone);stroke-width:2;transition:stroke .3s,fill .3s}
+.brk .brk-pin{fill:var(--tone)}
+.brk .brk-blade{fill:var(--tone);transform-box:fill-box;transform-origin:0% 50%;transition:transform .5s cubic-bezier(.5,-0.5,.3,1.6),fill .3s}
+.touring .brk:not(.on) .brk-box{stroke:var(--wire)}
+.brk.checking .brk-box{animation:checking .7s ease-in-out infinite}
+.brk.ok .brk-box{stroke:var(--ok);fill:color-mix(in srgb,var(--ok) 16%,var(--sheet))}
+.brk.ok .brk-blade,.brk.ok .brk-pin{fill:var(--ok)}
+.brk.trip .brk-box{stroke:var(--trip);fill:color-mix(in srgb,var(--trip) 16%,var(--sheet))}
+.brk.trip .brk-blade,.brk.trip .brk-pin{fill:var(--trip)}
+.brk.trip .brk-blade{transform:rotate(-40deg)}
+.save-table .frame{fill:var(--panel);stroke:var(--tone);stroke-opacity:.55;stroke-width:1.5}
+.save-row rect{fill:transparent;transition:fill .4s}
+.save-row .sv{font-size:12.5px;fill:var(--ink)}
+.save-row .ss{font-size:12px;font-weight:600;fill:var(--muted)}
+.save-row.live rect{fill:color-mix(in srgb,var(--live) 18%,transparent)}
+.save-row.live .ss{fill:var(--live-ink)}
+.save-row.save .ss{fill:var(--test-ink)}
+.save-row.bad rect{fill:color-mix(in srgb,var(--trip) 18%,transparent)}
+.save-row.bad .ss{fill:var(--trip-ink)}
+.save-row.gone .sv{fill:var(--faint);text-decoration:line-through}
+.save-row.gone .ss{fill:var(--faint)}
+.legend .lg{stroke-width:3.5;stroke-linecap:round}
+.legend .tb{fill:none;stroke:var(--rule);stroke-width:1.2}
+.part{cursor:pointer;outline:none}
+.part .hit{fill:none;stroke:transparent;stroke-width:24;pointer-events:stroke}
+.part .hitbox{fill:transparent}
+.part:hover .m-line{stroke-width:4.6}
+.part:hover .frame{stroke-width:2.8}
+.part:focus-visible .focus-ring{opacity:1}
+.focus-ring{fill:none;stroke:var(--focus);stroke-width:2.5;stroke-dasharray:5 4;opacity:0;pointer-events:none}
+.packet{opacity:0;transition:opacity .25s;pointer-events:none}
+.packet.show{opacity:1}
+.p-halo{fill:var(--ptone);opacity:.3;transform-box:fill-box;transform-origin:center;animation:halo 1.3s ease-in-out infinite}
+.p-core{fill:var(--ptone);stroke:var(--spark);stroke-width:2.2}
+.packet.bad{--ptone:var(--trip)!important}
+.packet.bad .p-inner{animation:shake .45s ease-in-out}
+.pre .k,.pre .colhead,.pre .band,.pre .legend{opacity:0}
+
+@keyframes flow{to{stroke-dashoffset:-15.01}}
+@keyframes halo{0%,100%{transform:scale(.8);opacity:.34}50%{transform:scale(1.25);opacity:.14}}
+@keyframes checking{0%,100%{stroke-opacity:1}50%{stroke-opacity:.25}}
+@keyframes alarm{0%,100%{opacity:.1}50%{opacity:.3}}
+@keyframes flash{0%{opacity:.42}100%{opacity:.16}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+
+/* Sections */
+.section{padding:clamp(64px,9vw,112px) 0;border-top:1px solid var(--rule)}
+h2{font-family:var(--font-display);font-weight:600;font-size:clamp(36px,4.6vw,60px);line-height:.98;letter-spacing:-.01em;margin:0 0 18px;max-width:22ch;text-wrap:balance}
+.lede{font-size:20px;line-height:1.5;color:var(--muted);max-width:58ch;margin:0 0 36px}
+h3{font-size:21px;line-height:1.25;margin:0 0 6px;font-weight:600}
+.tech-line{font-size:15px;color:var(--muted);margin:18px 0 0;max-width:60ch}
+.tech-line b{color:var(--ink);font-weight:600}
+
+.two-col{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px 64px;align-items:start}
+@media (max-width:900px){.two-col{grid-template-columns:1fr}}
+.walk{list-style:none;counter-reset:w;margin:0 0 26px;padding:0;border-top:1px solid var(--rule)}
+.walk li{counter-increment:w;display:grid;grid-template-columns:40px minmax(0,1fr);gap:0 12px;padding:14px 0;border-bottom:1px solid var(--rule);color:var(--muted);transition:color .3s}
+.walk li::before{content:counter(w);font-family:var(--font-display);font-weight:600;font-size:26px;line-height:1.1;color:var(--faint);transition:color .3s}
+.walk li strong{display:block;color:var(--ink);font-weight:600}
+.walk li.now{color:var(--ink)}
+.walk li.now::before{color:var(--live)}
+.sheet-fig{margin:0;background-color:var(--sheet);background-image:linear-gradient(var(--gridline) 1px,transparent 1px),linear-gradient(90deg,var(--gridline) 1px,transparent 1px);background-size:24px 24px;border:1px solid var(--rule);border-radius:20px;padding:clamp(14px,2.4vw,28px);box-shadow:var(--shadow)}
+#req{display:block;width:100%;height:auto}
+#req text{font-family:var(--font-body)}
+.r-line{fill:none;stroke:var(--wire);stroke-width:3;stroke-linecap:round;transition:stroke .4s}
+.r-line.active{stroke:var(--live)}
+.r-box rect.rb{fill:var(--panel);stroke:var(--wire);stroke-width:2;transition:stroke .4s,fill .4s}
+.r-box.active rect.rb{stroke:var(--live);fill:color-mix(in srgb,var(--live) 9%,var(--panel))}
+.r-name{font-family:var(--font-display)!important;font-weight:600;font-size:25px;fill:var(--ink)}
+.r-desc{font-size:15px;fill:var(--muted)}
+.r-small{font-size:13.5px;fill:var(--muted)}
+.r-you{color:var(--ink)}
+.r-done{opacity:0;transition:opacity .4s}
+.r-done.show{opacity:1}
+.r-done rect{fill:var(--live)}
+.r-done text{font-size:14px;font-weight:600;fill:#1b1200}
+.r-packet{opacity:0;--ptone:var(--live)}
+.r-packet.show{opacity:1}
+
+.table-wrap{overflow-x:auto;border:1px solid var(--rule);border-radius:16px;background:var(--panel)}
+.compare{width:100%;min-width:680px;border-collapse:collapse;font-size:17px}
+.compare th,.compare td{text-align:left;vertical-align:top;padding:16px 20px;border-bottom:1px solid var(--rule)}
+.compare tbody tr:last-child th,.compare tbody tr:last-child td{border-bottom:0}
+.compare thead th{font-family:var(--font-display);font-weight:600;font-size:26px;line-height:1.05;padding-top:20px;border-bottom:2px solid var(--rule)}
+.compare thead th span{display:block;font-family:var(--font-body);font-size:15px;font-weight:500;color:var(--muted);margin-top:4px}
+.compare .th-test{color:var(--test-ink);border-bottom-color:var(--test)!important}
+.compare .th-live{color:var(--live-ink);border-bottom-color:var(--live)!important}
+.compare tbody th{font-weight:600;width:22%;color:var(--ink)}
+.compare td{color:var(--muted)}
+.compare tr.tech td,.compare tr.tech th{font-size:15px}
+.sync-note{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:28px 48px;align-items:center;margin-top:40px}
+.sync-note p{margin:0;color:var(--muted);max-width:56ch}
+.sync-fig{width:100%;height:auto;display:block}
+.sync-fig text{font-family:var(--font-body)}
+.sf-flow{fill:none;stroke:var(--spark);stroke-width:2.4;stroke-linecap:round;stroke-dasharray:.01 15;animation:flow 1.05s linear infinite}
+@media (max-width:900px){.sync-note{grid-template-columns:1fr}}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;border-top:2px solid var(--rule)}
+.duo-col{padding:26px 36px 8px 0}
+.duo-col + .duo-col{padding:26px 0 8px 36px;border-left:1px solid var(--rule)}
+.duo-col h3{display:flex;align-items:center;gap:12px;font-size:22px;margin-bottom:14px}
+.duo-col h3 svg{width:30px;height:30px;flex:none}
+.duo-col.ai h3{color:var(--feature-ink)}
+.duo ul{list-style:none;margin:0;padding:0}
+.duo li{padding:12px 0;border-bottom:1px solid var(--rule);color:var(--ink)}
+.duo li:last-child{border-bottom:0}
+.rule-note{margin:30px 0 0;padding:18px 22px;border-left:4px solid var(--feature);background:color-mix(in srgb,var(--feature) 7%,transparent);border-radius:0 12px 12px 0;max-width:70ch;font-size:18px}
+@media (max-width:760px){.duo{grid-template-columns:1fr}.duo-col,.duo-col + .duo-col{padding:22px 0 6px;border-left:0}.duo-col + .duo-col{border-top:1px solid var(--rule)}}
+
+.checks{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;position:relative}
+.checks::before{content:"";position:absolute;left:26px;right:calc(20% - 26px);top:25px;height:3px;border-radius:2px;background:linear-gradient(90deg,var(--feature) 0 36%,var(--test) 36% 58%,var(--live) 58% 100%);opacity:.8}
+.checks li{position:relative;padding:0 22px 0 0}
+.checks .glyph{position:relative;width:52px;height:52px;display:block;margin-bottom:18px}
+.checks .n{display:block;font-family:var(--font-display);font-weight:600;font-size:18px;color:var(--muted);margin-bottom:2px}
+.checks h3{font-size:20px}
+.checks p{margin:0;font-size:16.5px;color:var(--muted)}
+@media (max-width:1000px){.checks{grid-template-columns:1fr;gap:22px}.checks::before{left:25px;right:auto;top:26px;bottom:26px;width:3px;height:auto;background:linear-gradient(180deg,var(--feature) 0 36%,var(--test) 36% 58%,var(--live) 58% 100%)}.checks li{display:grid;grid-template-columns:52px minmax(0,1fr);gap:0 18px;padding:0}.checks .glyph{margin:0;grid-row:span 3}}
+.always{margin-top:48px;display:grid;grid-template-columns:auto 1fr 1fr;gap:18px 40px;align-items:start;padding-top:26px;border-top:1px solid var(--rule)}
+.always h3{font-family:var(--font-display);font-size:26px;margin:0}
+.always div{display:grid;grid-template-columns:34px minmax(0,1fr);gap:0 14px}
+.always svg{width:34px;height:34px;color:var(--live)}
+.always p{margin:0;color:var(--muted);font-size:17px}
+.always p strong{display:block;color:var(--ink);font-weight:600}
+@media (max-width:900px){.always{grid-template-columns:1fr}}
+
+.faq{border-top:1px solid var(--rule);max-width:900px}
+.faq details{border-bottom:1px solid var(--rule)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:24px;align-items:center;padding:20px 2px;font-size:21px;font-weight:600}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .pm{flex:none;width:28px;height:28px;border-radius:50%;border:1.5px solid var(--rule);position:relative}
+.faq summary .pm::before,.faq summary .pm::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:2px;background:var(--ink);transform:translate(-50%,-50%);transition:transform .25s}
+.faq summary .pm::after{transform:translate(-50%,-50%) rotate(90deg)}
+.faq details[open] summary .pm::after{transform:translate(-50%,-50%) rotate(0deg)}
+.faq details p{margin:0 0 22px;color:var(--muted);max-width:64ch}
+
+.gloss{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 40px;margin:0}
+.gloss div{padding:16px 0;border-top:1px solid var(--rule)}
+.gloss dt{font-weight:600;font-size:18px}
+.gloss dd{margin:4px 0 0;color:var(--muted);font-size:16.5px}
+@media (max-width:1000px){.gloss{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.gloss{grid-template-columns:1fr}}
+
+footer{border-top:1px solid var(--rule);padding:36px 0 48px;color:var(--muted);font-size:15px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  .m-flow,.sf-flow{display:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#stage">Skip to the map</a>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top"><strong>Energy Matrix Group</strong><span>How we build our app</span></a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#stage">The map</a>
+      <a href="#using">Using the app</a>
+      <a href="#copies">Two copies</a>
+      <a href="#team">People and AI</a>
+      <a href="#checks">Safety checks</a>
+      <a href="#questions">Questions</a>
+      <a href="#words">Glossary</a>
+    </nav>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="Switch to dark theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path id="themeIcon" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="wrap hero-grid">
+    <h1>From idea to live app, one safe step at a time</h1>
+    <div class="hero-copy">
+      <p>This is how our team of <strong>people and AI agents</strong> builds the Energy Matrix Group app: where the code lives, how every change is checked and rehearsed, and how it reaches the people who use it. No technical background needed.</p>
+      <div class="btns">
+        <button class="btn primary" id="heroStart" type="button">Start the tour</button>
+        <button class="btn" id="heroExplore" type="button">Explore the map yourself</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stage-sec" aria-label="Interactive build and release map">
+ <div class="wrap">
+  <div class="stage" id="stage" tabindex="-1">
+    <div class="stage-top">
+      <span class="lbl" id="storyLbl">Choose a story</span>
+      <div class="tabs" role="group" aria-labelledby="storyLbl">
+        <button class="tab" type="button" data-s="0" aria-selected="false" style="--tone:var(--feature)"><i></i>Follow a new feature</button>
+        <button class="tab" type="button" data-s="1" aria-selected="false" style="--tone:var(--trip)"><i></i>When a check fails</button>
+        <button class="tab" type="button" data-s="2" aria-selected="false" style="--tone:var(--live)"><i></i>Undoing a release</button>
+      </div>
+      <span class="spacer"></span>
+      <button class="ov-btn" id="ovBtn" type="button">Show the whole map</button>
+    </div>
+    <p class="swipe">Swipe sideways to see the whole map. It follows the story as it moves.</p>
+    <div class="map-scroll">
+<svg id="map" viewBox="0 0 1200 610" xmlns="http://www.w3.org/2000/svg" role="group" aria-labelledby="map-t map-d">
+<title id="map-t">Build and release map</title>
+<desc id="map-d">Work flows from the team of developers and AI agents, through the GitHub code library, to the test app and then the live app on Render, with data stored in Microsoft Azure in Australia. Select any part to learn what it does.</desc>
+<defs>
+  <filter id="glow" filterUnits="userSpaceOnUse" x="0" y="0" width="1200" height="610" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceGraphic" stdDeviation="3.4" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <symbol id="i-person" viewBox="0 0 32 32"><circle cx="16" cy="10.5" r="5.6" fill="none" stroke="currentColor" stroke-width="2.3"/><path d="M5.5 28.5c0-6.2 4.7-10.6 10.5-10.6s10.5 4.4 10.5 10.6" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></symbol>
+  <symbol id="i-ai" viewBox="0 0 32 32"><path d="M16 2.8 27.4 9.4v13.2L16 29.2 4.6 22.6V9.4Z" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"/><path d="M16 9.4l1.9 4.7 4.7 1.9-4.7 1.9L16 22.6l-1.9-4.7L9.4 16l4.7-1.9Z" fill="currentColor"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 32 32"><rect x="7" y="14" width="18" height="13.5" rx="2.6" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M11 14v-3.4a5 5 0 0 1 10 0V14" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="16" cy="20.7" r="1.9" fill="currentColor"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 32 32"><path d="M16 3 27 7.2V15c0 7-4.6 11.7-11 14-6.4-2.3-11-7-11-14V7.2Z" style="fill:var(--sheet)" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"/><path d="m11 16 3.6 3.6L21.4 12.6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 32 32"><rect x="5" y="7" width="22" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2.3"/><path d="M5 13.5h22M11 4v6M21 4v6" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/><path d="M11 19h3M18 19h3M11 23h3" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 32 32"><path d="M16 29s-9-9.6-9-16a9 9 0 0 1 18 0c0 6.4-9 16-9 16Z" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"/><circle cx="16" cy="13" r="3.3" fill="none" stroke="currentColor" stroke-width="2.3"/></symbol>
+  <symbol id="i-people" viewBox="0 0 48 32"><circle cx="18" cy="10" r="5.4" fill="none" stroke="currentColor" stroke-width="2.3"/><path d="M7 28.5c0-6.2 4.8-10.4 11-10.4s11 4.2 11 10.4" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/><circle cx="33.5" cy="11.5" r="4.6" fill="none" stroke="currentColor" stroke-width="2.3"/><path d="M31.5 18.6c.7-.1 1.3-.2 2-.2 5.3 0 9 3.6 9 9.1" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></symbol>
+</defs>
+
+<!-- Zones -->
+<rect class="band" x="630" y="86" width="542" height="132" rx="16" style="--tone:var(--test)"/>
+<rect class="band" x="630" y="326" width="542" height="132" rx="16" style="--tone:var(--live)"/>
+
+<!-- Column headings -->
+<g class="colhead">
+  <text class="t-head" x="34" y="36">The team</text>
+  <text class="t-sub" x="34" y="56">people and AI agents</text>
+  <line class="rule" x1="34" x2="196" y1="68" y2="68"/>
+</g>
+<g class="colhead">
+  <text class="t-head" x="236" y="36">GitHub</text>
+  <text class="t-sub" x="236" y="56">our shared code library</text>
+  <line class="rule" x1="236" x2="590" y1="68" y2="68"/>
+</g>
+<g class="colhead">
+  <text class="t-head" x="640" y="36">Render</text>
+  <text class="t-sub" x="640" y="56">where the app runs</text>
+  <line class="rule" x1="640" x2="880" y1="68" y2="68"/>
+</g>
+<g class="colhead">
+  <text class="t-head" x="926" y="36">Microsoft Azure</text>
+  <text class="t-sub" x="926" y="56">where data is stored, in Australia</text>
+  <line class="rule" x1="926" x2="1166" y1="68" y2="68"/>
+</g>
+
+<!-- Wires drawn beneath the equipment -->
+<path class="k m-line" data-k="linkT" data-order="5" style="--tone:var(--test)" d="M866 160H926"/>
+<path class="k m-line" data-k="linkP" data-order="5.3" style="--tone:var(--live)" d="M866 400H926"/>
+<path class="k m-line" data-k="sso" data-order="6.4" style="--tone:var(--live)" d="M690 546V444"/>
+
+<!-- Task board -->
+<g class="part" data-info="task" tabindex="0" role="button" aria-label="Task board. Learn more">
+  <rect class="focus-ring" x="28" y="90" width="174" height="92" rx="13"/>
+  <g class="k m-box task" data-k="task" data-order="0" style="--tone:var(--feature)">
+    <rect class="frame" x="34" y="96" width="162" height="80" rx="10"/>
+    <rect class="tint" x="34" y="96" width="162" height="80" rx="10"/>
+    <text class="t-title" x="48" y="119">Task board</text>
+    <rect class="tbox first" x="48" y="130" width="9" height="9" rx="2"/><rect class="tline first" x="63" y="132.5" width="96" height="4" rx="2"/>
+    <rect class="tbox" x="48" y="144" width="9" height="9" rx="2"/><rect class="tline" x="63" y="146.5" width="72" height="4" rx="2"/>
+    <rect class="tbox" x="48" y="158" width="9" height="9" rx="2"/><rect class="tline" x="63" y="160.5" width="108" height="4" rx="2"/>
+  </g>
+</g>
+
+<!-- Developer and AI agent pairs -->
+<g class="part" data-info="pair" tabindex="0" role="button" aria-label="Developers working with AI agents. Learn more">
+  <rect class="focus-ring" x="28" y="210" width="136" height="156" rx="12"/>
+  <g class="k" data-k="pair1" data-order="0.5" style="--tone:var(--feature)">
+    <rect class="hitbox" x="34" y="216" width="124" height="68"/>
+    <use class="human" href="#i-person" x="48" y="222" width="36" height="36"/>
+    <text class="t-plus" x="92" y="246" text-anchor="middle">+</text>
+    <use href="#i-ai" x="100" y="222" width="36" height="36"/>
+    <text class="t-note" x="34" y="278">Developer + AI agent</text>
+  </g>
+  <g class="k" data-k="pair2" data-order="0.7" style="--tone:var(--feature)">
+    <rect class="hitbox" x="34" y="296" width="124" height="68"/>
+    <use class="human" href="#i-person" x="48" y="302" width="36" height="36"/>
+    <text class="t-plus" x="92" y="326" text-anchor="middle">+</text>
+    <use href="#i-ai" x="100" y="302" width="36" height="36"/>
+    <text class="t-note" x="34" y="358">Developer + AI agent</text>
+  </g>
+</g>
+
+<!-- Feature branches -->
+<g class="part" data-info="feat" tabindex="0" role="button" aria-label="Feature branches. Learn more">
+  <path class="hit" d="M150 240H372C404 240 404 160 436 160"/>
+  <path class="hit" d="M150 320H392C440 320 440 160 488 160"/>
+  <path class="k m-line" data-k="feat1a" data-order="1" style="--tone:var(--feature)" d="M150 240H277"/>
+  <path class="k m-line" data-k="feat1b" data-order="1.6" style="--tone:var(--feature)" d="M303 240H372C404 240 404 160 436 160"/>
+  <path class="k m-line" data-k="feat2" data-order="1.2" style="--tone:var(--feature)" d="M150 320H392C440 320 440 160 488 160"/>
+  <text class="t-note" x="160" y="308">feature branches</text>
+</g>
+
+<!-- Test branch -->
+<g class="part" data-info="testline" tabindex="0" role="button" aria-label="Test branch. Learn more">
+  <rect class="focus-ring" x="228" y="130" width="340" height="42" rx="10"/>
+  <path class="hit" d="M236 160H596"/>
+  <path class="k m-line" data-k="testline" data-order="2" style="--tone:var(--test)" d="M236 160H640"/>
+  <circle class="k dot" data-k="testline" data-order="2" style="--tone:var(--test)" cx="436" cy="160" r="5"/>
+  <circle class="k dot" data-k="testline" data-order="2" style="--tone:var(--test)" cx="488" cy="160" r="5"/>
+  <text class="t-title" x="236" y="146">test branch</text>
+</g>
+
+<!-- Tests and review breakers -->
+<g class="part" data-info="chk" tabindex="0" role="button" aria-label="Automated tests and review. Learn more">
+  <rect class="focus-ring" x="228" y="200" width="124" height="138" rx="10"/>
+  <text class="t-label" x="290" y="215" text-anchor="middle">Tests and review</text>
+  <g class="k brk" data-k="chk1" data-order="1.5" transform="translate(290 240)" style="--tone:var(--feature)">
+    <rect class="brk-box" x="-13" y="-13" width="26" height="26" rx="4"/>
+    <circle class="brk-pin" cx="-7" cy="0" r="2.2"/><circle class="brk-pin" cx="7.5" cy="0" r="2.2"/>
+    <rect class="brk-blade" x="-7" y="-1.4" width="14.5" height="2.8" rx="1.4"/>
+  </g>
+  <g class="k brk" data-k="chk2" data-order="1.7" transform="translate(290 320)" style="--tone:var(--feature)">
+    <rect class="brk-box" x="-13" y="-13" width="26" height="26" rx="4"/>
+    <circle class="brk-pin" cx="-7" cy="0" r="2.2"/><circle class="brk-pin" cx="7.5" cy="0" r="2.2"/>
+    <rect class="brk-blade" x="-7" y="-1.4" width="14.5" height="2.8" rx="1.4"/>
+  </g>
+</g>
+
+<!-- Approval gate, test into main -->
+<g class="part" data-info="gate" tabindex="0" role="button" aria-label="Approval to go live. Learn more">
+  <rect class="focus-ring" x="532" y="244" width="104" height="76" rx="10"/>
+  <path class="hit" d="M548 166V394"/>
+  <path class="k m-line" data-k="connector" data-order="3" style="--tone:var(--live)" d="M548 160V400"/>
+  <circle class="k dot" data-k="connector" data-order="3" style="--tone:var(--test)" cx="548" cy="160" r="5"/>
+  <g class="k brk" data-k="gate" data-order="3.2" transform="translate(548 280) rotate(90)" style="--tone:var(--live)">
+    <rect class="brk-box" x="-13" y="-13" width="26" height="26" rx="4"/>
+    <circle class="brk-pin" cx="-7" cy="0" r="2.2"/><circle class="brk-pin" cx="7.5" cy="0" r="2.2"/>
+    <rect class="brk-blade" x="-7" y="-1.4" width="14.5" height="2.8" rx="1.4"/>
+  </g>
+  <use class="k" data-k="gate" data-order="3.2" href="#i-lock" x="568" y="256" width="22" height="22" style="--tone:var(--live)"/>
+  <text class="t-label" x="570" y="296">Approval</text>
+  <text class="t-note" x="570" y="312">to go live</text>
+</g>
+
+<!-- Main branch -->
+<g class="part" data-info="mainline" tabindex="0" role="button" aria-label="Main branch, protected. Learn more">
+  <rect class="focus-ring" x="228" y="368" width="340" height="68" rx="10"/>
+  <path class="hit" d="M236 400H596"/>
+  <path class="k m-line" data-k="mainline" data-order="3.5" style="--tone:var(--live)" d="M236 400H640"/>
+  <circle class="k dot" data-k="mainline" data-order="3.5" style="--tone:var(--live)" cx="548" cy="400" r="5"/>
+  <text class="t-title" x="236" y="386">main branch</text>
+  <use class="k" data-k="mainline" data-order="3.5" href="#i-lock" x="328" y="371" width="19" height="19" style="--tone:var(--live)"/>
+  <text class="t-note" x="236" y="426">protected: changes need approval</text>
+</g>
+
+<!-- Auto-deploy breakers -->
+<g class="part" data-info="deployT" tabindex="0" role="button" aria-label="Automatic release to the test app. Learn more">
+  <rect class="focus-ring" x="552" y="130" width="78" height="46" rx="10"/>
+  <text class="t-note" x="626" y="138" text-anchor="end">auto-deploy</text>
+  <g class="k brk" data-k="deployT" data-order="4" transform="translate(612 160)" style="--tone:var(--test)">
+    <rect class="brk-box" x="-13" y="-13" width="26" height="26" rx="4"/>
+    <circle class="brk-pin" cx="-7" cy="0" r="2.2"/><circle class="brk-pin" cx="7.5" cy="0" r="2.2"/>
+    <rect class="brk-blade" x="-7" y="-1.4" width="14.5" height="2.8" rx="1.4"/>
+  </g>
+</g>
+<g class="part" data-info="deployP" tabindex="0" role="button" aria-label="Automatic release to the live app. Learn more">
+  <rect class="focus-ring" x="552" y="370" width="78" height="46" rx="10"/>
+  <text class="t-note" x="626" y="378" text-anchor="end">auto-deploy</text>
+  <g class="k brk" data-k="deployP" data-order="4.2" transform="translate(612 400)" style="--tone:var(--live)">
+    <rect class="brk-box" x="-13" y="-13" width="26" height="26" rx="4"/>
+    <circle class="brk-pin" cx="-7" cy="0" r="2.2"/><circle class="brk-pin" cx="7.5" cy="0" r="2.2"/>
+    <rect class="brk-blade" x="-7" y="-1.4" width="14.5" height="2.8" rx="1.4"/>
+  </g>
+</g>
+
+<!-- Apps on Render -->
+<g class="part" data-info="appT" tabindex="0" role="button" aria-label="Test app. Learn more">
+  <rect class="focus-ring" x="634" y="94" width="252" height="116" rx="15"/>
+  <g class="k m-box" data-k="appT" data-order="4.5" style="--tone:var(--test)">
+    <rect class="frame" x="640" y="100" width="240" height="104" rx="12"/>
+    <rect class="tint" x="640" y="100" width="240" height="104" rx="12"/>
+    <text class="t-title" x="654" y="123">Test app</text>
+    <text class="t-note" x="866" y="123" text-anchor="end">the rehearsal</text>
+    <rect class="chip" x="654" y="133" width="104" height="56" rx="7"/>
+    <text class="t-chip" x="666" y="157">Website</text>
+    <text class="t-chipsub" x="666" y="176">what you see</text>
+    <rect class="chip" x="768" y="133" width="98" height="56" rx="7"/>
+    <text class="t-chip" x="780" y="157">Server</text>
+    <text class="t-chipsub" x="780" y="176">the engine</text>
+  </g>
+</g>
+<g class="part" data-info="appP" tabindex="0" role="button" aria-label="Live app. Learn more">
+  <rect class="focus-ring" x="634" y="334" width="252" height="116" rx="15"/>
+  <g class="k m-box" data-k="appP" data-order="4.7" style="--tone:var(--live)">
+    <rect class="frame" x="640" y="340" width="240" height="104" rx="12"/>
+    <rect class="tint" x="640" y="340" width="240" height="104" rx="12"/>
+    <text class="t-title" x="654" y="363">Live app</text>
+    <text class="t-note" x="866" y="363" text-anchor="end">the real show</text>
+    <rect class="chip" x="654" y="373" width="104" height="56" rx="7"/>
+    <text class="t-chip" x="666" y="397">Website</text>
+    <text class="t-chipsub" x="666" y="416">what you see</text>
+    <rect class="chip" x="768" y="373" width="98" height="56" rx="7"/>
+    <text class="t-chip" x="780" y="397">Server</text>
+    <text class="t-chipsub" x="780" y="416">the engine</text>
+  </g>
+</g>
+
+<!-- Data in Azure, Australia -->
+<g class="part" data-info="dataT" tabindex="0" role="button" aria-label="Test data. Learn more">
+  <rect class="focus-ring" x="920" y="94" width="252" height="116" rx="15"/>
+  <g class="k m-box" data-k="dataT" data-order="5.5" style="--tone:var(--test)">
+    <rect class="frame" x="926" y="100" width="240" height="104" rx="12"/>
+    <rect class="tint" x="926" y="100" width="240" height="104" rx="12"/>
+    <text class="t-title" x="940" y="123">Test data</text>
+    <rect class="chip" x="940" y="133" width="106" height="56" rx="7"/>
+    <text class="t-chip" x="951" y="157">SQL database</text>
+    <text class="t-chipsub" x="951" y="176">records</text>
+    <rect class="chip" x="1054" y="133" width="98" height="56" rx="7"/>
+    <text class="t-chip" x="1065" y="157">File storage</text>
+    <text class="t-chipsub" x="1065" y="176">documents</text>
+  </g>
+</g>
+<g class="part" data-info="dataP" tabindex="0" role="button" aria-label="Live data. Learn more">
+  <rect class="focus-ring" x="920" y="334" width="252" height="116" rx="15"/>
+  <g class="k m-box" data-k="dataP" data-order="5.8" style="--tone:var(--live)">
+    <rect class="frame" x="926" y="340" width="240" height="104" rx="12"/>
+    <rect class="tint" x="926" y="340" width="240" height="104" rx="12"/>
+    <text class="t-title" x="940" y="363">Live data</text>
+    <rect class="chip" x="940" y="373" width="106" height="56" rx="7"/>
+    <text class="t-chip" x="951" y="397">SQL database</text>
+    <text class="t-chipsub" x="951" y="416">records</text>
+    <rect class="chip" x="1054" y="373" width="98" height="56" rx="7"/>
+    <text class="t-chip" x="1065" y="397">File storage</text>
+    <text class="t-chipsub" x="1065" y="416">documents</text>
+  </g>
+</g>
+
+<!-- Monthly copy -->
+<g class="part" data-info="sync" tabindex="0" role="button" aria-label="Monthly copy of live data into test. Learn more">
+  <rect class="focus-ring" x="966" y="226" width="170" height="80" rx="12"/>
+  <path class="hit" d="M990 336V210"/>
+  <path class="k m-line" data-k="sync" data-order="6" style="--tone:var(--test)" d="M990 338V210"/>
+  <path class="k m-line" data-k="sync" data-order="6" data-noflow="1" style="--tone:var(--test)" d="M981.5 219.5L990 208L998.5 219.5"/>
+  <g class="k" data-k="sync" data-order="6" style="--tone:var(--test)">
+    <circle class="badge" cx="990" cy="272" r="17"/>
+    <use href="#i-cal" x="979" y="261" width="22" height="22"/>
+  </g>
+  <text class="t-label" x="1016" y="268">Monthly copy</text>
+  <text class="t-note" x="1016" y="285">live data into test</text>
+</g>
+
+<!-- Sign-in and people -->
+<g class="part" data-info="sso" tabindex="0" role="button" aria-label="Microsoft work sign-in. Learn more">
+  <rect class="focus-ring" x="512" y="472" width="200" height="46" rx="10"/>
+  <path class="hit" d="M690 450V540"/>
+  <use class="k" data-k="sso" data-order="6.4" href="#i-shield" x="674" y="479" width="32" height="32" style="--tone:var(--live)"/>
+  <text class="t-label" x="662" y="492" text-anchor="end">Microsoft work sign-in</text>
+  <text class="t-note" x="662" y="508" text-anchor="end">single sign-on</text>
+</g>
+<g class="part" data-info="users" tabindex="0" role="button" aria-label="People using the app. Learn more">
+  <rect class="focus-ring" x="614" y="540" width="152" height="66" rx="10"/>
+  <g class="k" data-k="users" data-order="7" style="--tone:var(--live)">
+    <rect class="hitbox" x="620" y="546" width="140" height="58"/>
+    <use class="human" href="#i-people" x="666" y="548" width="48" height="32"/>
+    <text class="t-label" x="690" y="598" text-anchor="middle">People using the app</text>
+  </g>
+</g>
+
+<!-- Save points -->
+<path class="k m-line only" data-k="rollpath" style="--tone:var(--live)" d="M880 520C906 520 906 424 880 424"/>
+<g class="part" data-info="saves" tabindex="0" role="button" aria-label="Save points for rolling back. Learn more">
+  <rect class="focus-ring" x="710" y="456" width="176" height="110" rx="11"/>
+  <g class="k save-table" data-k="saves" data-order="6.8" style="--tone:var(--live)">
+    <rect class="frame" x="716" y="462" width="164" height="98" rx="8"/>
+    <text class="t-label" x="728" y="479">Save points</text>
+    <g class="save-row"><rect x="722" y="486" width="152" height="21" rx="4"/><text class="sv" x="731" y="501">Version 1.4</text><text class="ss" x="866" y="501" text-anchor="end"></text></g>
+    <g class="save-row"><rect x="722" y="510" width="152" height="21" rx="4"/><text class="sv" x="731" y="525">Version 1.5</text><text class="ss" x="866" y="525" text-anchor="end"></text></g>
+    <g class="save-row live"><rect x="722" y="534" width="152" height="21" rx="4"/><text class="sv" x="731" y="549">Version 1.6</text><text class="ss" x="866" y="549" text-anchor="end">Live</text></g>
+  </g>
+</g>
+
+<!-- Key and title block -->
+<g class="legend" aria-hidden="true">
+  <text class="t-label" x="34" y="480">Key to the map</text>
+  <line class="lg" x1="34" x2="60" y1="503" y2="503" style="stroke:var(--feature)"/><text class="t-note" x="70" y="507">Work in progress</text>
+  <line class="lg" x1="190" x2="216" y1="503" y2="503" style="stroke:var(--test)"/><text class="t-note" x="226" y="507">Test copy</text>
+  <line class="lg" x1="346" x2="372" y1="503" y2="503" style="stroke:var(--live)"/><text class="t-note" x="382" y="507">Live copy</text>
+  <g class="brk" transform="translate(47 532) scale(.8)" style="--tone:var(--muted)"><rect class="brk-box" x="-13" y="-13" width="26" height="26" rx="4"/><circle class="brk-pin" cx="-7" cy="0" r="2.2"/><circle class="brk-pin" cx="7.5" cy="0" r="2.2"/><rect class="brk-blade" x="-7" y="-1.4" width="14.5" height="2.8" rx="1.4"/></g>
+  <text class="t-note" x="70" y="536">Safety check</text>
+  <g class="brk ok" transform="translate(203 532) scale(.8)" style="--tone:var(--ok)"><rect class="brk-box" x="-13" y="-13" width="26" height="26" rx="4"/><circle class="brk-pin" cx="-7" cy="0" r="2.2"/><circle class="brk-pin" cx="7.5" cy="0" r="2.2"/><rect class="brk-blade" x="-7" y="-1.4" width="14.5" height="2.8" rx="1.4"/></g>
+  <text class="t-note" x="226" y="536">Check passed</text>
+  <g class="brk trip" transform="translate(359 532) scale(.8)" style="--tone:var(--trip)"><rect class="brk-box" x="-13" y="-13" width="26" height="26" rx="4"/><circle class="brk-pin" cx="-7" cy="0" r="2.2"/><circle class="brk-pin" cx="7.5" cy="0" r="2.2"/><rect class="brk-blade" x="-7" y="-1.4" width="14.5" height="2.8" rx="1.4"/></g>
+  <text class="t-note" x="382" y="536">Check stopped it</text>
+  <rect class="tb" x="34" y="556" width="450" height="34" rx="4"/>
+  <line class="tb" x1="190" x2="190" y1="556" y2="590"/><line class="tb" x1="346" x2="346" y1="556" y2="590"/>
+  <text class="t-label" x="46" y="577">Energy Matrix Group</text>
+  <text class="t-note" x="202" y="577">Build and release map</text>
+  <text class="t-note" x="358" y="577">Revision 1, Sep 2026</text>
+</g>
+
+<!-- Motion guides (invisible) -->
+<g fill="none" stroke="none" aria-hidden="true">
+  <path id="mv-task" d="M115 150C115 205 92 200 92 238"/>
+  <path id="mv-f1a" d="M92 240H277"/>
+  <path id="mv-f1b" d="M277 240H372C404 240 404 160 436 160"/>
+  <path id="mv-t1" d="M436 160H600"/>
+  <path id="mv-dT" d="M600 160H706"/>
+  <path id="mv-c1" d="M548 160V267"/>
+  <path id="mv-c2" d="M548 267V400H600"/>
+  <path id="mv-dP" d="M600 400H706"/>
+  <path id="mv-out" d="M690 429V546"/>
+  <path id="mv-roll" d="M880 520C906 520 906 424 880 424H812"/>
+</g>
+
+<g class="packet" id="packet" transform="translate(-50 -50)" style="--ptone:var(--feature)" aria-hidden="true">
+  <g class="p-inner"><circle class="p-halo" r="15"/><circle class="p-core" r="6.5" filter="url(#glow)"/></g>
+</g>
+</svg>
+    </div>
+    <div class="panel" id="panel">
+      <div class="p-text" id="pText" aria-live="polite">
+        <div class="p-meta"><i></i><span id="pMeta">Overview</span></div>
+        <h2 class="p-title" id="pTitle" style="max-width:none">The whole system on one page</h2>
+        <p class="p-body" id="pBody"></p>
+        <p class="p-tech" id="pTech"></p>
+      </div>
+      <div class="p-ctrl">
+        <div class="prog" id="pProg" hidden></div>
+        <div class="ctrl-row">
+          <button class="btn" id="pPrev" type="button" hidden>Previous</button>
+          <button class="btn" id="pPlay" type="button" hidden aria-pressed="false">Pause</button>
+          <button class="btn primary" id="pNext" type="button">Start the tour</button>
+        </div>
+      </div>
+    </div>
+  </div>
+ </div>
+</section>
+
+<!-- Using the app -->
+<section class="section" id="using" aria-labelledby="using-h">
+  <div class="wrap two-col">
+    <div>
+      <h2 id="using-h">What happens when someone uses the app</h2>
+      <p class="lede">The app has three layers, a bit like a shop: the shop front you walk into, the staff behind the counter, and the storeroom out the back.</p>
+      <ol class="walk" id="walk">
+        <li><div><strong>You sign in and ask for last month's usage report.</strong>You use your normal Microsoft work login, so there's no extra password.</div></li>
+        <li><div><strong>The server checks you're allowed to see it.</strong>It applies the business rules, then asks storage for what it needs.</div></li>
+        <li><div><strong>Storage hands back the pieces.</strong>The numbers come from the SQL database; the PDF comes from file storage.</div></li>
+        <li><div><strong>The report appears on your screen.</strong>All of this happens in the live app, the bottom row of the map.</div></li>
+      </ol>
+      <button class="btn primary" id="playReq" type="button">Play the example</button>
+      <p class="tech-line"><b>In tech terms:</b> a web interface secured with single sign-on, a Node.js server, Azure SQL Database and Azure Blob Storage.</p>
+    </div>
+    <figure class="sheet-fig">
+      <svg id="req" viewBox="0 0 520 462" role="img" aria-labelledby="req-t">
+        <title id="req-t">The three layers of the app: the website, the server, and storage in Microsoft Azure</title>
+        <path class="r-line" id="r1" d="M260 42V74"/>
+        <path class="r-line" id="r2" d="M260 158V200"/>
+        <path class="r-line" id="r3a" d="M146 284V330"/>
+        <path class="r-line" id="r3b" d="M374 284V330"/>
+        <use class="r-you" href="#i-person" x="226" y="4" width="32" height="32"/>
+        <text class="r-desc" x="266" y="19" style="font-weight:600;fill:var(--ink)">You</text>
+        <text class="r-small" x="266" y="36">signed in with your work account</text>
+        <g class="r-box" data-r="web">
+          <rect class="rb" x="40" y="74" width="440" height="84" rx="12"/>
+          <text class="r-name" x="64" y="110">Website</text>
+          <text class="r-desc" x="64" y="136">The shop front: what you see and click</text>
+          <g class="r-done" id="rDone"><rect x="356" y="98" width="106" height="36" rx="8"/><text x="409" y="121" text-anchor="middle">Report ready</text></g>
+        </g>
+        <g class="r-box" data-r="srv">
+          <rect class="rb" x="40" y="200" width="440" height="84" rx="12"/>
+          <text class="r-name" x="64" y="236">Server</text>
+          <text class="r-desc" x="64" y="262">Behind the counter: checks, rules, fetching</text>
+        </g>
+        <g class="r-box" data-r="sql">
+          <rect class="rb" x="40" y="330" width="212" height="84" rx="12"/>
+          <text class="r-name" x="60" y="366">SQL database</text>
+          <text class="r-desc" x="60" y="392">Records and numbers</text>
+        </g>
+        <g class="r-box" data-r="file">
+          <rect class="rb" x="268" y="330" width="212" height="84" rx="12"/>
+          <text class="r-name" x="288" y="366">File storage</text>
+          <text class="r-desc" x="288" y="392">Documents and files</text>
+        </g>
+        <use href="#i-pin" x="40" y="428" width="20" height="20" style="color:var(--muted)"/>
+        <text class="r-small" x="66" y="443">Stored in Microsoft Azure, in Australian data centres</text>
+        <g class="r-packet" id="rp1" transform="translate(260 30)"><circle class="p-halo" r="12"/><circle class="p-core" r="6"/></g>
+        <g class="r-packet" id="rp2" transform="translate(374 284)"><circle class="p-halo" r="12"/><circle class="p-core" r="6"/></g>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+<!-- Two copies -->
+<section class="section" id="copies" aria-labelledby="copies-h">
+  <div class="wrap">
+    <h2 id="copies-h">Two complete copies: a rehearsal and the real show</h2>
+    <p class="lede">We run two separate copies of the app, each with its own website, server and databases. Every change plays in the rehearsal before it reaches the real show.</p>
+    <div class="table-wrap">
+      <table class="compare">
+        <thead>
+          <tr><th scope="col"><span class="sr-only">Question</span></th><th scope="col" class="th-test">Test app<span>the rehearsal, top row of the map</span></th><th scope="col" class="th-live">Live app<span>the real show, bottom row of the map</span></th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Who uses it</th><td>Our build team</td><td>Everyone who uses the app</td></tr>
+          <tr><th scope="row">What changes it</th><td>Any reviewed change merged into the test branch, released automatically</td><td>Only work that passed in test and was approved into main, released automatically</td></tr>
+          <tr><th scope="row">Its data</th><td>A copy of live data, refreshed every month</td><td>The real, up-to-date records and files</td></tr>
+          <tr><th scope="row">If something goes wrong</th><td>Only the team notices. We fix it and try again.</td><td>We switch back to the last save point, then fix it in test.</td></tr>
+          <tr class="tech"><th scope="row">In tech terms</th><td>Render test services, test Azure SQL Database and Blob Storage</td><td>Render production services, production Azure SQL Database and Blob Storage</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="sync-note">
+      <svg class="sync-fig" viewBox="0 0 520 150" aria-hidden="true">
+        <g style="color:var(--live)">
+          <ellipse cx="90" cy="36" rx="58" ry="14" fill="none" stroke="currentColor" stroke-width="2.5"/>
+          <path d="M32 36V98a58 14 0 0 0 116 0V36" fill="none" stroke="currentColor" stroke-width="2.5"/>
+          <path d="M32 67a58 14 0 0 0 116 0" fill="none" stroke="currentColor" stroke-width="2" opacity=".5"/>
+        </g>
+        <text x="90" y="140" text-anchor="middle" style="font-weight:600;font-size:16px;fill:var(--ink)">Live data</text>
+        <path d="M168 68H346" fill="none" style="stroke:var(--test)" stroke-width="3.5" stroke-linecap="round"/>
+        <path class="sf-flow" d="M168 68H346"/>
+        <path d="M336 58l12 10-12 10" fill="none" style="stroke:var(--test)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="257" cy="68" r="21" style="fill:var(--sheet);stroke:var(--test)" stroke-width="2"/>
+        <use href="#i-cal" x="244" y="55" width="26" height="26" style="color:var(--test)"/>
+        <text x="257" y="112" text-anchor="middle" style="font-size:15px;fill:var(--muted)">once a month</text>
+        <g style="color:var(--test)">
+          <ellipse cx="430" cy="36" rx="58" ry="14" fill="none" stroke="currentColor" stroke-width="2.5"/>
+          <path d="M372 36V98a58 14 0 0 0 116 0V36" fill="none" stroke="currentColor" stroke-width="2.5"/>
+          <path d="M372 67a58 14 0 0 0 116 0" fill="none" stroke="currentColor" stroke-width="2" opacity=".5"/>
+        </g>
+        <text x="430" y="140" text-anchor="middle" style="font-weight:600;font-size:16px;fill:var(--ink)">Test data</text>
+      </svg>
+      <div>
+        <h3>Why copy live data every month?</h3>
+        <p>A rehearsal with old data slowly stops behaving like the real thing. A fresh monthly copy keeps the test app realistic, so problems show up there rather than in front of our users. Because test holds a copy of real data, it's protected by the same work sign-in and kept in Australia too.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- People and AI -->
+<section class="section" id="team" aria-labelledby="team-h">
+  <div class="wrap">
+    <h2 id="team-h">AI agents propose. People decide.</h2>
+    <p class="lede">Every piece of work is done by a developer paired with an AI agent. The agent is fast and tireless. The developer brings judgement, context and accountability.</p>
+    <div class="duo">
+      <div class="duo-col ai">
+        <h3><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-ai" style="color:var(--feature)"/></svg>What AI agents do</h3>
+        <ul>
+          <li>Draft code from a clearly written task</li>
+          <li>Write the automated tests that prove the code works</li>
+          <li>Explain existing code and suggest fixes</li>
+          <li>Take on repetitive work quickly, so people can focus on judgement</li>
+        </ul>
+      </div>
+      <div class="duo-col">
+        <h3><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-person" style="color:var(--ink)"/></svg>What people always do</h3>
+        <ul>
+          <li>Decide what to build, and why</li>
+          <li>Review every change before it's merged</li>
+          <li>Approve what goes live</li>
+          <li>Own the outcome when something needs fixing</li>
+        </ul>
+      </div>
+    </div>
+    <p class="rule-note">AI agents work only inside feature branches. Nothing they write reaches the live app without a person reviewing and approving it.</p>
+  </div>
+</section>
+
+<!-- Safety checks -->
+<section class="section" id="checks" aria-labelledby="checks-h">
+  <div class="wrap">
+    <h2 id="checks-h">Five checks stand between an idea and our users</h2>
+    <p class="lede">Each check works like a circuit breaker. If something isn't right, it trips, and the change goes no further. They happen in this order, every time.</p>
+    <ol class="checks">
+      <li style="--tone:var(--feature)"><svg class="glyph" viewBox="-26 -26 52 52" aria-hidden="true"><g class="brk"><rect class="brk-box" x="-20" y="-20" width="40" height="40" rx="7" style="stroke-width:2.5"/><circle class="brk-pin" cx="-10" cy="0" r="3.2"/><circle class="brk-pin" cx="10.5" cy="0" r="3.2"/><rect class="brk-blade" x="-10" y="-2" width="20.5" height="4" rx="2"/></g></svg><span class="n">1</span><h3>Automated tests</h3><p>Run on every change. A failing test stops the change straight away.</p></li>
+      <li style="--tone:var(--feature)"><svg class="glyph" viewBox="-26 -26 52 52" aria-hidden="true"><g class="brk"><rect class="brk-box" x="-20" y="-20" width="40" height="40" rx="7" style="stroke-width:2.5"/><circle class="brk-pin" cx="-10" cy="0" r="3.2"/><circle class="brk-pin" cx="10.5" cy="0" r="3.2"/><rect class="brk-blade" x="-10" y="-2" width="20.5" height="4" rx="2"/></g></svg><span class="n">2</span><h3>Peer review</h3><p>A teammate reads and approves every change before it joins the test branch.</p></li>
+      <li style="--tone:var(--test)"><svg class="glyph" viewBox="-26 -26 52 52" aria-hidden="true"><g class="brk"><rect class="brk-box" x="-20" y="-20" width="40" height="40" rx="7" style="stroke-width:2.5"/><circle class="brk-pin" cx="-10" cy="0" r="3.2"/><circle class="brk-pin" cx="10.5" cy="0" r="3.2"/><rect class="brk-blade" x="-10" y="-2" width="20.5" height="4" rx="2"/></g></svg><span class="n">3</span><h3>Rehearsal in the test app</h3><p>The team tries the feature in a full copy of the app, with realistic data.</p></li>
+      <li style="--tone:var(--live)"><svg class="glyph" viewBox="-26 -26 52 52" aria-hidden="true"><g class="brk"><rect class="brk-box" x="-20" y="-20" width="40" height="40" rx="7" style="stroke-width:2.5"/><circle class="brk-pin" cx="-10" cy="0" r="3.2"/><circle class="brk-pin" cx="10.5" cy="0" r="3.2"/><rect class="brk-blade" x="-10" y="-2" width="20.5" height="4" rx="2"/></g></svg><span class="n">4</span><h3>Approval to go live</h3><p>Main is protected. Nobody can change the live code without an approved merge.</p></li>
+      <li style="--tone:var(--live)"><svg class="glyph" viewBox="-26 -26 52 52" aria-hidden="true"><g class="brk"><rect class="brk-box" x="-20" y="-20" width="40" height="40" rx="7" style="stroke-width:2.5"/><circle class="brk-pin" cx="-10" cy="0" r="3.2"/><circle class="brk-pin" cx="10.5" cy="0" r="3.2"/><rect class="brk-blade" x="-10" y="-2" width="20.5" height="4" rx="2"/></g></svg><span class="n">5</span><h3>A save point on every release</h3><p>The previous version is kept ready, so we can switch back quickly.</p></li>
+    </ol>
+    <div class="always">
+      <h3>Always on</h3>
+      <div><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-shield"/></svg><p><strong>Microsoft work sign-in</strong>People use the work login they already have. When a work account is switched off, access to the app ends too.</p></div>
+      <div><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-pin"/></svg><p><strong>Data kept in Australia</strong>Databases and files for both copies are stored in Microsoft Azure data centres in Australia.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Questions -->
+<section class="section" id="questions" aria-labelledby="q-h">
+  <div class="wrap">
+    <h2 id="q-h">Questions people often ask</h2>
+    <div class="faq">
+      <details><summary>Can an AI agent put something live on its own?<span class="pm" aria-hidden="true"></span></summary><p>No. AI agents only work inside feature branches. Every change they draft is checked by automated tests and reviewed by a person before it can join the test branch. Going live needs a further approval to merge into main, which is protected.</p></details>
+      <details><summary>What happens if a release goes wrong?<span class="pm" aria-hidden="true"></span></summary><p>Render keeps the previous version ready as a save point, so we can switch the live app back to it quickly. The fix then follows the normal route: its own branch, automated tests, a rehearsal in the test app, and approval to go live.</p></details>
+      <details><summary>Why not make changes directly in the live app?<span class="pm" aria-hidden="true"></span></summary><p>Because one mistake would reach everyone at once. Working this way means every change has been tested and rehearsed before anyone relies on it, and there's always a way back.</p></details>
+      <details><summary>Where is our data kept?<span class="pm" aria-hidden="true"></span></summary><p>In Microsoft Azure data centres in Australia. Records such as accounts and usage figures live in SQL databases. Documents and files live in Blob Storage. The test and live copies are kept separate.</p></details>
+      <details><summary>How do people sign in?<span class="pm" aria-hidden="true"></span></summary><p>With the Microsoft work account they already have, known as single sign-on. There's no separate password to manage, and when someone's work account is switched off, their access to the app ends too.</p></details>
+      <details><summary>Does the test app contain real data?<span class="pm" aria-hidden="true"></span></summary><p>It holds a copy of live data, refreshed monthly, so rehearsals behave like the real thing. That's why the test app has the same sign-in protection and Australian hosting as the live app.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- Glossary -->
+<section class="section" id="words" aria-labelledby="w-h">
+  <div class="wrap">
+    <h2 id="w-h">Words you'll hear, in plain English</h2>
+    <dl class="gloss">
+      <div><dt>AI agent</dt><dd>Software that writes and changes code when given a task. On our team it works alongside a developer, who reviews everything it produces.</dd></div>
+      <div><dt>Branch</dt><dd>A separate working copy of the code. Changes on a branch don't affect anyone else until they're merged.</dd></div>
+      <div><dt>Feature branch</dt><dd>A short-lived branch for one piece of work, such as a new report.</dd></div>
+      <div><dt>Test branch</dt><dd>The shared branch for finished work that isn't live yet. It feeds the test app.</dd></div>
+      <div><dt>Main branch</dt><dd>The branch that holds the live app's code. It's protected.</dd></div>
+      <div><dt>Protected branch</dt><dd>A branch nobody can change directly. Changes need review and approval.</dd></div>
+      <div><dt>Merge</dt><dd>Combining the changes from one branch into another.</dd></div>
+      <div><dt>Unit test</dt><dd>A small automated check that confirms one piece of code does what it should.</dd></div>
+      <div><dt>Deployment</dt><dd>Installing a new version of the app so people can use it.</dd></div>
+      <div><dt>Pipeline</dt><dd>The automatic steps that run when code changes, ending in a deployment.</dd></div>
+      <div><dt>Rollback</dt><dd>Switching the app back to its previous version, using a save point.</dd></div>
+      <div><dt>Production</dt><dd>Another word for the live app that people use.</dd></div>
+      <div><dt>GitHub</dt><dd>The online service where our code is stored, tracked and reviewed.</dd></div>
+      <div><dt>Render</dt><dd>The cloud service that runs our website and server, and releases new versions automatically.</dd></div>
+      <div><dt>Node.js</dt><dd>The technology our server, the app's engine, is built with.</dd></div>
+      <div><dt>SQL database</dt><dd>Stores structured records, like accounts and usage figures, in tables.</dd></div>
+      <div><dt>Blob storage</dt><dd>Stores files, like PDFs and images.</dd></div>
+      <div><dt>Single sign-on (SSO)</dt><dd>Signing in with an existing work account instead of a separate password.</dd></div>
+    </dl>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Energy Matrix Group. How we build our app, revision 1, September 2026.</span>
+    <a href="#top">Back to the top</a>
+  </div>
+</footer>
+
+<script>
+(() => {
+  'use strict';
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const mqReduce = matchMedia('(prefers-reduced-motion: reduce)');
+  let reduced = mqReduce.matches;
+  if (mqReduce.addEventListener) mqReduce.addEventListener('change', e => { reduced = e.matches; });
+  const CANCEL = { cancelled: true };
+  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+  /* ---------- Theme ---------- */
+  const root = document.documentElement;
+  const themeBtn = $('#themeBtn'), themeIcon = $('#themeIcon');
+  const MOON = 'M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z';
+  const SUN = 'M12 4V2M12 22v-2M4.9 4.9 3.5 3.5M20.5 20.5l-1.4-1.4M4 12H2M22 12h-2M4.9 19.1l-1.4 1.4M20.5 3.5l-1.4 1.4M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z';
+  const sysDark = () => matchMedia('(prefers-color-scheme: dark)').matches;
+  const theme = () => root.getAttribute('data-theme') || (sysDark() ? 'dark' : 'light');
+  function syncThemeBtn() {
+    const dark = theme() === 'dark';
+    themeIcon.setAttribute('d', dark ? SUN : MOON);
+    themeBtn.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+  }
+  try { const t = localStorage.getItem('emg-theme'); if (t === 'dark' || t === 'light') root.setAttribute('data-theme', t); } catch (e) {}
+  syncThemeBtn();
+  themeBtn.addEventListener('click', () => {
+    const next = theme() === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('emg-theme', next); } catch (e) {}
+    syncThemeBtn();
+  });
+
+  /* ---------- Map setup ---------- */
+  const svg = $('#map');
+  const stage = $('#stage');
+  const scroller = $('.map-scroll');
+  stage.classList.add('pre');
+
+  $$('.m-line', svg).forEach(p => {
+    if (p.dataset.noflow) return;
+    const f = p.cloneNode(false);
+    f.setAttribute('class', 'k m-flow' + (p.classList.contains('only') ? ' only' : ''));
+    f.removeAttribute('data-order');
+    p.after(f);
+  });
+
+  const K = {};
+  $$('[data-k]', svg).forEach(el => { (K[el.dataset.k] = K[el.dataset.k] || []).push(el); });
+  const ALL = Object.values(K).flat();
+  const STATES = ['on', 'ok', 'trip', 'warn', 'checking', 'flash'];
+
+  function setK(k, cls, on = true) {
+    (K[k] || []).forEach(el => {
+      el.classList.toggle(cls, on);
+      if (on) el.classList.add('on');
+    });
+  }
+  function applyState(st) {
+    stage.classList.toggle('touring', !!st);
+    ALL.forEach(el => el.classList.remove(...STATES));
+    if (!st) { setSaves('before', true); return; }
+    STATES.forEach(c => (st[c] || []).forEach(k => setK(k, c, true)));
+    setSaves(st.saves || 'before', true);
+  }
+
+  const SAVES = {
+    before: [['Version 1.4', ''], ['Version 1.5', ''], ['Version 1.6', 'Live', 'live']],
+    after:  [['Version 1.5', ''], ['Version 1.6', 'Save point', 'save'], ['Version 1.7', 'Live', 'live']],
+    warn:   [['Version 1.5', ''], ['Version 1.6', 'Save point', 'save'], ['Version 1.7', 'Problem', 'bad']],
+    rolled: [['Version 1.5', ''], ['Version 1.6', 'Live', 'live'], ['Version 1.7', 'Withdrawn', 'gone']],
+    fixed:  [['Version 1.6', 'Save point', 'save'], ['Version 1.7', 'Withdrawn', 'gone'], ['Version 1.8', 'Live', 'live']]
+  };
+  let savesNow = 'before';
+  const saveRows = $$('.save-row', svg);
+  function setSaves(name, quiet) {
+    if (savesNow === name) return;
+    savesNow = name;
+    SAVES[name].forEach(([v, s, c], i) => {
+      const r = saveRows[i];
+      r.querySelector('.sv').textContent = v;
+      r.querySelector('.ss').textContent = s;
+      r.setAttribute('class', 'save-row' + (c ? ' ' + c : ''));
+      if (!quiet && !reduced) r.animate([{ opacity: .15 }, { opacity: 1 }], { duration: 520, delay: i * 90, easing: 'ease-out', fill: 'backwards' });
+    });
+  }
+
+  /* ---------- Packet ---------- */
+  const packet = $('#packet');
+  const place = (x, y) => packet.setAttribute('transform', `translate(${x.toFixed(2)} ${y.toFixed(2)})`);
+  const toneP = t => packet.style.setProperty('--ptone', `var(--${t})`);
+  const showP = t => { toneP(t); packet.classList.add('show'); };
+  const hideP = () => { packet.classList.remove('show', 'bad'); };
+
+  let token = 0;
+  function ctxFor(t, instant) {
+    const alive = () => t === token;
+    const check = () => { if (!alive()) throw CANCEL; };
+    return {
+      at(x, y, tone) { check(); packet.classList.remove('bad'); showP(tone); place(x, y); },
+      tone(tn) { check(); toneP(tn); },
+      bad() { check(); packet.classList.add('bad'); },
+      hide() { check(); hideP(); },
+      set(k, c, on = true) { check(); setK(k, c, on); },
+      saves(n) { check(); setSaves(n); },
+      flash(k) { check(); if (instant) return; setK(k, 'flash', false); void svg.getBoundingClientRect(); setK(k, 'flash', true); },
+      async wait(ms) { check(); if (instant) return; await sleep(ms); check(); },
+      async travel(ids, tone, speed = .3) {
+        check();
+        packet.classList.remove('bad');
+        showP(tone);
+        const paths = ids.map(id => document.getElementById(id));
+        const lens = paths.map(p => p.getTotalLength());
+        const total = lens.reduce((a, b) => a + b, 0);
+        const pointAt = d => {
+          let i = 0;
+          while (i < paths.length - 1 && d > lens[i]) { d -= lens[i]; i++; }
+          return paths[i].getPointAtLength(Math.max(0, Math.min(d, lens[i])));
+        };
+        if (instant) { const p = pointAt(total); place(p.x, p.y); return; }
+        const dur = Math.max(500, total / speed);
+        await new Promise((res, rej) => {
+          const t0 = performance.now();
+          const f = now => {
+            if (!alive()) return rej(CANCEL);
+            const k = Math.min(1, (now - t0) / dur);
+            const p = pointAt(ease(k) * total);
+            place(p.x, p.y);
+            if (k < 1) requestAnimationFrame(f); else res();
+          };
+          requestAnimationFrame(f);
+        });
+      }
+    };
+  }
+
+  /* ---------- Stories ---------- */
+  const SCEN = [
+    {
+      name: 'Follow a new feature', tone: 'feature',
+      steps: [
+        { title: 'An idea becomes a task',
+          body: "Someone needs a new monthly energy usage report. It's written up as a small, clear task and handed to a developer working with an AI agent.",
+          tech: 'The task spells out what "done" looks like, so the developer and the AI agent build the same thing.',
+          focus: 110, state: { on: ['task', 'pair1'] },
+          run: async c => { c.at(115, 150, 'feature'); await c.wait(250); await c.travel(['mv-task'], 'feature'); } },
+        { title: 'Work starts on its own branch',
+          body: 'They get a private working copy of the code, called a feature branch. Nothing done here can affect the rest of the team or the live app.',
+          tech: 'A feature branch is created in GitHub from the test branch.',
+          focus: 220, state: { on: ['pair1', 'feat1a'] },
+          run: async c => { c.at(92, 240, 'feature'); await c.travel(['mv-f1a'], 'feature', .22); } },
+        { title: 'Built and checked, side by side',
+          body: 'The AI agent drafts the code and the automated tests that prove it works. The developer steers, reviews and corrects. Every change is tested automatically.',
+          tech: 'Unit tests run on each change, and a teammate reviews the pull request.',
+          focus: 290, state: { on: ['pair1', 'feat1a', 'chk1'], checking: ['chk1'] },
+          run: async c => { c.at(277, 240, 'feature'); await c.wait(1700); c.set('chk1', 'checking', false); c.set('chk1', 'ok'); } },
+        { title: 'Joins the shared test branch',
+          body: "Once the tests pass and a teammate approves it, the work is merged into the test branch, where the whole team's finished work comes together.",
+          tech: 'The pull request is merged from the feature branch into test.',
+          focus: 440, state: { on: ['feat1a', 'feat1b', 'testline'], ok: ['chk1'] },
+          run: async c => { c.at(277, 240, 'feature'); await c.wait(200); await c.travel(['mv-f1b'], 'feature'); c.tone('test'); await c.wait(200); await c.travel(['mv-t1'], 'test'); } },
+        { title: 'The rehearsal updates itself',
+          body: 'Render spots the change and automatically rebuilds the test app, with its own website, server and data. The team tries the new report there, using a recent copy of real data.',
+          tech: "A push to the test branch triggers Render's test deployment. Test data is refreshed from live every month.",
+          focus: 860, state: { on: ['testline', 'deployT', 'appT', 'linkT', 'dataT', 'sync'], checking: ['deployT'] },
+          run: async c => { c.at(600, 160, 'test'); await c.wait(900); c.set('deployT', 'checking', false); c.set('deployT', 'ok'); await c.travel(['mv-dT'], 'test'); c.flash('appT'); await c.wait(250); c.flash('dataT'); await c.wait(600); c.hide(); } },
+        { title: 'Approval to go live',
+          body: 'When the feature is complete, the team merges the test branch into main. Main is protected: nobody, person or AI, can change it without approval.',
+          tech: 'A pull request from test to main needs approval under GitHub branch protection rules.',
+          focus: 548, state: { on: ['testline', 'connector', 'gate', 'mainline'] },
+          run: async c => { c.at(548, 160, 'test'); await c.wait(300); await c.travel(['mv-c1'], 'test'); c.set('gate', 'checking'); await c.wait(1400); c.set('gate', 'checking', false); c.set('gate', 'ok'); c.tone('live'); await c.wait(250); await c.travel(['mv-c2'], 'live'); } },
+        { title: 'Live, with a save point',
+          body: 'Render automatically releases the new version to the live app and keeps the previous one as a save point. People sign in with their work account and start using the report.',
+          tech: 'A merge to main triggers the production deployment on Render. The previous deploy stays available for rollback.',
+          focus: 780, state: { on: ['mainline', 'deployP', 'appP', 'linkP', 'dataP', 'saves', 'sso', 'users'], checking: ['deployP'] },
+          run: async c => { c.at(600, 400, 'live'); await c.wait(900); c.set('deployP', 'checking', false); c.set('deployP', 'ok'); await c.travel(['mv-dP'], 'live'); c.flash('appP'); c.saves('after'); await c.wait(700); await c.travel(['mv-out'], 'live'); c.flash('users'); } }
+      ]
+    },
+    {
+      name: 'When a check fails', tone: 'trip',
+      steps: [
+        { title: 'A check stops a mistake',
+          body: "This time an automated test finds a problem. Like a circuit breaker, the check trips, and the change can't go any further.",
+          tech: 'A failing unit test blocks the merge into the test branch.',
+          focus: 240, state: { on: ['pair1', 'feat1a', 'chk1'] },
+          run: async c => { c.at(92, 240, 'feature'); await c.travel(['mv-f1a'], 'feature', .24); c.set('chk1', 'checking'); await c.wait(1100); c.set('chk1', 'checking', false); c.set('chk1', 'trip'); c.bad(); } },
+        { title: 'Fixed, then checked again',
+          body: 'The developer and AI agent fix the problem and the tests run again. This time they pass and the work carries on. The live app was never touched.',
+          tech: 'New commits re-run the tests. The merge goes ahead once they pass.',
+          focus: 400, state: { on: ['pair1', 'feat1a', 'chk1'], trip: ['chk1'] },
+          run: async c => { c.at(277, 240, 'feature'); c.bad(); await c.wait(900); c.at(277, 240, 'feature'); c.set('chk1', 'trip', false); c.set('chk1', 'checking'); await c.wait(1300); c.set('chk1', 'checking', false); c.set('chk1', 'ok'); c.set('feat1b', 'on'); c.set('testline', 'on'); await c.travel(['mv-f1b'], 'feature'); c.tone('test'); await c.travel(['mv-t1'], 'test'); } }
+      ]
+    },
+    {
+      name: 'Undoing a release', tone: 'live',
+      steps: [
+        { title: 'A problem shows up after release',
+          body: "Rarely, an issue only appears once real people use a new version. Version 1.7 is live, and something isn't right.",
+          tech: 'Users or the team report a problem with the latest production deploy.',
+          focus: 780, state: { on: ['mainline', 'appP', 'saves', 'sso', 'users'], warn: ['appP'], saves: 'warn' },
+          run: async c => { c.hide(); } },
+        { title: 'Switch back to the save point',
+          body: 'We switch the live app back to version 1.6, the last version that worked. People are back on a working app while the team investigates.',
+          tech: 'Render rolls production back to the previous deploy.',
+          focus: 820, state: { on: ['appP', 'saves', 'rollpath', 'sso', 'users'], warn: ['appP'], saves: 'warn' },
+          run: async c => { c.at(880, 520, 'live'); await c.wait(500); await c.travel(['mv-roll'], 'live', .2); c.set('appP', 'warn', false); c.saves('rolled'); c.flash('appP'); await c.wait(500); c.hide(); } },
+        { title: 'Fix it, rehearse it, release it',
+          body: 'The fix follows the same route as everything else: its own branch, automated tests, a rehearsal in the test app, then approval to go live.',
+          tech: 'Fixes use the normal branch, test and main flow. There are no shortcuts.',
+          focus: 520, state: { on: ['pair1', 'feat1a', 'feat1b', 'chk1', 'testline', 'deployT', 'appT', 'connector', 'gate', 'mainline', 'deployP', 'appP', 'saves'], saves: 'rolled' },
+          run: async c => {
+            c.at(92, 240, 'feature'); await c.travel(['mv-f1a'], 'feature', .5); c.set('chk1', 'ok');
+            await c.travel(['mv-f1b'], 'feature', .5); c.tone('test'); await c.travel(['mv-t1', 'mv-dT'], 'test', .5); c.set('deployT', 'ok'); c.flash('appT');
+            await c.wait(300); c.at(548, 160, 'test'); await c.travel(['mv-c1'], 'test', .45); c.set('gate', 'ok'); c.tone('live');
+            await c.travel(['mv-c2', 'mv-dP'], 'live', .45); c.set('deployP', 'ok'); c.flash('appP'); c.saves('fixed'); await c.wait(700); c.hide(); } }
+      ]
+    }
+  ];
+
+  const OVERVIEW = {
+    title: 'The whole system on one page',
+    body: 'Work moves left to right: from the team, through our shared code library, to the app itself, with data stored in Australia. The top row is the test copy where we rehearse. The bottom row is the live app people use.',
+    tech: 'Select any part of the map to see what it does, or start the tour.'
+  };
+
+  const INFO = {
+    task: { tone: 'feature', focus: 110, keys: ['task'], title: 'Task board', body: 'Where ideas become small, clear pieces of work that a developer and an AI agent can pick up.', tech: 'Work is broken into small tasks before any code is written.' },
+    pair: { tone: 'feature', focus: 110, keys: ['pair1', 'pair2'], title: 'A developer and an AI agent', body: 'Every piece of work is done by a person working with an AI agent. The agent drafts; the person steers, reviews and is accountable for the result.', tech: "AI coding agents working inside the developer's feature branch." },
+    feat: { tone: 'feature', focus: 300, keys: ['feat1a', 'feat1b', 'feat2', 'pair1', 'pair2'], title: 'Feature branches', body: "A private working copy for each piece of work. Mistakes made here can't reach anyone else.", tech: 'Short-lived Git branches, created from the test branch.' },
+    chk: { tone: 'feature', focus: 290, keys: ['chk1', 'chk2'], title: 'Tests and review', body: 'Automated tests check the code works, and a teammate reviews it. If either finds a problem, the change stops here.', tech: 'Unit tests and pull request review before merging into test.' },
+    testline: { tone: 'test', focus: 400, keys: ['testline'], title: 'Test branch', body: "The shared branch where the team's finished work comes together. Anything merged here goes straight to the test app.", tech: 'A long-lived branch. Every push triggers the Render test deployment.' },
+    gate: { tone: 'live', focus: 548, keys: ['gate', 'connector'], title: 'Approval to go live', body: "Moving work from the test branch to main needs a person's approval. This is the step that decides what reaches the live app.", tech: 'GitHub branch protection rules on main require an approved pull request.' },
+    mainline: { tone: 'live', focus: 400, keys: ['mainline'], title: 'Main branch', body: 'The code that runs the live app. It is protected, so it can only change through an approved merge from the test branch.', tech: 'A protected branch. Direct pushes are blocked.' },
+    deployT: { tone: 'test', focus: 612, keys: ['deployT', 'testline'], title: 'Automatic release to test', body: 'Whenever the test branch changes, Render rebuilds the test app. Nobody has to do it by hand, so it happens the same way every time.', tech: 'Render auto-deploy on every push to the test branch.' },
+    deployP: { tone: 'live', focus: 612, keys: ['deployP', 'mainline'], title: 'Automatic release to live', body: 'When main changes, Render releases the new version to the live app and keeps the old one as a save point.', tech: 'Render production auto-deploy on every merge to main.' },
+    appT: { tone: 'test', focus: 760, keys: ['appT'], title: 'Test app', body: 'A complete rehearsal copy of the app, with its own website and server. The team tries every change here first.', tech: 'Render test services: the web interface and the Node.js server.' },
+    appP: { tone: 'live', focus: 760, keys: ['appP'], title: 'Live app', body: 'The app people actually use. It only ever changes through the approved release route.', tech: 'Render production services: the web interface and the Node.js server.' },
+    dataT: { tone: 'test', focus: 1040, keys: ['dataT', 'linkT'], title: 'Test data', body: 'Separate databases for the rehearsal, refreshed each month with a copy of live data. Stored in Australia.', tech: 'Test Azure SQL Database and Azure Blob Storage, in an Australian region.' },
+    dataP: { tone: 'live', focus: 1040, keys: ['dataP', 'linkP'], title: 'Live data', body: "The real records and files the app uses, stored in Microsoft's Australian data centres.", tech: 'Production Azure SQL Database and Azure Blob Storage, in an Australian region.' },
+    sync: { tone: 'test', focus: 1040, keys: ['sync', 'dataT', 'dataP'], title: 'Monthly copy', body: 'Once a month, live data is copied into test so rehearsals stay realistic. The copy runs from live to test, so rehearsals never change real data.', tech: 'A scheduled monthly refresh from the production databases to the test databases.' },
+    sso: { tone: 'live', focus: 700, keys: ['sso', 'users'], title: 'Microsoft work sign-in', body: 'People sign in with the work account they already have. When a work account is switched off, access to the app ends too.', tech: 'Single sign-on with Microsoft Entra ID.' },
+    users: { tone: 'live', focus: 700, keys: ['users', 'sso', 'appP'], title: 'People using the app', body: 'They only ever see the live app, and only versions that have been through every check.', tech: 'End users of the production web interface.' },
+    saves: { tone: 'live', focus: 820, keys: ['saves', 'appP'], title: 'Save points', body: 'Every live release keeps the previous version ready. If something goes wrong, we switch back to it.', tech: 'Render keeps previous deploys available for rollback.' }
+  };
+
+  /* ---------- Controller ---------- */
+  const pText = $('#pText'), pMeta = $('#pMeta'), pTitle = $('#pTitle'), pBody = $('#pBody'), pTech = $('#pTech');
+  const pProg = $('#pProg'), pPrev = $('#pPrev'), pPlay = $('#pPlay'), pNext = $('#pNext');
+  const panel = $('#panel');
+  const tabs = $$('.tab');
+  let mode = 'overview', scen = 0, step = 0, playing = false, stepDone = false, dwell = null, lastTour = null, infoKey = null;
+
+  function focusMap(x) {
+    if (x == null) return;
+    const cw = scroller.clientWidth, sw = scroller.scrollWidth;
+    if (sw <= cw + 2) return;
+    const scale = svg.getBoundingClientRect().width / 1200;
+    scroller.scrollTo({ left: Math.max(0, x * scale - cw / 2), behavior: reduced ? 'auto' : 'smooth' });
+  }
+
+  function renderPanel() {
+    let tone = 'ink', meta, t;
+    if (mode === 'overview') { meta = 'Overview'; t = OVERVIEW; }
+    else if (mode === 'explore') { t = INFO[infoKey]; tone = t.tone; meta = 'About this part'; }
+    else { const S = SCEN[scen]; t = S.steps[step]; tone = S.tone; meta = `${S.name}, step ${step + 1} of ${S.steps.length}`; }
+    panel.style.setProperty('--tone', `var(--${tone})`);
+    pMeta.textContent = meta;
+    pTitle.textContent = t.title;
+    pBody.textContent = t.body;
+    pTech.innerHTML = '';
+    if (t.tech) {
+      if (mode === 'overview') pTech.textContent = t.tech;
+      else { const b = document.createElement('b'); b.textContent = 'In tech terms: '; pTech.append(b, document.createTextNode(t.tech)); }
+    }
+    pText.classList.remove('swap'); void pText.offsetWidth; pText.classList.add('swap');
+
+    const touring = mode === 'tour';
+    pProg.hidden = !touring;
+    pPrev.hidden = !touring;
+    pPlay.hidden = !touring;
+    if (touring) {
+      const S = SCEN[scen];
+      pProg.innerHTML = '';
+      S.steps.forEach((s, i) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'seg' + (i < step ? ' done' : '') + (i === step ? ' now' : '');
+        b.setAttribute('aria-label', `Step ${i + 1}: ${s.title}`);
+        if (i === step) b.setAttribute('aria-current', 'step');
+        b.addEventListener('click', () => { playing = false; step = i; runStep(); });
+        pProg.append(b);
+      });
+      pPrev.disabled = step === 0;
+      const atEnd = step === S.steps.length - 1;
+      pPlay.textContent = playing ? 'Pause' : (atEnd && stepDone ? 'Replay' : 'Play');
+      pPlay.setAttribute('aria-pressed', String(playing));
+      if (!atEnd) pNext.textContent = 'Next step';
+      else if (scen < SCEN.length - 1) pNext.textContent = `Next story: ${SCEN[scen + 1].name}`;
+      else pNext.textContent = 'Show the whole map';
+    } else if (mode === 'explore') {
+      pNext.textContent = lastTour ? 'Back to the tour' : 'Start the tour';
+    } else {
+      pNext.textContent = 'Start the tour';
+    }
+    tabs.forEach((b, i) => b.setAttribute('aria-selected', String(touring && i === scen)));
+  }
+
+  function clearDwell() { clearTimeout(dwell); dwell = null; }
+  function scheduleAdvance(delay) {
+    clearDwell();
+    const t = token;
+    dwell = setTimeout(() => {
+      if (t !== token || !playing) return;
+      const S = SCEN[scen];
+      if (step < S.steps.length - 1) { step++; runStep(); }
+      else { playing = false; renderPanel(); }
+    }, delay);
+  }
+
+  async function runStep() {
+    clearDwell();
+    const t = ++token;
+    mode = 'tour';
+    stepDone = false;
+    lastTour = { scen, step };
+    const s = SCEN[scen].steps[step];
+    hideP();
+    applyState(s.state);
+    renderPanel();
+    focusMap(s.focus);
+    try { await s.run(ctxFor(t, reduced)); }
+    catch (e) { if (e !== CANCEL) console.error(e); return; }
+    if (t !== token) return;
+    stepDone = true;
+    renderPanel();
+    if (playing) {
+      const words = (s.body + ' ' + s.tech).split(/\s+/).length;
+      scheduleAdvance(Math.min(11000, Math.max(4500, words * 210)));
+    }
+  }
+
+  function startStory(i, autoplay = true) {
+    scen = i; step = 0; playing = autoplay && !reduced ? true : autoplay;
+    runStep();
+  }
+  function showOverview() {
+    clearDwell(); token++; playing = false; mode = 'overview';
+    hideP(); applyState(null); renderPanel();
+  }
+  function explore(key) {
+    clearDwell(); token++; playing = false; mode = 'explore'; infoKey = key;
+    hideP();
+    applyState({ on: INFO[key].keys });
+    renderPanel();
+  }
+
+  pNext.addEventListener('click', () => {
+    if (mode === 'overview') return startStory(0);
+    if (mode === 'explore') {
+      if (lastTour) { scen = lastTour.scen; step = lastTour.step; playing = false; return runStep(); }
+      return startStory(0);
+    }
+    playing = false;
+    const S = SCEN[scen];
+    if (step < S.steps.length - 1) { step++; runStep(); }
+    else if (scen < SCEN.length - 1) startStory(scen + 1, false);
+    else { lastTour = null; showOverview(); }
+  });
+  pPrev.addEventListener('click', () => { if (step > 0) { playing = false; step--; runStep(); } });
+  pPlay.addEventListener('click', () => {
+    if (playing) { playing = false; clearDwell(); renderPanel(); return; }
+    playing = true;
+    const S = SCEN[scen];
+    if (step === S.steps.length - 1 && stepDone) { step = 0; runStep(); return; }
+    if (stepDone) { renderPanel(); scheduleAdvance(600); } else renderPanel();
+  });
+  tabs.forEach(b => b.addEventListener('click', () => startStory(+b.dataset.s)));
+  $('#ovBtn').addEventListener('click', () => { lastTour = null; showOverview(); });
+
+  $$('.part', svg).forEach(g => {
+    const go = () => explore(g.dataset.info);
+    g.addEventListener('click', go);
+    g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+  });
+
+  function toStage() { stage.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' }); }
+  $('#heroStart').addEventListener('click', () => { toStage(); startStory(0); });
+  $('#heroExplore').addEventListener('click', () => {
+    toStage(); lastTour = null; showOverview();
+    setTimeout(() => { const first = $('.part', svg); if (first) first.focus({ preventScroll: true }); }, reduced ? 0 : 600);
+  });
+
+  let stageVisible = false;
+  document.addEventListener('keydown', e => {
+    if (!stageVisible || e.altKey || e.ctrlKey || e.metaKey) return;
+    const tag = (e.target.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      if (mode !== 'tour') return startStory(0, false);
+      if (step < SCEN[scen].steps.length - 1) { playing = false; step++; runStep(); }
+    } else if (e.key === 'ArrowLeft' && mode === 'tour' && step > 0) {
+      e.preventDefault(); playing = false; step--; runStep();
+    }
+  });
+  document.addEventListener('visibilitychange', () => { if (document.hidden && playing) { playing = false; clearDwell(); renderPanel(); } });
+
+  /* ---------- Energise on first view ---------- */
+  let energised = false;
+  function energise() {
+    if (energised) return; energised = true;
+    if (reduced) { stage.classList.remove('pre'); stage.classList.add('powered'); return; }
+    const STEP = 190;
+    const orderOf = el => parseFloat(el.dataset.order || '0');
+    let maxEnd = 0;
+    $$('.m-line:not(.only)', svg).forEach(l => {
+      const L = l.getTotalLength();
+      const d = orderOf(l) * STEP;
+      l.style.strokeDasharray = `${L} ${L}`;
+      const a = l.animate([{ strokeDashoffset: L }, { strokeDashoffset: 0 }], { duration: 640, delay: d, easing: 'cubic-bezier(.55,0,.25,1)', fill: 'backwards' });
+      a.onfinish = () => { l.style.strokeDasharray = ''; };
+      maxEnd = Math.max(maxEnd, d + 640);
+    });
+    $$('.k:not(.m-line):not(.m-flow)', svg).forEach(n => {
+      const d = orderOf(n) * STEP + 120;
+      n.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 520, delay: d, easing: 'ease-out', fill: 'backwards' });
+    });
+    $$('.colhead, .legend', svg).forEach((n, i) => n.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 500, delay: i * 70, fill: 'backwards' }));
+    $$('.band', svg).forEach((n, i) => n.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 700, delay: 500 + i * 250, fill: 'backwards' }));
+    stage.classList.remove('pre');
+    setTimeout(() => stage.classList.add('powered'), maxEnd);
+  }
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        stageVisible = en.isIntersecting;
+        if (en.isIntersecting) energise();
+      });
+    }, { threshold: .2 });
+    io.observe(stage);
+  } else { stageVisible = true; energise(); }
+
+  renderPanel();
+
+  /* ---------- Request example ---------- */
+  const req = $('#req');
+  const walk = $$('#walk li');
+  const rp1 = $('#rp1'), rp2 = $('#rp2'), rDone = $('#rDone');
+  const playReq = $('#playReq');
+  let reqTok = 0;
+  function rMove(pk, id, rev, t, dur = 650) {
+    const p = document.getElementById(id), L = p.getTotalLength();
+    pk.classList.add('show');
+    const put = k => { const pt = p.getPointAtLength(rev ? L * (1 - k) : L * k); pk.setAttribute('transform', `translate(${pt.x} ${pt.y})`); };
+    if (reduced) { put(1); return Promise.resolve(); }
+    return new Promise((res, rej) => {
+      const t0 = performance.now();
+      const f = now => {
+        if (t !== reqTok) return rej(CANCEL);
+        const k = Math.min(1, (now - t0) / dur);
+        put(ease(k));
+        k < 1 ? requestAnimationFrame(f) : res();
+      };
+      requestAnimationFrame(f);
+    });
+  }
+  function rActive(i, boxes, lines) {
+    walk.forEach((li, j) => li.classList.toggle('now', j === i));
+    $$('.r-box', req).forEach(b => b.classList.toggle('active', boxes.includes(b.dataset.r)));
+    $$('.r-line', req).forEach(l => l.classList.toggle('active', lines.includes(l.id)));
+  }
+  playReq.addEventListener('click', async () => {
+    const t = ++reqTok;
+    const wait = async ms => { await sleep(reduced ? Math.min(ms, 900) : ms); if (t !== reqTok) throw CANCEL; };
+    rDone.classList.remove('show');
+    playReq.textContent = 'Playing the example';
+    try {
+      rp1.setAttribute('transform', 'translate(260 42)');
+      rActive(0, ['web'], ['r1']); await rMove(rp1, 'r1', false, t); await wait(1300);
+      rActive(1, ['srv'], ['r2']); await rMove(rp1, 'r2', false, t); await wait(1300);
+      rActive(2, ['sql', 'file'], ['r3a', 'r3b']);
+      await Promise.all([rMove(rp1, 'r3a', false, t), rMove(rp2, 'r3b', false, t)]); await wait(900);
+      await Promise.all([rMove(rp1, 'r3a', true, t), rMove(rp2, 'r3b', true, t)]); rp2.classList.remove('show'); await wait(300);
+      rActive(3, ['web'], ['r2']); await rMove(rp1, 'r2', true, t); rp1.classList.remove('show');
+      rDone.classList.add('show');
+      playReq.textContent = 'Play it again';
+    } catch (e) { if (e !== CANCEL) console.error(e); }
+  });
+})();
+</script>
+</body>
+</html>

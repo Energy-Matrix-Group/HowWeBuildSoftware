@@ -3,141 +3,291 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>How we build the Energy Matrix Group app</title>
-<meta name="description" content="A plain-English, animated guide to how our team of people and AI agents builds, tests and releases the Energy Matrix Group app.">
+<title>How we build software | Energy Matrix Group</title>
+<meta name="description" content="A plain-English, interactive guide to how Energy Matrix Group's developers and AI agents build, check and release our app. Written for the board, executives and developers.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="How we build software | Energy Matrix Group">
+<meta property="og:description" content="How every change to our app is checked, rehearsed, approved and reversible, from idea to live app.">
+<meta name="theme-color" content="#415A7E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300' fill='none'%3E%3Cpath d='M109.89 39.96L149.99 0L190.10 39.96L149.99 80.10L109.89 39.96Z' fill='%23415A7E'/%3E%3Cpath d='M56.24 93.66L109.89 39.96L126.21 56.16L72.39 109.86L56.24 93.66Z' fill='%23CCEBF7'/%3E%3Cpath d='M110.76 71.65L126.21 56.16L150.00 80.10L134.55 95.42L110.76 71.65Z' fill='%23E47454'/%3E%3Cpath d='M81.76 100.70L110.76 71.65L134.54 95.42L105.55 124.47L81.76 100.70Z' fill='%232E3541'/%3E%3Cpath d='M72.39 109.85L81.77 100.70L118.75 137.67L109.55 147.00L72.39 109.85Z' fill='%239DC0D7'/%3E%3Cpath d='M51.21 122.18L68.05 105.45L109.54 147.00L92.70 163.73L51.21 122.18Z' fill='%23415A7E'/%3E%3Cpath d='M39.41 110.56L56.25 93.66L68.05 105.45L51.21 122.18L39.41 110.56Z' fill='%23E47454'/%3E%3Cpath d='M19.78 130.28L39.39 110.56L51.20 122.18L31.58 142.07L19.78 130.28Z' fill='%232E3541'/%3E%3Cpath d='M0 150L19.79 130.28L31.59 142.07L11.80 161.79L0 150Z' fill='%23415A7E'/%3E%3Cpath d='M11.80 161.79L51.21 122.18L92.70 163.73L53.29 203.17L11.80 161.79Z' fill='%239DC0D7'/%3E%3Cpath d='M53.30 203.17L118.75 137.67L138.19 157.04L72.57 222.53L53.30 203.17Z' fill='%232E3541'/%3E%3Cpath d='M72.57 222.53L126.04 169.19L149.65 192.95L96.35 246.30L72.57 222.53Z' fill='%23CCEBF7'/%3E%3Cpath d='M126.04 169.19L167.18 127.99L190.97 151.58L149.65 192.95L126.04 169.19Z' fill='%239DC0D7'/%3E%3Cpath d='M105.56 124.47L134.55 95.42L167.19 127.99L138.2 157.04L105.56 124.47Z' fill='%23CCEBF7'/%3E%3Cpath d='M134.54 95.42L158.33 71.65L179.86 93.13L156.07 116.90L134.54 95.42Z' fill='%239DC0D7'/%3E%3Cpath d='M158.33 71.65L190.10 39.96L211.45 61.44L179.85 93.13L158.33 71.65Z' fill='%232E3541'/%3E%3Cpath d='M156.08 116.90L211.47 61.44L236.81 86.79L181.43 142.07L156.08 116.90Z' fill='%23415A7E'/%3E%3Cpath d='M194.96 128.52L236.80 86.79L246.35 96.30L204.51 138.02L194.96 128.52Z' fill='%23CCEBF7'/%3E%3Cpath d='M204.51 138.02L246.35 96.30L280.72 130.63L238.88 172.36L204.51 138.02Z' fill='%239DC0D7'/%3E%3Cpath d='M190.97 151.58L204.51 138.02L238.89 172.36L225.35 186.09L190.97 151.58Z' fill='%232E3541'/%3E%3Cpath d='M181.42 142.07L194.96 128.52L204.51 138.02L190.97 151.58L181.42 142.07Z' fill='%23E47454'/%3E%3Cpath d='M149.65 192.96L190.97 151.58L225.34 186.09L184.02 227.29L149.65 192.96Z' fill='%23CCEBF7'/%3E%3Cpath d='M141.14 201.40L149.65 192.95L184.03 227.28L175.52 235.74L141.14 201.40Z' fill='%23E47454'/%3E%3Cpath d='M96.35 246.30L141.14 201.40L175.52 235.73L130.72 280.63L96.35 246.30Z' fill='%23415A7E'/%3E%3Cpath d='M130.73 280.63L175.00 236.26L194.27 255.63L150.00 300L130.73 280.63Z' fill='%232E3541'/%3E%3Cpath d='M175.00 236.26L193.06 218.13L212.50 237.49L194.27 255.63L175.00 236.26Z' fill='%23415A7E'/%3E%3Cpath d='M193.05 218.13L238.88 172.35L258.15 191.72L212.49 237.49L193.05 218.13Z' fill='%239DC0D7'/%3E%3Cpath d='M238.89 172.36L251.74 159.50L271.18 178.87L258.16 191.72L238.89 172.36Z' fill='%23E47454'/%3E%3Cpath d='M251.73 159.50L280.73 130.63L300.00 149.99L271.18 178.87L251.73 159.50Z' fill='%232E3541'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>try{var t=localStorage.getItem('emg-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 <style>
+/* ---------- Tokens: Energy Matrix Group palette ---------- */
 :root{
-  --font-body:"Barlow","Segoe UI","Helvetica Neue",Arial,sans-serif;
-  --font-display:"Barlow Condensed","Arial Narrow","Roboto Condensed","Helvetica Neue",Arial,sans-serif;
-  --bg:#E7EDF2; --sheet:#F4F7FA; --panel:#FFFFFF; --ink:#0F2236; --muted:#4C6177; --faint:#7F93A8;
-  --wire:#BCCAD7; --rule:#CBD7E2; --gridline:rgba(15,34,54,.055);
-  --feature:#6446D2; --test:#08879B; --live:#C27500; --ok:#138A55; --trip:#CF3B33;
-  --feature-ink:#5236B4; --test-ink:#066B7B; --live-ink:#8A5300; --ok-ink:#0F7547; --trip-ink:#B02E27;
-  --spark:rgba(255,255,255,.96); --focus:#1C64D8;
-  --shadow:0 1px 0 rgba(15,34,54,.04), 0 18px 44px -22px rgba(15,34,54,.28);
+  --font:"Montserrat","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"SFMono-Regular","Cascadia Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --navy:#415A7E; --coral:#E47454; --charcoal:#2B3340; --steel:#9DC0D7; --sky:#CCEBF7; --slate:#718096;
+  --bg:#FFFFFF; --bg-alt:#F7FAFC; --sheet:#FFFFFF; --panel:#FFFFFF; --raised:#F4F7FA;
+  --ink:#2B3340; --head:#415A7E; --muted:#566275; --faint:#8793A5;
+  --rule:#E2E8F0; --rule-strong:#CBD5E0; --wire:#CBD5E0; --gridline:rgba(65,90,126,.055);
+  --accent:#E06C4B; --accent-ink:#BD4F2D; --accent-soft:#FCEDE8;
+  --feature:#5A8DB6; --test:#415A7E; --live:#E06C4B; --ok:#2E8B57; --trip:#D0392E;
+  --feature-ink:#3B729E; --test-ink:#415A7E; --live-ink:#BD4F2D; --ok-ink:#23794A; --trip-ink:#B8322A;
+  --dia-a:#EDF2F7; --dia-b:#FCEDE8;
+  --logo-word:#231F20; --logo-dark:#2E3541;
+  --solid:#415A7E; --solid-hover:#2B3340; --solid-ink:#FFFFFF;
+  --line-hover:#BD4F2D; --line-hover-ink:#FFFFFF;
+  --spark:rgba(255,255,255,.96); --focus:#1F6FD1;
+  --shadow:0 1px 2px rgba(43,51,64,.05),0 22px 44px -26px rgba(43,51,64,.38);
+  --header-h:76px;
   color-scheme:light;
-  box-sizing:border-box;
-  padding-top:env(safe-area-inset-top,0px);
-  padding-bottom:env(safe-area-inset-bottom,0px);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#0A1522; --sheet:#0E1C2E; --panel:#13253A; --ink:#E4ECF5; --muted:#9BAEC3; --faint:#687F98;
-    --wire:#2A405A; --rule:#20354C; --gridline:rgba(150,190,235,.05);
-    --feature:#A68CFF; --test:#3CCFE3; --live:#FFB443; --ok:#4ADB99; --trip:#FF6B62;
-    --feature-ink:#BCA8FF; --test-ink:#6ADCEB; --live-ink:#FFC56B; --ok-ink:#6BE6AE; --trip-ink:#FF8C85;
+    --bg:#161B22; --bg-alt:#1A2029; --sheet:#1C222B; --panel:#222A35; --raised:#262E3A;
+    --ink:#E8EEF5; --head:#F4F7FB; --muted:#A9B5C6; --faint:#7C889A;
+    --rule:#2C3542; --rule-strong:#3A4655; --wire:#3A4655; --gridline:rgba(157,192,215,.05);
+    --accent:#E47454; --accent-ink:#F49C80; --accent-soft:rgba(228,116,84,.13);
+    --feature:#A9D4EA; --test:#7D9BCB; --live:#EE7F5F; --ok:#4FC98A; --trip:#FF6E63;
+    --feature-ink:#BFE0F0; --test-ink:#A3BBE0; --live-ink:#F49C80; --ok-ink:#6FD9A2; --trip-ink:#FF8C85;
+    --dia-a:#1C232D; --dia-b:#241F23;
+    --logo-word:#FFFFFF; --logo-dark:#FFFFFF;
+    --solid:#E47454; --solid-hover:#F08A6C; --solid-ink:#161B22;
+    --line-hover:#E47454; --line-hover-ink:#161B22;
     --spark:rgba(255,255,255,.92); --focus:#7DB4FF;
-    --shadow:0 1px 0 rgba(0,0,0,.25), 0 24px 54px -26px rgba(0,0,0,.75);
+    --shadow:0 1px 0 rgba(0,0,0,.25),0 24px 54px -26px rgba(0,0,0,.75);
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#0A1522; --sheet:#0E1C2E; --panel:#13253A; --ink:#E4ECF5; --muted:#9BAEC3; --faint:#687F98;
-  --wire:#2A405A; --rule:#20354C; --gridline:rgba(150,190,235,.05);
-  --feature:#A68CFF; --test:#3CCFE3; --live:#FFB443; --ok:#4ADB99; --trip:#FF6B62;
-  --feature-ink:#BCA8FF; --test-ink:#6ADCEB; --live-ink:#FFC56B; --ok-ink:#6BE6AE; --trip-ink:#FF8C85;
+  --bg:#161B22; --bg-alt:#1A2029; --sheet:#1C222B; --panel:#222A35; --raised:#262E3A;
+  --ink:#E8EEF5; --head:#F4F7FB; --muted:#A9B5C6; --faint:#7C889A;
+  --rule:#2C3542; --rule-strong:#3A4655; --wire:#3A4655; --gridline:rgba(157,192,215,.05);
+  --accent:#E47454; --accent-ink:#F49C80; --accent-soft:rgba(228,116,84,.13);
+  --feature:#A9D4EA; --test:#7D9BCB; --live:#EE7F5F; --ok:#4FC98A; --trip:#FF6E63;
+  --feature-ink:#BFE0F0; --test-ink:#A3BBE0; --live-ink:#F49C80; --ok-ink:#6FD9A2; --trip-ink:#FF8C85;
+  --dia-a:#1C232D; --dia-b:#241F23;
+  --logo-word:#FFFFFF; --logo-dark:#FFFFFF;
+  --solid:#E47454; --solid-hover:#F08A6C; --solid-ink:#161B22;
+  --line-hover:#E47454; --line-hover-ink:#161B22;
   --spark:rgba(255,255,255,.92); --focus:#7DB4FF;
-  --shadow:0 1px 0 rgba(0,0,0,.25), 0 24px 54px -26px rgba(0,0,0,.75);
+  --shadow:0 1px 0 rgba(0,0,0,.25),0 24px 54px -26px rgba(0,0,0,.75);
   color-scheme:dark;
 }
-*,*::before,*::after{box-sizing:inherit}
-html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 76px);scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:18px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+
+/* ---------- Base ---------- */
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-padding-top:calc(var(--header-h) + 18px);scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;padding-bottom:env(safe-area-inset-bottom,0px)}
 img,svg{max-width:100%}
 a{color:inherit}
-button{font:inherit;color:inherit}
-:focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:4px}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-.skip{position:absolute;left:12px;top:-60px;background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:8px;z-index:50;text-decoration:none;font-weight:600}
-.skip:focus{top:calc(env(safe-area-inset-top,0px) + 10px)}
-.wrap{max-width:1260px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
+.sprite{position:absolute;width:0;height:0;overflow:hidden}
+.skip{position:absolute;left:12px;top:-80px;background:var(--navy);color:#fff;padding:12px 16px;z-index:60;text-decoration:none;font-weight:600}
+.skip:focus{top:12px}
+.wrap{max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
+.ic{width:24px;height:24px;flex:none}
 
-/* Top bar */
-.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:saturate(1.2) blur(10px);-webkit-backdrop-filter:saturate(1.2) blur(10px);border-bottom:1px solid var(--rule)}
-.topbar .wrap{display:flex;align-items:center;gap:28px;height:60px}
-.brand{display:flex;align-items:baseline;gap:12px;text-decoration:none;white-space:nowrap}
-.brand strong{font-family:var(--font-display);font-weight:600;font-size:22px;letter-spacing:.005em}
-.brand span{color:var(--muted);font-size:15px}
-.nav{display:flex;gap:22px;margin-left:auto;font-size:15px}
-.nav a{text-decoration:none;color:var(--muted);padding:6px 0;border-bottom:2px solid transparent}
-.nav a:hover{color:var(--ink);border-bottom-color:var(--rule)}
-.theme-btn{margin-left:8px;display:grid;place-items:center;width:40px;height:40px;border-radius:10px;border:1px solid var(--rule);background:var(--panel);cursor:pointer}
-.theme-btn svg{width:20px;height:20px}
-@media (max-width:1020px){.nav{display:none}.theme-btn{margin-left:auto}}
-@media (max-width:520px){.brand span{display:none}}
+h1,h2,h3{color:var(--head);font-weight:700;margin:0;text-wrap:balance}
+h1{font-size:clamp(38px,4.8vw,66px);line-height:1.06;letter-spacing:-.028em}
+h2{font-size:clamp(30px,3.4vw,46px);line-height:1.1;letter-spacing:-.022em;margin-bottom:18px;max-width:24ch}
+h3{font-size:19px;line-height:1.3;letter-spacing:-.005em;margin-bottom:6px}
+.hl{color:var(--accent)}
+.lede{font-size:clamp(17px,1.35vw,19px);line-height:1.62;color:var(--muted);max-width:62ch;margin:0 0 36px}
+.lede strong{color:var(--ink);font-weight:600}
 
-/* Hero */
-.hero{padding:clamp(36px,6vw,64px) 0 28px}
-.hero-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:24px 56px;align-items:end}
-h1{font-family:var(--font-display);font-weight:600;font-size:clamp(46px,6.4vw,92px);line-height:.93;letter-spacing:-.012em;margin:0;text-wrap:balance}
-.hero-copy p{margin:0 0 20px;font-size:19px;color:var(--muted);max-width:44ch}
-.hero-copy p strong{color:var(--ink);font-weight:600}
-.btns{display:flex;flex-wrap:wrap;gap:10px}
-@media (max-width:860px){.hero-grid{grid-template-columns:1fr}}
+.eyebrow{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px;margin:0 0 16px;font-size:15px;font-weight:600;color:var(--accent-ink)}
+.eyebrow .ch{display:inline-flex;align-items:center;gap:12px;font-weight:700;letter-spacing:.08em}
+.eyebrow .ch::after{content:"";width:30px;height:2px;background:var(--accent)}
+.aud{--a:var(--rule-strong);--a-ink:var(--head);display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;letter-spacing:.1em;line-height:1.2;text-transform:uppercase;color:var(--a-ink);padding:5px 10px 5px 9px;border:1.5px solid var(--a)}
+.aud::before{content:"";width:7px;height:7px;background:var(--a);transform:rotate(45deg);flex:none}
+.aud.board{--a:var(--accent);--a-ink:var(--accent-ink)}
+.aud.all{--a:var(--test);--a-ink:var(--test-ink)}
+.aud.dev{--a:var(--ink);--a-ink:var(--ink)}
 
-.btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:10px 18px;border-radius:10px;border:1px solid var(--rule);background:var(--panel);color:var(--ink);font-weight:600;font-size:16px;cursor:pointer;text-decoration:none;transition:background .2s,border-color .2s,transform .12s}
-.btn:hover{border-color:var(--faint)}
+/* Buttons: square, as on energymatrix.com.au */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:50px;padding:12px 24px;border:2px solid var(--solid);background:var(--solid);color:var(--solid-ink);font-weight:600;font-size:15.5px;letter-spacing:.01em;line-height:1.25;text-decoration:none;cursor:pointer;transition:background .2s,border-color .2s,color .2s,transform .12s}
+.btn:hover{background:var(--solid-hover);border-color:var(--solid-hover)}
 .btn:active{transform:translateY(1px)}
-.btn.primary{background:var(--ink);border-color:var(--ink);color:var(--bg)}
-.btn.primary:hover{background:color-mix(in srgb,var(--ink) 88%,var(--bg))}
-.btn[disabled]{opacity:.38;cursor:default;transform:none}
-.btn[hidden]{display:none}
-.btn svg{width:16px;height:16px}
+.btn .arr{width:18px;height:18px;flex:none;transition:transform .2s}
+.btn:hover .arr{transform:translateX(3px)}
+.btn-line{background:transparent;border-color:var(--accent);color:var(--accent-ink)}
+.btn-line:hover{background:var(--line-hover);border-color:var(--line-hover);color:var(--line-hover-ink)}
+.btn-quiet{background:transparent;border-color:var(--rule-strong);color:var(--ink)}
+.btn-quiet:hover{background:var(--raised);border-color:var(--faint)}
+.btn-sm{min-height:42px;padding:8px 16px;font-size:14.5px}
+.btn[disabled]{opacity:.4;cursor:default;transform:none}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
 
-/* Stage */
-.stage-sec{padding-bottom:clamp(56px,8vw,96px)}
-.stage{position:relative;scroll-margin-top:calc(env(safe-area-inset-top,0px) + 68px);background-color:var(--sheet);background-image:linear-gradient(var(--gridline) 1px,transparent 1px),linear-gradient(90deg,var(--gridline) 1px,transparent 1px);background-size:24px 24px;border:1px solid var(--rule);border-radius:20px;box-shadow:var(--shadow);overflow:hidden}
-.stage-top{display:flex;align-items:center;gap:8px 18px;flex-wrap:wrap;padding:8px 12px;border-bottom:1px solid var(--rule);background:color-mix(in srgb,var(--sheet) 80%,transparent)}
-.stage-top .lbl{font-size:15px;color:var(--muted);padding-left:6px}
-.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+/* Diamond decorations, echoing the brand site */
+.deco{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.deco i{position:absolute;width:var(--s);height:var(--s);left:var(--x);top:var(--y);background:var(--c,var(--dia-a));transform:rotate(45deg)}
+
+/* ---------- Header ---------- */
+.topbar{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 93%,transparent);backdrop-filter:saturate(1.3) blur(12px);-webkit-backdrop-filter:saturate(1.3) blur(12px);border-bottom:1px solid var(--rule)}
+.bar{position:relative;display:flex;align-items:center;gap:20px;height:var(--header-h);padding-left:clamp(16px,3vw,32px)}
+.brand{display:flex;align-items:center;gap:16px;text-decoration:none;color:var(--logo-word);flex:none}
+.brand .logo{display:block;height:50px;width:auto}
+.brand-sep{width:1px;height:36px;background:var(--rule-strong)}
+.brand-product{font-size:13px;font-weight:700;line-height:1.25;letter-spacing:.06em;text-transform:uppercase;color:var(--head)}
+.nav{display:flex;gap:clamp(16px,1.8vw,28px);margin-left:auto}
+.nav a{position:relative;font-size:13px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;text-decoration:none;color:var(--ink);padding:10px 0;white-space:nowrap}
+.nav a::after{content:"";position:absolute;left:0;right:0;bottom:2px;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .25s ease}
+.nav a:hover::after,.nav a.active::after{transform:scaleX(1)}
+.nav a.active{color:var(--head)}
+.tools{display:flex;align-items:center;gap:8px;margin-left:8px}
+.icon-btn{display:grid;place-items:center;width:44px;height:44px;border:1.5px solid var(--rule-strong);background:transparent;color:var(--ink);cursor:pointer;transition:border-color .2s,background .2s}
+.icon-btn:hover{border-color:var(--faint);background:var(--raised)}
+.icon-btn svg{width:20px;height:20px}
+.menu-btn{display:none}
+.chev{align-self:stretch;display:flex;flex-direction:column;justify-content:center;margin-left:14px;padding:0 clamp(20px,2.4vw,34px) 0 60px;background:var(--navy);color:#fff;text-decoration:none;clip-path:polygon(40px 0,100% 0,100% 100%,40px 100%,0 50%);font-size:13.5px;line-height:1.3;transition:background .2s}
+.chev strong{font-size:16px;font-weight:700;letter-spacing:.005em}
+.chev:hover{background:#34496A}
+.progress{position:absolute;left:0;right:0;bottom:-1px;height:3px;pointer-events:none}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--navy),var(--coral));transform-origin:0 50%;transform:scaleX(0)}
+.mnav{position:absolute;left:0;right:0;top:100%;background:var(--bg);border-bottom:1px solid var(--rule);box-shadow:var(--shadow);max-height:calc(100vh - var(--header-h));overflow:auto}
+.mnav ol{list-style:none;margin:0;padding:8px clamp(16px,4vw,40px) 16px}
+.mnav a{display:flex;align-items:center;gap:16px;padding:14px 4px;border-bottom:1px solid var(--rule);text-decoration:none;font-weight:600;color:var(--head)}
+.mnav a span{font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--accent-ink);min-width:24px}
+.mnav small{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+@media (max-width:1180px){.nav{display:none}.menu-btn{display:grid}.tools{margin-left:auto}}
+@media (max-width:720px){.chev{display:none}.bar{padding-right:clamp(16px,3vw,32px)}}
+@media (max-width:520px){:root{--header-h:66px}.brand .logo{height:42px}.brand-sep,.brand-product{display:none}}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;overflow:hidden;padding:clamp(40px,6vw,84px) 0 clamp(56px,7vw,96px)}
+.hero .deco i:nth-child(1){--s:min(62vw,760px);--x:58%;--y:-18%}
+.hero .deco i:nth-child(2){--s:min(40vw,460px);--x:-12%;--y:62%;--c:var(--dia-b)}
+.hero .deco i:nth-child(3){--s:120px;--x:47%;--y:84%;--c:var(--dia-b)}
+.hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);gap:40px 64px;align-items:center}
+.hero h1{margin-bottom:24px}
+.hero .lede{font-size:clamp(17.5px,1.45vw,20px);max-width:42ch;margin-bottom:32px}
+.hero-note{margin:18px 0 0;font-size:14.5px;color:var(--muted)}
+.hero-art{position:relative;width:100%;max-width:480px;aspect-ratio:1;justify-self:center}
+.hero-mark{display:block;width:100%;height:100%;overflow:visible}
+.tile{transform-box:fill-box;transform-origin:center;animation:tileIn 1s cubic-bezier(.2,.75,.25,1) var(--d) both}
+@keyframes tileIn{from{opacity:0;transform:translate(var(--x),var(--y)) rotate(var(--r)) scale(.55)}}
+.sweep{animation:sweep 8s cubic-bezier(.45,0,.25,1) 2.6s infinite}
+@keyframes sweep{0%{transform:translateX(0)}28%,100%{transform:translateX(520px)}}
+.tag{position:absolute;display:flex;align-items:center;gap:9px;padding:8px 14px 8px 11px;background:var(--panel);border:1.5px solid var(--rule-strong);box-shadow:var(--shadow);font-size:14px;font-weight:700;color:var(--head);white-space:nowrap;animation:tagIn .7s ease-out var(--d) both}
+.tag b{display:grid;place-items:center;width:22px;height:22px;background:var(--t);color:#fff;font-size:11.5px;font-weight:800}
+.tag:nth-of-type(1){--t:var(--feature);--d:1.35s;left:2%;top:12%}
+.tag:nth-of-type(2){--t:var(--test);--d:1.5s;right:0;top:12%}
+.tag:nth-of-type(3){--t:var(--live);--d:1.65s;right:0;bottom:12%}
+.tag:nth-of-type(4){--t:var(--ok);--d:1.8s;left:2%;bottom:12%}
+@keyframes tagIn{from{opacity:0;transform:translateY(8px)}}
+@media (max-width:980px){.hero-grid{grid-template-columns:1fr}.hero-art{max-width:400px;order:2}}
+@media (max-width:520px){.tag{font-size:12.5px;padding:6px 10px 6px 8px}.tag b{width:19px;height:19px;font-size:10.5px}}
+
+/* Path cards: the three bordered cards from the brand site */
+.paths-lbl{position:relative;z-index:1;max-width:none;margin:clamp(48px,6vw,80px) 0 18px;font-size:12.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.paths{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.path{--c:var(--test);--c-ink:var(--test-ink);position:relative;display:flex;flex-direction:column;gap:10px;padding:28px 28px 22px;border:2px solid var(--c);background:var(--panel);color:var(--ink);text-decoration:none;transition:transform .25s ease,box-shadow .25s ease}
+.path:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.path .pi{width:46px;height:46px;color:var(--c)}
+.path .pa{font-size:11.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--c-ink)}
+.path .pt{font-size:22px;font-weight:700;line-height:1.2;color:var(--c-ink);letter-spacing:-.01em}
+.path p{margin:0;font-size:15.5px;line-height:1.55;color:var(--muted)}
+.path .pg{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;padding-top:14px;border-top:1px solid var(--rule);font-size:14.5px;font-weight:700;color:var(--c-ink)}
+.path .pg span{display:inline-flex;align-items:center;gap:8px}
+.path .pg small{font-size:12.5px;font-weight:600;color:var(--muted)}
+.path .pg .arr{width:17px;height:17px;transition:transform .2s}
+.path:hover .pg .arr{transform:translateX(3px)}
+.path.board{--c:var(--accent);--c-ink:var(--accent-ink)}
+.path.dev{--c:var(--ink);--c-ink:var(--ink)}
+@media (max-width:900px){.paths{grid-template-columns:1fr}}
+
+/* ---------- Sections ---------- */
+.section{position:relative;padding:clamp(72px,9vw,120px) 0}
+.section.alt{background:var(--bg-alt)}
+.sec-head{position:relative;z-index:1;margin-bottom:clamp(32px,4vw,52px)}
+.sec-head .lede{margin-bottom:0}
+.tech-line{font-size:14.5px;color:var(--muted);margin:18px 0 0;max-width:60ch}
+.tech-line b{color:var(--ink);font-weight:700}
+
+/* Briefing */
+.numbers{list-style:none;margin:0;padding:34px 0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px 24px;border-top:1px solid var(--rule-strong);border-bottom:1px solid var(--rule-strong)}
+.numbers li{--c:var(--accent);--c-ink:var(--accent-ink);display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px}
+.numbers li:nth-child(even){--c:var(--test);--c-ink:var(--test-ink)}
+.numbers .ni{width:48px;height:48px;color:var(--c);margin-bottom:6px}
+.numbers .nv{font-size:clamp(44px,4.4vw,60px);font-weight:700;line-height:1.05;letter-spacing:-.03em;color:var(--c);font-variant-numeric:tabular-nums}
+.numbers .nl{font-size:15px;line-height:1.45;font-weight:500;color:var(--c-ink);max-width:22ch}
+@media (max-width:900px){.numbers{grid-template-columns:1fr 1fr}}
+.risk-h{margin:clamp(48px,6vw,72px) 0 20px;font-size:clamp(22px,2.2vw,28px)}
+.risks{border-top:2px solid var(--head)}
+.risk-cols,.risk{display:grid;grid-template-columns:minmax(0,4.2fr) minmax(0,6.5fr) 250px;gap:10px 40px;align-items:start}
+.risk-cols{padding:12px 0;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--rule-strong)}
+.risk{padding:22px 0;border-bottom:1px solid var(--rule-strong)}
+.risk-q{display:flex;gap:14px;margin:0;font-size:17.5px;font-weight:700;line-height:1.4;color:var(--head)}
+.risk-q::before{content:"";flex:none;width:11px;height:11px;margin-top:7px;background:var(--coral);transform:rotate(45deg)}
+.risk-a{display:flex;gap:14px;margin:0;color:var(--ink);font-size:16.5px;line-height:1.55}
+.risk-a .ic{color:var(--ok);margin-top:1px}
+.risk-go{justify-self:end;display:inline-flex;align-items:center;gap:8px;padding:6px 0;border:0;background:none;color:var(--accent-ink);font-weight:700;font-size:14.5px;cursor:pointer;white-space:nowrap;text-align:left}
+.risk-go .arr{width:16px;height:16px;transition:transform .2s}
+.risk-go:hover{text-decoration:underline;text-underline-offset:4px}
+.risk-go:hover .arr{transform:translateX(3px)}
+@media (max-width:900px){.risk-cols{display:none}.risk{grid-template-columns:1fr;gap:8px}.risk-go{justify-self:start;padding-left:25px}.risk-a{padding-left:25px}.risk-a .ic{display:none}}
+.summary{position:relative;overflow:hidden;display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px 36px;align-items:center;margin-top:clamp(44px,5vw,64px);padding:clamp(26px,3.4vw,40px) clamp(24px,3.6vw,48px);background:var(--charcoal);color:#fff}
+.summary .deco i{--c:rgba(255,255,255,.045)}
+.summary .deco i:nth-child(1){--s:230px;--x:85%;--y:-70px}
+.summary .deco i:nth-child(2){--s:120px;--x:79%;--y:64px;--c:rgba(228,116,84,.16)}
+.summary .sl{position:relative;font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--steel)}
+.summary p{position:relative;margin:0;font-size:clamp(20px,2.1vw,26px);font-weight:600;line-height:1.4;letter-spacing:-.01em;max-width:44ch}
+.summary em{font-style:normal;color:#F08A6C}
+@media (max-width:700px){.summary{grid-template-columns:1fr}}
+
+/* ---------- Stage (interactive map) ---------- */
+.stage{position:relative;scroll-margin-top:calc(var(--header-h) + 12px);background-color:var(--sheet);background-image:linear-gradient(var(--gridline) 1px,transparent 1px),linear-gradient(90deg,var(--gridline) 1px,transparent 1px);background-size:24px 24px;border:1px solid var(--rule-strong);box-shadow:var(--shadow);overflow:hidden}
+.stage::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,var(--feature) 0 33.3%,var(--test) 33.3% 66.6%,var(--live) 66.6%);z-index:2}
+.stage-top{display:flex;align-items:flex-end;gap:4px 18px;flex-wrap:wrap;padding:14px 14px 0;border-bottom:1px solid var(--rule);background:var(--panel)}
+.stage-top .lbl{font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:0 6px 16px}
+.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
-.tab{display:inline-flex;align-items:center;gap:9px;white-space:nowrap;min-height:40px;padding:8px 14px;border-radius:10px;border:1px solid transparent;background:transparent;color:var(--muted);font-weight:600;font-size:16px;cursor:pointer}
-.tab:hover{color:var(--ink);background:color-mix(in srgb,var(--panel) 60%,transparent)}
-.tab i{width:10px;height:10px;border-radius:50%;background:var(--tone);flex:none}
-.tab[aria-selected="true"]{background:var(--panel);color:var(--ink);border-color:var(--rule);box-shadow:0 1px 0 rgba(15,34,54,.05)}
+.tab{display:inline-flex;align-items:center;gap:10px;white-space:nowrap;min-height:48px;padding:10px 16px 11px;border:0;border-bottom:3px solid transparent;background:transparent;color:var(--muted);font-weight:600;font-size:15px;cursor:pointer;transition:color .2s,border-color .2s}
+.tab i{width:9px;height:9px;background:var(--tone);transform:rotate(45deg);flex:none}
+.tab:hover{color:var(--head)}
+.tab[aria-selected="true"]{color:var(--head);border-bottom-color:var(--tone)}
 .stage-top .spacer{flex:1}
-.ov-btn{background:none;border:0;color:var(--muted);font-weight:600;font-size:15px;cursor:pointer;padding:8px 10px;border-radius:8px}
-.ov-btn:hover{color:var(--ink)}
-.swipe{display:none;margin:10px 16px 0;font-size:14px;color:var(--muted)}
+.ov-btn{display:inline-flex;align-items:center;gap:8px;margin-bottom:8px;background:none;border:0;color:var(--muted);font-weight:600;font-size:14.5px;cursor:pointer;padding:8px 10px}
+.ov-btn:hover{color:var(--head)}
+.ov-btn svg{width:18px;height:18px}
+.swipe{display:none;margin:12px 16px 0;font-size:14px;color:var(--muted)}
 .map-scroll{overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
-#map{display:block;width:100%;height:auto;max-height:max(540px,calc(100vh - 332px));margin:0 auto}
-@media (max-width:860px){#map{width:940px;max-width:none;max-height:none}.swipe{display:block}}
+#map{display:block;width:100%;height:auto;max-height:max(540px,calc(100vh - 360px));margin:0 auto}
+@media (max-width:860px){#map{width:960px;max-width:none;max-height:none}.swipe{display:block}}
+.stage-hint{margin:14px 2px 0;font-size:14px;color:var(--muted)}
+.stage-hint kbd{display:inline-grid;place-items:center;min-width:26px;height:24px;padding:0 6px;border:1.5px solid var(--rule-strong);border-bottom-width:3px;font:700 12px var(--font);color:var(--ink);background:var(--panel)}
+@media (hover:none),(max-width:860px){.stage-hint{display:none}}
 
 /* Panel */
-.panel{--tone:var(--ink);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px 40px;align-items:end;padding:16px 24px 18px;border-top:1px solid var(--rule);background:var(--panel);min-height:184px}
-.p-meta{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:600;color:var(--muted)}
-.p-meta i{width:22px;height:4px;border-radius:2px;background:var(--tone)}
-.p-title{font-family:var(--font-display);font-weight:600;font-size:clamp(26px,2.4vw,31px);line-height:1.04;margin:4px 0 6px;letter-spacing:-.005em}
-.p-body{margin:0;max-width:70ch;font-size:17.5px;line-height:1.5}
-.p-tech{margin:8px 0 0;max-width:72ch;font-size:15px;color:var(--muted)}
-.p-tech b{font-weight:600;color:var(--ink)}
+.panel{--tone:var(--head);position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px 40px;align-items:end;padding:20px 26px 22px;border-top:1px solid var(--rule);background:var(--panel);min-height:200px}
+.panel::before{content:"";position:absolute;left:0;top:-1px;width:120px;height:3px;background:var(--tone);transition:background .4s}
+.p-meta{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.p-meta i{width:9px;height:9px;background:var(--tone);transform:rotate(45deg)}
+.p-title{font-size:clamp(22px,2.1vw,28px);line-height:1.18;margin:8px 0 8px;letter-spacing:-.015em}
+.p-body{margin:0;max-width:70ch;font-size:16.5px;line-height:1.6}
+.p-tech{margin:10px 0 0;max-width:72ch;font-size:14.5px;color:var(--muted)}
+.p-tech b{font-weight:700;color:var(--ink)}
 .p-text.swap{animation:swap .45s ease-out}
 @keyframes swap{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .p-ctrl{display:flex;flex-direction:column;align-items:flex-end;gap:14px}
 .prog{display:flex;gap:4px}
-.prog[hidden]{display:none}
-.seg{width:30px;height:20px;padding:0;border:0;background:none;cursor:pointer;display:grid;align-items:center}
-.seg::before{content:"";height:6px;border-radius:3px;background:var(--wire);transition:background .3s}
+.seg{width:30px;height:22px;padding:0;border:0;background:none;cursor:pointer;display:grid;align-items:center}
+.seg::before{content:"";height:5px;background:var(--wire);transition:background .3s}
 .seg.done::before{background:color-mix(in srgb,var(--tone) 45%,var(--wire))}
 .seg.now::before{background:var(--tone)}
 .ctrl-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 @media (max-width:860px){.panel{grid-template-columns:1fr}.p-ctrl{align-items:flex-start}.ctrl-row{justify-content:flex-start}}
 
 /* Map drawing */
-#map text{font-family:var(--font-body)}
-.t-head{font-family:var(--font-display);font-weight:600;font-size:22px;fill:var(--ink)}
-.t-sub{font-size:13.5px;fill:var(--muted)}
-.t-title{font-weight:600;font-size:15px;fill:var(--ink)}
-.t-label{font-weight:600;font-size:13px;fill:var(--ink)}
-.t-note{font-size:12.5px;fill:var(--muted)}
-.t-chip{font-weight:600;font-size:13.5px;fill:var(--ink)}
-.t-chipsub{font-size:12px;fill:var(--muted)}
-.t-plus{font-size:17px;font-weight:600;fill:var(--muted)}
-.rule{stroke:var(--rule);stroke-width:1.5}
-.band{fill:var(--tone);fill-opacity:.05;stroke:var(--tone);stroke-opacity:.38;stroke-width:1.2;stroke-dasharray:14 5 2 5}
+#map text{font-family:var(--font)}
+.t-head{font-weight:700;font-size:19px;fill:var(--head);letter-spacing:-.01em}
+.t-sub{font-size:12px;fill:var(--muted)}
+.t-title{font-weight:700;font-size:13.5px;fill:var(--ink)}
+.t-label{font-weight:700;font-size:12px;fill:var(--ink)}
+.t-note{font-size:11.5px;fill:var(--muted)}
+.t-chip{font-weight:700;font-size:12px;fill:var(--ink)}
+.t-chipsub{font-size:11px;fill:var(--muted)}
+.t-plus{font-size:16px;font-weight:700;fill:var(--muted)}
+.rule{stroke:var(--rule-strong);stroke-width:1.5}
+.colhead .rule{stroke:var(--head);stroke-opacity:.35}
+.band{fill:var(--tone);fill-opacity:.045;stroke:var(--tone);stroke-opacity:.4;stroke-width:1.2;stroke-dasharray:14 5 2 5}
 .k{color:var(--tone);transition:opacity .45s ease}
 .m-line{fill:none;stroke:var(--tone);stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;transition:stroke .45s ease,opacity .45s ease}
 .m-flow{fill:none;stroke:var(--spark);stroke-width:2.4;stroke-linecap:round;stroke-dasharray:.01 15;opacity:0;pointer-events:none;transition:opacity .45s ease}
@@ -146,18 +296,18 @@ h1{font-family:var(--font-display);font-weight:600;font-size:clamp(46px,6.4vw,92
 .touring .m-flow.on{opacity:.95}
 .touring .m-line:not(.on){stroke:var(--wire)}
 .touring .m-line.on{filter:url(#glow)}
-.touring .k:not(.m-line):not(.m-flow):not(.on){opacity:.34}
+.touring .k:not(.m-line):not(.m-flow):not(.on){opacity:.3}
 #map .only{opacity:0}
 .touring #map .only.on{opacity:1}
 .touring #map .m-flow.only.on{opacity:.95}
 .dot{fill:var(--sheet);stroke:var(--tone);stroke-width:2.5}
 .human{color:var(--ink)}
 .m-box .frame{fill:var(--sheet);stroke:var(--tone);stroke-width:2;transition:stroke .45s,stroke-width .3s}
-.m-box .tint{fill:var(--tone);opacity:.07;transition:opacity .45s}
+.m-box .tint{fill:var(--tone);opacity:.06;transition:opacity .45s}
 .m-box .chip{fill:var(--panel);stroke:var(--tone);stroke-opacity:.5;stroke-width:1.2}
 .touring .m-box:not(.on) .frame{stroke:var(--wire)}
 .m-box.on .frame{stroke-width:2.6}
-.touring .m-box.on .tint{opacity:.16}
+.touring .m-box.on .tint{opacity:.15}
 .m-box.warn .frame{stroke:var(--trip)}
 .m-box.warn .tint{fill:var(--trip);animation:alarm 1.1s ease-in-out infinite}
 .m-box.warn .chip{stroke:var(--trip)}
@@ -176,19 +326,20 @@ h1{font-family:var(--font-display);font-weight:600;font-size:clamp(46px,6.4vw,92
 .brk.trip .brk-box{stroke:var(--trip);fill:color-mix(in srgb,var(--trip) 16%,var(--sheet))}
 .brk.trip .brk-blade,.brk.trip .brk-pin{fill:var(--trip)}
 .brk.trip .brk-blade{transform:rotate(-40deg)}
-.save-table .frame{fill:var(--panel);stroke:var(--tone);stroke-opacity:.55;stroke-width:1.5}
+.save-table .frame{fill:var(--panel);stroke:var(--tone);stroke-opacity:.6;stroke-width:1.5}
 .save-row rect{fill:transparent;transition:fill .4s}
-.save-row .sv{font-size:12.5px;fill:var(--ink)}
-.save-row .ss{font-size:12px;font-weight:600;fill:var(--muted)}
-.save-row.live rect{fill:color-mix(in srgb,var(--live) 18%,transparent)}
+.save-row .sv{font-size:12px;fill:var(--ink)}
+.save-row .ss{font-size:11.5px;font-weight:700;fill:var(--muted)}
+.save-row.live rect{fill:color-mix(in srgb,var(--live) 17%,transparent)}
 .save-row.live .ss{fill:var(--live-ink)}
 .save-row.save .ss{fill:var(--test-ink)}
-.save-row.bad rect{fill:color-mix(in srgb,var(--trip) 18%,transparent)}
+.save-row.bad rect{fill:color-mix(in srgb,var(--trip) 17%,transparent)}
 .save-row.bad .ss{fill:var(--trip-ink)}
 .save-row.gone .sv{fill:var(--faint);text-decoration:line-through}
 .save-row.gone .ss{fill:var(--faint)}
 .legend .lg{stroke-width:3.5;stroke-linecap:round}
-.legend .tb{fill:none;stroke:var(--rule);stroke-width:1.2}
+.legend .tb{fill:none;stroke:var(--rule-strong);stroke-width:1.2}
+.legend .tb-fill{fill:var(--panel)}
 .part{cursor:pointer;outline:none}
 .part .hit{fill:none;stroke:transparent;stroke-width:24;pointer-events:stroke}
 .part .hitbox{fill:transparent}
@@ -208,163 +359,595 @@ h1{font-family:var(--font-display);font-weight:600;font-size:clamp(46px,6.4vw,92
 @keyframes halo{0%,100%{transform:scale(.8);opacity:.34}50%{transform:scale(1.25);opacity:.14}}
 @keyframes checking{0%,100%{stroke-opacity:1}50%{stroke-opacity:.25}}
 @keyframes alarm{0%,100%{opacity:.1}50%{opacity:.3}}
-@keyframes flash{0%{opacity:.42}100%{opacity:.16}}
+@keyframes flash{0%{opacity:.42}100%{opacity:.15}}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
 
-/* Sections */
-.section{padding:clamp(64px,9vw,112px) 0;border-top:1px solid var(--rule)}
-h2{font-family:var(--font-display);font-weight:600;font-size:clamp(36px,4.6vw,60px);line-height:.98;letter-spacing:-.01em;margin:0 0 18px;max-width:22ch;text-wrap:balance}
-.lede{font-size:20px;line-height:1.5;color:var(--muted);max-width:58ch;margin:0 0 36px}
-h3{font-size:21px;line-height:1.25;margin:0 0 6px;font-weight:600}
-.tech-line{font-size:15px;color:var(--muted);margin:18px 0 0;max-width:60ch}
-.tech-line b{color:var(--ink);font-weight:600}
-
-.two-col{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px 64px;align-items:start}
-@media (max-width:900px){.two-col{grid-template-columns:1fr}}
-.walk{list-style:none;counter-reset:w;margin:0 0 26px;padding:0;border-top:1px solid var(--rule)}
-.walk li{counter-increment:w;display:grid;grid-template-columns:40px minmax(0,1fr);gap:0 12px;padding:14px 0;border-bottom:1px solid var(--rule);color:var(--muted);transition:color .3s}
-.walk li::before{content:counter(w);font-family:var(--font-display);font-weight:600;font-size:26px;line-height:1.1;color:var(--faint);transition:color .3s}
-.walk li strong{display:block;color:var(--ink);font-weight:600}
+/* ---------- Inside the app ---------- */
+.two-col{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px 72px;align-items:start}
+@media (min-width:941px){.two-col .sheet-fig{position:sticky;top:calc(var(--header-h) + 24px)}}
+@media (max-width:940px){.two-col{grid-template-columns:1fr}}
+.walk{list-style:none;counter-reset:w;margin:0 0 28px;padding:0;border-top:1px solid var(--rule-strong)}
+.walk li{counter-increment:w;display:grid;grid-template-columns:44px minmax(0,1fr);gap:0 12px;padding:16px 0;border-bottom:1px solid var(--rule-strong);color:var(--muted);transition:color .3s}
+.walk li::before{content:counter(w,decimal-leading-zero);font-weight:700;font-size:15px;letter-spacing:.06em;line-height:1.7;color:var(--faint);transition:color .3s}
+.walk li strong{display:block;color:var(--head);font-weight:700}
 .walk li.now{color:var(--ink)}
-.walk li.now::before{color:var(--live)}
-.sheet-fig{margin:0;background-color:var(--sheet);background-image:linear-gradient(var(--gridline) 1px,transparent 1px),linear-gradient(90deg,var(--gridline) 1px,transparent 1px);background-size:24px 24px;border:1px solid var(--rule);border-radius:20px;padding:clamp(14px,2.4vw,28px);box-shadow:var(--shadow)}
+.walk li.now::before{color:var(--accent-ink)}
+.sheet-fig{margin:0;background-color:var(--sheet);background-image:linear-gradient(var(--gridline) 1px,transparent 1px),linear-gradient(90deg,var(--gridline) 1px,transparent 1px);background-size:24px 24px;border:1px solid var(--rule-strong);padding:clamp(14px,2.4vw,28px);box-shadow:var(--shadow)}
 #req{display:block;width:100%;height:auto}
-#req text{font-family:var(--font-body)}
+#req text{font-family:var(--font)}
 .r-line{fill:none;stroke:var(--wire);stroke-width:3;stroke-linecap:round;transition:stroke .4s}
 .r-line.active{stroke:var(--live)}
 .r-box rect.rb{fill:var(--panel);stroke:var(--wire);stroke-width:2;transition:stroke .4s,fill .4s}
-.r-box.active rect.rb{stroke:var(--live);fill:color-mix(in srgb,var(--live) 9%,var(--panel))}
-.r-name{font-family:var(--font-display)!important;font-weight:600;font-size:25px;fill:var(--ink)}
-.r-desc{font-size:15px;fill:var(--muted)}
-.r-small{font-size:13.5px;fill:var(--muted)}
+.r-box.active rect.rb{stroke:var(--live);fill:color-mix(in srgb,var(--live) 8%,var(--panel))}
+.r-name{font-weight:700;font-size:21px;fill:var(--head);letter-spacing:-.01em}
+.r-desc{font-size:14px;fill:var(--muted)}
+.r-small{font-size:12.5px;fill:var(--muted)}
 .r-you{color:var(--ink)}
 .r-done{opacity:0;transition:opacity .4s}
 .r-done.show{opacity:1}
 .r-done rect{fill:var(--live)}
-.r-done text{font-size:14px;font-weight:600;fill:#1b1200}
+.r-done text{font-size:13px;font-weight:700;fill:#1B1310}
 .r-packet{opacity:0;--ptone:var(--live)}
 .r-packet.show{opacity:1}
 
-.table-wrap{overflow-x:auto;border:1px solid var(--rule);border-radius:16px;background:var(--panel)}
-.compare{width:100%;min-width:680px;border-collapse:collapse;font-size:17px}
-.compare th,.compare td{text-align:left;vertical-align:top;padding:16px 20px;border-bottom:1px solid var(--rule)}
+/* ---------- Two copies ---------- */
+.table-wrap{overflow-x:auto;border:1px solid var(--rule-strong);background:var(--panel)}
+.compare{width:100%;min-width:680px;border-collapse:collapse;font-size:16.5px}
+.compare th,.compare td{text-align:left;vertical-align:top;padding:18px 22px;border-bottom:1px solid var(--rule)}
 .compare tbody tr:last-child th,.compare tbody tr:last-child td{border-bottom:0}
-.compare thead th{font-family:var(--font-display);font-weight:600;font-size:26px;line-height:1.05;padding-top:20px;border-bottom:2px solid var(--rule)}
-.compare thead th span{display:block;font-family:var(--font-body);font-size:15px;font-weight:500;color:var(--muted);margin-top:4px}
+.compare thead th{font-weight:700;font-size:22px;line-height:1.15;padding-top:22px;border-bottom:3px solid var(--rule-strong);letter-spacing:-.01em}
+.compare thead th span{display:block;font-size:14px;font-weight:500;color:var(--muted);margin-top:4px;letter-spacing:0}
 .compare .th-test{color:var(--test-ink);border-bottom-color:var(--test)!important}
 .compare .th-live{color:var(--live-ink);border-bottom-color:var(--live)!important}
-.compare tbody th{font-weight:600;width:22%;color:var(--ink)}
+.compare tbody th{font-weight:700;width:22%;color:var(--head)}
 .compare td{color:var(--muted)}
-.compare tr.tech td,.compare tr.tech th{font-size:15px}
-.sync-note{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:28px 48px;align-items:center;margin-top:40px}
+.compare tr.tech td,.compare tr.tech th{font-size:14.5px;background:var(--bg-alt)}
+.sync-note{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:28px 56px;align-items:center;margin-top:48px}
 .sync-note p{margin:0;color:var(--muted);max-width:56ch}
 .sync-fig{width:100%;height:auto;display:block}
-.sync-fig text{font-family:var(--font-body)}
+.sync-fig text{font-family:var(--font)}
 .sf-flow{fill:none;stroke:var(--spark);stroke-width:2.4;stroke-linecap:round;stroke-dasharray:.01 15;animation:flow 1.05s linear infinite}
 @media (max-width:900px){.sync-note{grid-template-columns:1fr}}
 
-.duo{display:grid;grid-template-columns:1fr 1fr;border-top:2px solid var(--rule)}
-.duo-col{padding:26px 36px 8px 0}
-.duo-col + .duo-col{padding:26px 0 8px 36px;border-left:1px solid var(--rule)}
-.duo-col h3{display:flex;align-items:center;gap:12px;font-size:22px;margin-bottom:14px}
-.duo-col h3 svg{width:30px;height:30px;flex:none}
-.duo-col.ai h3{color:var(--feature-ink)}
+/* ---------- People and AI ---------- */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.duo-col{padding:28px 32px 16px;border:2px solid var(--c,var(--ink));background:var(--panel)}
+.duo-col h3{display:flex;align-items:center;gap:14px;font-size:21px;margin-bottom:10px;color:var(--c-ink,var(--head))}
+.duo-col h3 svg{width:34px;height:34px;flex:none}
+.duo-col.ai{--c:var(--feature);--c-ink:var(--feature-ink)}
+.duo-col.people{--c:var(--test);--c-ink:var(--test-ink)}
 .duo ul{list-style:none;margin:0;padding:0}
-.duo li{padding:12px 0;border-bottom:1px solid var(--rule);color:var(--ink)}
+.duo li{display:flex;gap:14px;padding:13px 0;border-bottom:1px solid var(--rule);color:var(--ink)}
 .duo li:last-child{border-bottom:0}
-.rule-note{margin:30px 0 0;padding:18px 22px;border-left:4px solid var(--feature);background:color-mix(in srgb,var(--feature) 7%,transparent);border-radius:0 12px 12px 0;max-width:70ch;font-size:18px}
-@media (max-width:760px){.duo{grid-template-columns:1fr}.duo-col,.duo-col + .duo-col{padding:22px 0 6px;border-left:0}.duo-col + .duo-col{border-top:1px solid var(--rule)}}
+.duo li::before{content:"";flex:none;width:8px;height:8px;margin-top:9px;background:var(--c);transform:rotate(45deg)}
+.rule-note{display:flex;gap:18px;align-items:flex-start;margin:28px 0 0;padding:20px 24px;border-left:4px solid var(--accent);background:var(--accent-soft);max-width:78ch;font-size:17.5px;font-weight:500;color:var(--ink)}
+.rule-note svg{width:28px;height:28px;flex:none;color:var(--accent-ink)}
+@media (max-width:760px){.duo{grid-template-columns:1fr}}
 
+/* ---------- Safety checks ---------- */
 .checks{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;position:relative}
-.checks::before{content:"";position:absolute;left:26px;right:calc(20% - 26px);top:25px;height:3px;border-radius:2px;background:linear-gradient(90deg,var(--feature) 0 36%,var(--test) 36% 58%,var(--live) 58% 100%);opacity:.8}
-.checks li{position:relative;padding:0 22px 0 0}
+.checks::before{content:"";position:absolute;left:26px;right:calc(20% - 26px);top:25px;height:3px;background:linear-gradient(90deg,var(--feature) 0 36%,var(--test) 36% 58%,var(--live) 58% 100%)}
+.checks li{position:relative;padding:0 24px 0 0}
 .checks .glyph{position:relative;width:52px;height:52px;display:block;margin-bottom:18px}
-.checks .n{display:block;font-family:var(--font-display);font-weight:600;font-size:18px;color:var(--muted);margin-bottom:2px}
-.checks h3{font-size:20px}
-.checks p{margin:0;font-size:16.5px;color:var(--muted)}
-@media (max-width:1000px){.checks{grid-template-columns:1fr;gap:22px}.checks::before{left:25px;right:auto;top:26px;bottom:26px;width:3px;height:auto;background:linear-gradient(180deg,var(--feature) 0 36%,var(--test) 36% 58%,var(--live) 58% 100%)}.checks li{display:grid;grid-template-columns:52px minmax(0,1fr);gap:0 18px;padding:0}.checks .glyph{margin:0;grid-row:span 3}}
-.always{margin-top:48px;display:grid;grid-template-columns:auto 1fr 1fr;gap:18px 40px;align-items:start;padding-top:26px;border-top:1px solid var(--rule)}
-.always h3{font-family:var(--font-display);font-size:26px;margin:0}
-.always div{display:grid;grid-template-columns:34px minmax(0,1fr);gap:0 14px}
-.always svg{width:34px;height:34px;color:var(--live)}
-.always p{margin:0;color:var(--muted);font-size:17px}
-.always p strong{display:block;color:var(--ink);font-weight:600}
+.checks .n{display:block;font-weight:700;font-size:13px;letter-spacing:.1em;color:var(--muted);margin-bottom:4px}
+.checks h3{font-size:18.5px}
+.checks p{margin:0;font-size:15.5px;color:var(--muted)}
+@media (max-width:1000px){.checks{grid-template-columns:1fr;gap:24px}.checks::before{left:25px;right:auto;top:26px;bottom:26px;width:3px;height:auto;background:linear-gradient(180deg,var(--feature) 0 36%,var(--test) 36% 58%,var(--live) 58% 100%)}.checks li{display:grid;grid-template-columns:52px minmax(0,1fr);gap:0 20px;padding:0}.checks .glyph{margin:0;grid-row:span 3}}
+.always{margin-top:56px;display:grid;grid-template-columns:auto 1fr 1fr;gap:18px 44px;align-items:start;padding-top:28px;border-top:1px solid var(--rule-strong)}
+.always h3{font-size:22px;margin:0}
+.always div{display:grid;grid-template-columns:36px minmax(0,1fr);gap:0 16px}
+.always svg{width:36px;height:36px;color:var(--accent)}
+.always p{margin:0;color:var(--muted);font-size:16px}
+.always p strong{display:block;color:var(--head);font-weight:700}
 @media (max-width:900px){.always{grid-template-columns:1fr}}
 
-.faq{border-top:1px solid var(--rule);max-width:900px}
-.faq details{border-bottom:1px solid var(--rule)}
-.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:24px;align-items:center;padding:20px 2px;font-size:21px;font-weight:600}
-.faq summary::-webkit-details-marker{display:none}
-.faq summary .pm{flex:none;width:28px;height:28px;border-radius:50%;border:1.5px solid var(--rule);position:relative}
-.faq summary .pm::before,.faq summary .pm::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:2px;background:var(--ink);transform:translate(-50%,-50%);transition:transform .25s}
-.faq summary .pm::after{transform:translate(-50%,-50%) rotate(90deg)}
-.faq details[open] summary .pm::after{transform:translate(-50%,-50%) rotate(0deg)}
-.faq details p{margin:0 0 22px;color:var(--muted);max-width:64ch}
+/* ---------- Developer playbook (dark band, like the brand footer) ---------- */
+.band-dark{
+  --bg:#2B3340; --bg-alt:#2B3340; --sheet:#262D39; --panel:#313A48; --raised:#374152;
+  --ink:#EDF2F7; --head:#FFFFFF; --muted:#B7C2D0; --faint:#8A97A8;
+  --rule:rgba(255,255,255,.11); --rule-strong:rgba(255,255,255,.2); --wire:#4A5668; --gridline:rgba(157,192,215,.06);
+  --accent:#EE7F5F; --accent-ink:#F6A487; --accent-soft:rgba(228,116,84,.14);
+  --feature:#A9D4EA; --test:#8EA8D2; --live:#EE7F5F; --ok:#4FC98A;
+  --feature-ink:#BFE0F0; --test-ink:#B4C6E4; --live-ink:#F6A487; --ok-ink:#7EDDAA;
+  --solid:#E47454; --solid-hover:#F08A6C; --solid-ink:#161B22; --line-hover:#E47454; --line-hover-ink:#161B22;
+  --focus:#7DB4FF;
+  background:var(--bg);color:var(--ink);overflow:hidden
+}
+:root[data-theme="dark"] .band-dark{--bg:#1F252E;--bg-alt:#1F252E;--panel:#29313D}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .band-dark{--bg:#1F252E;--bg-alt:#1F252E;--panel:#29313D}}
+.band-dark .deco i{--c:rgba(255,255,255,.035)}
+.band-dark .deco i:nth-child(1){--s:520px;--x:78%;--y:-12%}
+.band-dark .deco i:nth-child(2){--s:300px;--x:88%;--y:18%;--c:rgba(228,116,84,.07)}
+.band-dark .deco i:nth-child(3){--s:220px;--x:70%;--y:6%;--c:rgba(157,192,215,.06)}
+.gg{position:relative;z-index:1;margin:0 0 clamp(40px,5vw,64px);border:1px solid var(--rule-strong);background:var(--sheet);background-image:linear-gradient(var(--gridline) 1px,transparent 1px),linear-gradient(90deg,var(--gridline) 1px,transparent 1px);background-size:24px 24px}
+.gg-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 20px;border-bottom:1px solid var(--rule)}
+.gg-top h3{margin:0;font-size:16px}
+.gg-key{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.gg-key span{display:inline-flex;align-items:center;gap:8px}
+.gg-key i{width:22px;height:4px;background:var(--k)}
+.gg-scroll{overflow-x:auto}
+#gitgraph{display:block;width:100%;min-width:760px;height:auto}
+#gitgraph text{font-family:var(--font)}
+.g-lane{fill:none;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.g-dot{stroke-width:3;fill:var(--sheet)}
+.g-name{font-family:var(--mono)!important;font-size:15px;font-weight:600}
+.g-note{font-size:12.5px;fill:var(--muted)}
+.g-strong{font-size:13px;font-weight:700;fill:var(--ink)}
+.g-num rect{fill:var(--accent)}
+.g-num text{font-size:11.5px;font-weight:800;fill:#1B1310}
+.g-box rect{fill:var(--panel);stroke-width:2}
+.g-box text{font-size:14px;font-weight:700;fill:var(--ink)}
+.g-box .g-sub{font-size:11.5px;font-weight:500;fill:var(--muted)}
+.pb-grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4.6fr);gap:48px 64px;align-items:start}
+@media (max-width:1000px){.pb-grid{grid-template-columns:1fr}}
+.steps{list-style:none;margin:0;padding:0;position:relative}
+.step::before{content:"";position:absolute;left:21px;top:46px;bottom:0;width:2px;background:var(--s,var(--feature));opacity:.75}
+.step:last-child::before{display:none}
+.step{position:relative;display:grid;grid-template-columns:44px minmax(0,1fr);gap:0 26px;padding:0 0 34px}
+.step:last-child{padding-bottom:0}
+.step-n{position:relative;display:grid;place-items:center;width:32px;height:32px;margin:6px;background:var(--bg);border:2px solid var(--s,var(--feature));transform:rotate(45deg)}
+.step-n i{transform:rotate(-45deg);font-style:normal;font-weight:800;font-size:14px;color:var(--head)}
+.step h3{font-size:20px;margin:8px 0 6px}
+.step h3 code{font-size:.92em}
+.step p{margin:0;color:var(--muted);max-width:62ch}
+.step p code,.rules code,.check-list code,.faq code{font-family:var(--mono);font-size:.9em;padding:1px 6px;background:var(--raised);color:var(--ink);border:1px solid var(--rule);white-space:nowrap}
+.step .cap{margin-top:8px;font-size:13.5px;color:var(--faint)}
+.code{margin:14px 0 0;max-width:640px;border:1px solid rgba(255,255,255,.14);background:#1B2029}
+.code-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 6px 6px 14px;border-bottom:1px solid rgba(255,255,255,.09);font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8A97A8}
+.code pre{margin:0;padding:14px 16px 16px;overflow-x:auto;font-family:var(--mono);font-size:14px;line-height:1.75;color:#E6ECF3;tab-size:2}
+.code .pr{color:#EE7F5F;user-select:none;-webkit-user-select:none}
+.code .br{color:#A9D4EA}
+.copy{display:inline-flex;align-items:center;gap:7px;min-height:32px;padding:4px 10px;border:1px solid rgba(255,255,255,.18);background:transparent;color:#DCE3EC;font-size:12.5px;font-weight:600;letter-spacing:.02em;text-transform:none;cursor:pointer}
+.copy:hover{background:rgba(255,255,255,.08)}
+.copy svg{width:15px;height:15px}
+.copy.done{color:#7EDDAA;border-color:rgba(126,221,170,.5)}
+.pb-aside{position:sticky;top:calc(var(--header-h) + 24px);display:grid;gap:22px}
+.card{padding:26px 28px;border:1.5px solid var(--rule-strong);background:var(--panel)}
+.card h3{display:flex;align-items:center;gap:12px;font-size:19px;margin-bottom:14px}
+.card h3 svg{width:26px;height:26px;color:var(--accent)}
+.rules{margin:0;padding:0;list-style:none;counter-reset:r}
+.rules li{counter-increment:r;display:grid;grid-template-columns:30px minmax(0,1fr);gap:0 8px;padding:11px 0;border-top:1px solid var(--rule);font-size:15.5px;line-height:1.55}
+.rules li::before{content:counter(r,decimal-leading-zero);font-weight:800;font-size:12.5px;letter-spacing:.06em;line-height:2;color:var(--accent-ink)}
+.check-list{margin:0 0 6px;padding:0;list-style:none}
+.check-list li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:0 12px;padding:8px 0;font-size:15.5px;line-height:1.5}
+.check-list li svg{width:22px;height:22px;color:var(--ok);margin-top:1px}
+.card h4{margin:18px 0 4px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.card h4:first-of-type{margin-top:0}
 
+/* ---------- Questions ---------- */
+.faq{border-top:2px solid var(--head);max-width:920px}
+.faq details{border-bottom:1px solid var(--rule-strong)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:24px;align-items:center;padding:22px 2px;font-size:19px;font-weight:700;color:var(--head);letter-spacing:-.005em}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:hover{color:var(--accent-ink)}
+.faq summary .pm{flex:none;width:30px;height:30px;border:1.5px solid var(--rule-strong);position:relative;transition:background .2s,border-color .2s}
+.faq summary .pm::before,.faq summary .pm::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:2px;background:var(--head);transform:translate(-50%,-50%);transition:transform .25s}
+.faq summary .pm::after{transform:translate(-50%,-50%) rotate(90deg)}
+.faq details[open] summary .pm{background:var(--accent);border-color:var(--accent)}
+.faq details[open] summary .pm::before,.faq details[open] summary .pm::after{background:#fff}
+.faq details[open] summary .pm::after{transform:translate(-50%,-50%) rotate(0deg)}
+.faq details p{margin:0 0 24px;color:var(--muted);max-width:66ch}
+
+/* ---------- Glossary ---------- */
+.gloss-tools{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin:0 0 28px}
+.search{position:relative;flex:0 1 420px}
+.search svg{position:absolute;left:14px;top:50%;width:20px;height:20px;transform:translateY(-50%);color:var(--muted);pointer-events:none}
+.search input{width:100%;min-height:50px;padding:10px 14px 10px 44px;border:1.5px solid var(--rule-strong);background:var(--panel);color:var(--ink);font-size:16px;border-radius:0;-webkit-appearance:none;appearance:none}
+.search input::placeholder{color:var(--faint)}
+.search input:focus{outline:none;border-color:var(--focus);box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 25%,transparent)}
+.gloss-count{font-size:14.5px;color:var(--muted)}
 .gloss{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 40px;margin:0}
-.gloss div{padding:16px 0;border-top:1px solid var(--rule)}
-.gloss dt{font-weight:600;font-size:18px}
-.gloss dd{margin:4px 0 0;color:var(--muted);font-size:16.5px}
+.gloss div{padding:18px 0;border-top:1px solid var(--rule-strong)}
+.gloss dt{font-weight:700;font-size:17px;color:var(--head)}
+.gloss dd{margin:4px 0 0;color:var(--muted);font-size:15.5px}
+.gloss-empty{margin:8px 0 0;color:var(--muted)}
 @media (max-width:1000px){.gloss{grid-template-columns:1fr 1fr}}
 @media (max-width:640px){.gloss{grid-template-columns:1fr}}
 
-footer{border-top:1px solid var(--rule);padding:36px 0 48px;color:var(--muted);font-size:15px}
-footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+/* ---------- Footer (charcoal, as on the brand site) ---------- */
+.foot{position:relative;overflow:hidden;background:#2B3340;color:#E2E8F0;--logo-word:#fff;--logo-dark:#fff;--focus:#7DB4FF}
+:root[data-theme="dark"] .foot{background:#11151B}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .foot{background:#11151B}}
+.foot .deco i:nth-child(1){--s:360px;--x:78%;--y:-30%;--c:rgba(157,192,215,.07)}
+.foot .deco i:nth-child(2){--s:260px;--x:90%;--y:30%;--c:rgba(0,0,0,.18)}
+.foot .deco i:nth-child(3){--s:200px;--x:70%;--y:48%;--c:rgba(228,116,84,.08)}
+.foot .deco i:nth-child(4){--s:150px;--x:84%;--y:70%;--c:rgba(65,90,126,.35)}
+.foot-grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr);gap:40px 56px;padding-top:64px;padding-bottom:48px}
+.foot .logo{display:block;height:72px;width:auto;margin-bottom:20px;color:#fff}
+.foot p{margin:0;color:#C3CCD8;font-size:15.5px;max-width:40ch}
+.foot h2{margin:0 0 14px;font-size:15px;font-weight:600;letter-spacing:.02em;color:var(--steel);max-width:none}
+.foot ol{list-style:none;margin:0;padding:0;columns:2;column-gap:24px}
+.foot ol a{display:inline-block;padding:5px 0;color:#fff;text-decoration:none;font-size:15px}
+.foot ol a:hover{color:#F08A6C}
+.foot-actions{display:grid;gap:10px;justify-items:start}
+.foot-btn{display:inline-flex;align-items:center;gap:10px;min-height:46px;padding:10px 18px;border:1.5px solid rgba(255,255,255,.28);background:transparent;color:#fff;font-weight:600;font-size:15px;cursor:pointer;transition:background .2s,border-color .2s}
+.foot-btn:hover{background:rgba(255,255,255,.07);border-color:#fff}
+.foot-btn svg{width:18px;height:18px}
+.foot-btn.done{border-color:#7EDDAA;color:#7EDDAA}
+.foot-base{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.1);padding:18px 0 22px;font-size:14px;color:#AEB9C7}
+.foot-base .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+.foot-base a{color:#fff}
+@media (max-width:900px){.foot-grid{grid-template-columns:1fr}}
+
+/* ---------- Scroll reveal ---------- */
+.reveal-on .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.reveal-on .reveal.in{opacity:1;transform:none}
 
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
-  .m-flow,.sf-flow{display:none}
+  .m-flow,.sf-flow,.sweep{display:none}
+  .reveal-on .reveal{transform:none}
+}
+
+/* ---------- Print: a clean, light document for board packs ---------- */
+@media print{
+  :root,:root[data-theme="dark"]{
+    --bg:#FFFFFF; --bg-alt:#FFFFFF; --sheet:#FFFFFF; --panel:#FFFFFF; --raised:#F4F7FA;
+    --ink:#2B3340; --head:#415A7E; --muted:#4F5B6D; --faint:#7A8698; --rule:#DCE3EB; --rule-strong:#C3CDD9; --wire:#C9D4E0;
+    --accent:#E06C4B; --accent-ink:#BD4F2D; --feature:#5A8DB6; --test:#415A7E; --live:#E06C4B;
+    --feature-ink:#3B729E; --test-ink:#415A7E; --live-ink:#BD4F2D; --logo-word:#231F20; --logo-dark:#2E3541;
+    color-scheme:light;
+  }
+  @page{margin:14mm 14mm 16mm}
+  body{font-size:11pt;line-height:1.5;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .topbar{position:static;backdrop-filter:none;background:#fff}
+  .nav,.tools,.chev,.progress,.mnav,.skip,.hero-art,.paths-lbl,.paths,.btns,.hero-note,.stage-top,.swipe,.stage-hint,.p-ctrl,#playReq,.risk-go,.copy,.gloss-tools,.foot-actions,.foot .deco,.deco{display:none!important}
+  .section,.hero{padding:26px 0;break-inside:auto}
+  .section.alt{background:#fff}
+  .hero-grid{grid-template-columns:1fr}
+  h1{font-size:30pt}
+  h2{font-size:21pt}
+  .reveal-on .reveal{opacity:1!important;transform:none!important}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .m-flow,.sf-flow,.sweep{display:none}
+  .stage,.sheet-fig,.path,.card{box-shadow:none}
+  .map-scroll{overflow:visible}
+  #map{width:100%!important;max-height:none}
+  .panel{min-height:0}
+  .band-dark{--bg:#FFFFFF;--bg-alt:#FFFFFF;--sheet:#FFFFFF;--panel:#FFFFFF;--raised:#F4F7FA;--ink:#2B3340;--head:#415A7E;--muted:#4F5B6D;--faint:#7A8698;--rule:#DCE3EB;--rule-strong:#C3CDD9;--accent:#E06C4B;--accent-ink:#BD4F2D;--feature:#5A8DB6;--test:#415A7E;--live:#E06C4B;--ok:#2E8B57;--ok-ink:#23794A}
+  .code{background:#F4F7FA;border-color:#C3CDD9}
+  .code pre{color:#2B3340;white-space:pre-wrap}
+  .code .br{color:#3B729E}
+  .code-top{color:#4F5B6D;border-color:#DCE3EB}
+  .pb-aside{position:static}
+  .gg-scroll{overflow:visible}
+  #gitgraph{min-width:0}
+  .risk,.step,.card,.duo-col,.checks li,.gloss div,.faq details,.compare tr,.numbers li,.summary,figure{break-inside:avoid}
+  .summary{background:#F4F7FA;color:#2B3340;border-left:4px solid #E06C4B}
+  .summary .sl{color:#415A7E}
+  .summary em{color:#BD4F2D}
+  .faq summary .pm{display:none}
+  .foot{background:#fff;color:#2B3340;--logo-word:#231F20;--logo-dark:#2E3541;border-top:2px solid #415A7E}
+  .foot-grid{grid-template-columns:1fr 1fr;padding-top:18px;padding-bottom:10px}
+  .foot-grid > :nth-child(2){display:none}
+  .foot p,.foot-base{color:#4F5B6D}
+  .foot h2{color:#415A7E}
+  .foot-base{border-color:#DCE3EB}
+  .foot-base a{color:#2B3340}
+  a[href^="http"]::after{content:" (" attr(href) ")";font-size:9pt;color:#4F5B6D}
 }
 </style>
 </head>
 <body>
-<a class="skip" href="#stage">Skip to the map</a>
+<svg class="sprite" aria-hidden="true" focusable="false">
+<symbol id="emg-logo" viewBox="0 0 245 93">
+<path d="M34.31 12.38L46.83 -5.86e-05L59.35 12.38L46.83 24.83L34.31 12.38Z" fill="#415A7E"/>
+<path d="M17.56 29.03L34.31 12.38L39.40 17.41L22.60 34.05L17.56 29.03Z" fill="#CCEBF7"/>
+<path d="M34.58 22.21L39.40 17.41L46.83 24.83L42.00 29.58L34.58 22.21Z" fill="#E47454"/>
+<path d="M25.52 31.21L34.58 22.21L42.00 29.58L32.95 38.58L25.52 31.21Z" style="fill:var(--logo-dark,#2E3541)"/>
+<path d="M22.60 34.05L25.53 31.21L37.07 42.67L34.20 45.57L22.60 34.05Z" fill="#9DC0D7"/>
+<path d="M15.98 37.87L21.24 32.69L34.20 45.57L28.94 50.75L15.98 37.87Z" fill="#415A7E"/>
+<path d="M12.30 34.27L17.56 29.03L21.24 32.69L15.99 37.87L12.30 34.27Z" fill="#E47454"/>
+<path d="M6.17 40.38L12.30 34.27L15.98 37.87L9.86 44.04L6.17 40.38Z" style="fill:var(--logo-dark,#2E3541)"/>
+<path d="M0 46.5L6.17 40.38L9.86 44.04L3.68 50.15L0 46.5Z" fill="#415A7E"/>
+<path d="M3.68 50.15L15.98 37.87L28.94 50.75L16.64 62.98L3.68 50.15Z" fill="#9DC0D7"/>
+<path d="M16.64 62.98L37.07 42.67L43.14 48.68L22.65 68.98L16.64 62.98Z" style="fill:var(--logo-dark,#2E3541)"/>
+<path d="M22.65 68.98L39.35 52.44L46.72 59.81L30.08 76.35L22.65 68.98Z" fill="#CCEBF7"/>
+<path d="M39.35 52.44L52.19 39.67L59.62 46.99L46.72 59.81L39.35 52.44Z" fill="#9DC0D7"/>
+<path d="M32.95 38.58L42.00 29.58L52.19 39.67L43.14 48.68L32.95 38.58Z" fill="#CCEBF7"/>
+<path d="M42.00 29.58L49.43 22.21L56.15 28.87L48.72 36.23L42.00 29.58Z" fill="#9DC0D7"/>
+<path d="M49.43 22.21L59.35 12.38L66.01 19.04L56.15 28.87L49.43 22.21Z" style="fill:var(--logo-dark,#2E3541)"/>
+<path d="M48.73 36.23L66.02 19.04L73.93 26.90L56.64 44.04L48.73 36.23Z" fill="#415A7E"/>
+<path d="M60.87 39.84L73.93 26.90L76.91 29.85L63.85 42.78L60.87 39.84Z" fill="#CCEBF7"/>
+<path d="M63.85 42.78L76.91 29.85L87.64 40.49L74.58 53.43L63.85 42.78Z" fill="#9DC0D7"/>
+<path d="M59.62 46.99L63.85 42.78L74.58 53.43L70.35 57.68L59.62 46.99Z" style="fill:var(--logo-dark,#2E3541)"/>
+<path d="M56.64 44.04L60.87 39.84L63.85 42.78L59.62 46.99L56.64 44.04Z" fill="#E47454"/>
+<path d="M46.72 59.81L59.62 46.99L70.35 57.68L57.45 70.46L46.72 59.81Z" fill="#CCEBF7"/>
+<path d="M44.06 62.43L46.72 59.81L57.45 70.45L54.80 73.07L44.06 62.43Z" fill="#E47454"/>
+<path d="M30.08 76.35L44.06 62.43L54.80 73.07L40.81 86.99L30.08 76.35Z" fill="#415A7E"/>
+<path d="M40.81 86.99L54.63 73.24L60.65 79.24L46.83 93.00L40.81 86.99Z" style="fill:var(--logo-dark,#2E3541)"/>
+<path d="M54.63 73.24L60.27 67.62L66.34 73.62L60.65 79.24L54.63 73.24Z" fill="#415A7E"/>
+<path d="M60.27 67.62L74.58 53.43L80.59 59.43L66.34 73.62L60.27 67.62Z" fill="#9DC0D7"/>
+<path d="M74.58 53.43L78.59 49.44L84.66 55.45L80.60 59.43L74.58 53.43Z" fill="#E47454"/>
+<path d="M78.59 49.44L87.64 40.49L93.66 46.49L84.66 55.45L78.59 49.44Z" style="fill:var(--logo-dark,#2E3541)"/>
+<g fill="currentColor">
+<path d="M106.4 31.27V11.78H120.76V14.84H110.03V19.86H119.51V22.86H110.03V28.21H121.14V31.27H106.4Z"/>
+<path d="M143.63 31.27L132.79 18.06V31.27H129.16V11.78H132.20L143.04 24.99V11.78H146.62V31.27H143.63Z"/>
+<path d="M155.88 31.27V11.78H170.25V14.84H159.57V19.86H169.06V22.86H159.57V28.21H170.63V31.27H155.88Z"/>
+<path d="M191.55 31.27H195.45L190.95 24.88C191.06 24.83 191.17 24.83 191.23 24.77C192.47 24.23 193.45 23.41 194.10 22.43C194.75 21.39 195.13 20.19 195.13 18.77C195.13 17.30 194.80 16.10 194.10 15.06C193.45 14.02 192.47 13.20 191.23 12.66C189.98 12.11 188.51 11.84 186.73 11.84H178.65V31.32H182.28V25.59H186.73C187.00 25.59 187.27 25.59 187.48 25.59L191.55 31.27ZM190.25 15.82C191.06 16.48 191.50 17.46 191.50 18.66C191.50 19.86 191.12 20.84 190.25 21.55C189.44 22.26 188.24 22.59 186.62 22.59H182.34V14.84H186.62C188.24 14.84 189.44 15.17 190.25 15.82Z"/>
+<path d="M207.49 16.59C208.14 15.99 208.90 15.50 209.77 15.17C210.63 14.84 211.61 14.68 212.64 14.68C213.72 14.68 214.70 14.84 215.57 15.22C216.43 15.60 217.30 16.15 218.06 16.91L220.34 14.68C219.41 13.64 218.28 12.82 216.98 12.33C215.62 11.78 214.16 11.51 212.48 11.51C210.90 11.51 209.5 11.78 208.19 12.28C206.89 12.77 205.81 13.48 204.83 14.40C203.86 15.33 203.10 16.37 202.61 17.57C202.07 18.77 201.85 20.13 201.85 21.55C201.85 23.03 202.12 24.34 202.61 25.54C203.15 26.74 203.86 27.83 204.83 28.70C205.81 29.63 206.89 30.34 208.19 30.83C209.5 31.32 210.90 31.60 212.42 31.60C213.83 31.60 215.19 31.38 216.54 31.00C217.90 30.56 219.09 29.96 220.07 29.14V21.33H216.65V27.39C216.27 27.61 215.84 27.83 215.40 27.94C214.48 28.27 213.56 28.38 212.59 28.38C211.56 28.38 210.58 28.21 209.71 27.88C208.85 27.56 208.09 27.07 207.49 26.47C206.84 25.86 206.35 25.10 206.03 24.28C205.65 23.46 205.48 22.54 205.48 21.55C205.48 20.57 205.65 19.64 206.03 18.77C206.35 17.90 206.84 17.19 207.49 16.59Z"/>
+<path d="M233.67 31.27H237.30V24.39L245 11.78H241.42L235.62 21.23L229.82 11.78H225.97L233.67 24.39V31.27Z"/>
+<path d="M124.88 38.14L117.18 51.08L109.38 38.14H106.4V57.63H109.86V44.91L116.32 55.45H118L124.39 44.69V57.63H127.91L127.86 38.14H124.88Z"/>
+<path d="M144.94 38.14L136.10 57.63H139.84L141.79 53.10H151.60L153.55 57.63H157.40L148.51 38.14H144.94ZM142.98 50.32L146.67 41.80L150.36 50.32H142.98Z"/>
+<path d="M168.57 57.63H172.20V41.20H178.70V38.15H162.06V41.20H168.57V57.63Z"/>
+<path d="M196.00 51.95L200.01 57.63H203.91L199.41 51.24C199.52 51.19 199.63 51.19 199.68 51.13C200.93 50.59 201.90 49.77 202.55 48.79C203.21 47.75 203.58 46.55 203.58 45.13C203.58 43.66 203.26 42.46 202.55 41.42C201.90 40.38 200.93 39.56 199.68 39.02C198.44 38.47 196.97 38.20 195.18 38.20H187.11V57.68H190.74V51.95H195.18C195.51 51.95 195.73 51.95 196.00 51.95ZM198.71 42.24C199.52 42.89 199.95 43.88 199.95 45.08C199.95 46.28 199.52 47.26 198.71 47.97C197.89 48.68 196.70 49.01 195.07 49.01H190.79V41.20H195.07C196.65 41.20 197.89 41.53 198.71 42.24Z"/>
+<path d="M216.97 38.15H213.34V57.63H216.97V38.15Z"/>
+<path d="M244.02 38.15H240.06L235.13 45.02L230.09 38.15H225.92L232.85 47.70L225.59 57.63H229.71L234.97 50.21L240.33 57.63H244.51L237.14 47.59L244.02 38.15Z"/>
+<path d="M109.27 68.16C110.08 67.40 111.01 66.80 112.09 66.36C113.17 65.93 114.37 65.71 115.61 65.71C116.81 65.71 117.94 65.87 118.92 66.25C119.95 66.58 120.87 67.18 121.74 68.05L122.66 67.13C121.79 66.25 120.76 65.54 119.57 65.11C118.38 64.67 117.02 64.45 115.61 64.45C114.09 64.45 112.74 64.72 111.49 65.22C110.25 65.71 109.16 66.42 108.24 67.29C107.32 68.16 106.56 69.20 106.07 70.40C105.58 71.60 105.31 72.91 105.31 74.33C105.31 75.75 105.58 77.06 106.07 78.26C106.56 79.46 107.32 80.50 108.24 81.37C109.16 82.24 110.25 82.95 111.49 83.44C112.74 83.94 114.09 84.21 115.61 84.21C116.97 84.21 118.27 83.99 119.46 83.61C120.71 83.17 121.74 82.57 122.60 81.75V74.44H121.25V81.15C120.55 81.70 119.79 82.13 118.97 82.41C117.94 82.74 116.86 82.95 115.67 82.95C114.42 82.95 113.23 82.74 112.14 82.30C111.06 81.86 110.14 81.26 109.32 80.50C108.51 79.73 107.92 78.81 107.48 77.77C107.05 76.73 106.83 75.59 106.83 74.38C106.83 73.18 107.05 72.04 107.48 71.00C107.81 69.85 108.46 68.93 109.27 68.16Z"/>
+<path d="M148.46 76.84C149.65 76.29 150.52 75.59 151.17 74.60C151.82 73.62 152.15 72.47 152.15 71.11C152.15 69.69 151.82 68.54 151.17 67.56C150.52 66.58 149.65 65.82 148.46 65.32C147.27 64.78 145.86 64.56 144.23 64.56H137.19V84.04H138.60V77.66H144.23C144.88 77.66 145.53 77.60 146.13 77.55L150.85 84.04H152.47L147.54 77.22C147.87 77.11 148.19 77.00 148.46 76.84ZM138.65 76.40V65.82H144.29C146.40 65.82 148.03 66.25 149.11 67.18C150.2 68.11 150.74 69.42 150.74 71.11C150.74 72.80 150.2 74.06 149.11 74.98C148.03 75.91 146.40 76.40 144.29 76.40H138.65Z"/>
+<path d="M181.36 67.23C180.44 66.36 179.35 65.65 178.11 65.16C176.86 64.67 175.50 64.40 174.04 64.40C172.58 64.40 171.22 64.67 169.98 65.16C168.73 65.65 167.64 66.36 166.72 67.23C165.80 68.16 165.10 69.20 164.56 70.40C164.07 71.60 163.80 72.91 163.80 74.33C163.80 75.75 164.07 77.06 164.56 78.26C165.04 79.46 165.80 80.50 166.72 81.42C167.64 82.35 168.73 83.01 169.98 83.50C171.22 83.99 172.58 84.26 174.04 84.26C175.50 84.26 176.86 83.99 178.11 83.50C179.35 83.01 180.44 82.30 181.36 81.42C182.28 80.55 182.98 79.51 183.53 78.31C184.01 77.11 184.29 75.80 184.29 74.38C184.29 72.97 184.01 71.66 183.53 70.45C182.98 69.14 182.28 68.11 181.36 67.23ZM182.17 77.66C181.74 78.70 181.14 79.62 180.33 80.39C179.57 81.15 178.59 81.75 177.56 82.19C176.48 82.63 175.34 82.84 174.09 82.84C172.85 82.84 171.66 82.63 170.63 82.19C169.54 81.75 168.62 81.15 167.81 80.39C166.99 79.62 166.40 78.70 165.96 77.66C165.53 76.62 165.31 75.48 165.31 74.27C165.31 73.02 165.53 71.87 165.96 70.84C166.40 69.80 166.99 68.93 167.81 68.11C168.62 67.34 169.54 66.74 170.63 66.31C171.71 65.87 172.85 65.65 174.09 65.65C175.34 65.65 176.53 65.87 177.56 66.31C178.65 66.74 179.57 67.34 180.33 68.11C181.09 68.87 181.74 69.80 182.17 70.84C182.60 71.87 182.82 73.02 182.82 74.27C182.82 75.53 182.60 76.62 182.17 77.66Z"/>
+<path d="M211.72 75.69C211.72 78.15 211.17 79.95 210.04 81.10C208.90 82.24 207.33 82.84 205.32 82.84C203.26 82.84 201.69 82.24 200.55 81.10C199.41 79.95 198.87 78.15 198.87 75.69V64.51H197.46V75.75C197.46 78.53 198.17 80.61 199.57 82.02C200.98 83.44 202.88 84.15 205.32 84.15C207.76 84.15 209.71 83.44 211.12 82.02C212.53 80.61 213.23 78.53 213.23 75.75V64.51H211.82V75.69H211.72Z"/>
+<path d="M239.41 65.32C238.22 64.78 236.81 64.56 235.19 64.56H228.14V84.04H229.55V77.66H235.19C236.81 77.66 238.22 77.39 239.41 76.9C240.61 76.35 241.47 75.64 242.12 74.66C242.77 73.67 243.10 72.53 243.10 71.16C243.10 69.75 242.77 68.60 242.12 67.62C241.47 66.58 240.61 65.82 239.41 65.32ZM239.96 74.98C238.87 75.91 237.25 76.35 235.13 76.35H229.5V65.82H235.13C237.25 65.82 238.87 66.25 239.96 67.18C241.04 68.11 241.58 69.42 241.58 71.11C241.64 72.80 241.09 74.06 239.96 74.98Z"/>
+</g>
+</symbol>
+<symbol id="emg-mark" viewBox="0 0 300 300">
+<path d="M109.89 39.96L149.99 0L190.10 39.96L149.99 80.10L109.89 39.96Z" fill="#415A7E"/>
+<path d="M56.24 93.66L109.89 39.96L126.21 56.16L72.39 109.86L56.24 93.66Z" fill="#CCEBF7"/>
+<path d="M110.76 71.65L126.21 56.16L150.00 80.10L134.55 95.42L110.76 71.65Z" fill="#E47454"/>
+<path d="M81.76 100.70L110.76 71.65L134.54 95.42L105.55 124.47L81.76 100.70Z" style="fill:var(--logo-dark,#2E3541)"/>
+<path d="M72.39 109.85L81.77 100.70L118.75 137.67L109.55 147.00L72.39 109.85Z" fill="#9DC0D7"/>
+<path d="M51.21 122.18L68.05 105.45L109.54 147.00L92.70 163.73L51.21 122.18Z" fill="#415A7E"/>
+<path d="M39.41 110.56L56.25 93.66L68.05 105.45L51.21 122.18L39.41 110.56Z" fill="#E47454"/>
+<path d="M19.78 130.28L39.39 110.56L51.20 122.18L31.58 142.07L19.78 130.28Z" style="fill:var(--logo-dark,#2E3541)"/>
+<path d="M0 150L19.79 130.28L31.59 142.07L11.80 161.79L0 150Z" fill="#415A7E"/>
+<path d="M11.80 161.79L51.21 122.18L92.70 163.73L53.29 203.17L11.80 161.79Z" fill="#9DC0D7"/>
+<path d="M53.30 203.17L118.75 137.67L138.19 157.04L72.57 222.53L53.30 203.17Z" style="fill:var(--logo-dark,#2E3541)"/>
+<path d="M72.57 222.53L126.04 169.19L149.65 192.95L96.35 246.30L72.57 222.53Z" fill="#CCEBF7"/>
+<path d="M126.04 169.19L167.18 127.99L190.97 151.58L149.65 192.95L126.04 169.19Z" fill="#9DC0D7"/>
+<path d="M105.56 124.47L134.55 95.42L167.19 127.99L138.2 157.04L105.56 124.47Z" fill="#CCEBF7"/>
+<path d="M134.54 95.42L158.33 71.65L179.86 93.13L156.07 116.90L134.54 95.42Z" fill="#9DC0D7"/>
+<path d="M158.33 71.65L190.10 39.96L211.45 61.44L179.85 93.13L158.33 71.65Z" style="fill:var(--logo-dark,#2E3541)"/>
+<path d="M156.08 116.90L211.47 61.44L236.81 86.79L181.43 142.07L156.08 116.90Z" fill="#415A7E"/>
+<path d="M194.96 128.52L236.80 86.79L246.35 96.30L204.51 138.02L194.96 128.52Z" fill="#CCEBF7"/>
+<path d="M204.51 138.02L246.35 96.30L280.72 130.63L238.88 172.36L204.51 138.02Z" fill="#9DC0D7"/>
+<path d="M190.97 151.58L204.51 138.02L238.89 172.36L225.35 186.09L190.97 151.58Z" style="fill:var(--logo-dark,#2E3541)"/>
+<path d="M181.42 142.07L194.96 128.52L204.51 138.02L190.97 151.58L181.42 142.07Z" fill="#E47454"/>
+<path d="M149.65 192.96L190.97 151.58L225.34 186.09L184.02 227.29L149.65 192.96Z" fill="#CCEBF7"/>
+<path d="M141.14 201.40L149.65 192.95L184.03 227.28L175.52 235.74L141.14 201.40Z" fill="#E47454"/>
+<path d="M96.35 246.30L141.14 201.40L175.52 235.73L130.72 280.63L96.35 246.30Z" fill="#415A7E"/>
+<path d="M130.73 280.63L175.00 236.26L194.27 255.63L150.00 300L130.73 280.63Z" style="fill:var(--logo-dark,#2E3541)"/>
+<path d="M175.00 236.26L193.06 218.13L212.50 237.49L194.27 255.63L175.00 236.26Z" fill="#415A7E"/>
+<path d="M193.05 218.13L238.88 172.35L258.15 191.72L212.49 237.49L193.05 218.13Z" fill="#9DC0D7"/>
+<path d="M238.89 172.36L251.74 159.50L271.18 178.87L258.16 191.72L238.89 172.36Z" fill="#E47454"/>
+<path d="M251.73 159.50L280.73 130.63L300.00 149.99L271.18 178.87L251.73 159.50Z" style="fill:var(--logo-dark,#2E3541)"/>
+</symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-person" viewBox="0 0 32 32"><circle cx="16" cy="10.5" r="5.6" fill="none" stroke="currentColor" stroke-width="2.3"/><path d="M5.5 28.5c0-6.2 4.7-10.6 10.5-10.6s10.5 4.4 10.5 10.6" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></symbol>
+  <symbol id="i-ai" viewBox="0 0 32 32"><path d="M16 2.8 27.4 9.4v13.2L16 29.2 4.6 22.6V9.4Z" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"/><path d="M16 9.4l1.9 4.7 4.7 1.9-4.7 1.9L16 22.6l-1.9-4.7L9.4 16l4.7-1.9Z" fill="currentColor"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 32 32"><rect x="7" y="14" width="18" height="13.5" rx="2" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M11 14v-3.4a5 5 0 0 1 10 0V14" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="16" cy="20.7" r="1.9" fill="currentColor"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 32 32"><path d="M16 3 27 7.2V15c0 7-4.6 11.7-11 14-6.4-2.3-11-7-11-14V7.2Z" style="fill:var(--sheet)" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"/><path d="m11 16 3.6 3.6L21.4 12.6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 32 32"><rect x="5" y="7" width="22" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="2.3"/><path d="M5 13.5h22M11 4v6M21 4v6" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/><path d="M11 19h3M18 19h3M11 23h3" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 32 32"><path d="M16 29s-9-9.6-9-16a9 9 0 0 1 18 0c0 6.4-9 16-9 16Z" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"/><circle cx="16" cy="13" r="3.3" fill="none" stroke="currentColor" stroke-width="2.3"/></symbol>
+  <symbol id="i-people" viewBox="0 0 48 32"><circle cx="18" cy="10" r="5.4" fill="none" stroke="currentColor" stroke-width="2.3"/><path d="M7 28.5c0-6.2 4.8-10.4 11-10.4s11 4.2 11 10.4" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/><circle cx="33.5" cy="11.5" r="4.6" fill="none" stroke="currentColor" stroke-width="2.3"/><path d="M31.5 18.6c.7-.1 1.3-.2 2-.2 5.3 0 9 3.6 9 9.1" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></symbol>
+  <symbol id="i-brief" viewBox="0 0 48 48"><rect x="10" y="7" width="28" height="36" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M18 7V4h12v3M16 18h16M16 25h16M16 32h9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="m28 34 3 3 6-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-route" viewBox="0 0 48 48"><circle cx="11" cy="37" r="5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M37 16.5c0 6.5-7 12.5-7 12.5s-7-6-7-12.5a7 7 0 0 1 14 0Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><circle cx="30" cy="16.3" r="2.4" fill="currentColor"/><path d="M16 37h9a6 6 0 0 0 0-12h-2" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="3 4"/></symbol>
+  <symbol id="i-code" viewBox="0 0 48 48"><rect x="5" y="9" width="38" height="30" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M5 16h38" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m18 23-5 5 5 5M30 23l5 5-5 5M26 21l-4 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-checks" viewBox="0 0 48 48"><path d="M24 4 40 10v12c0 10.5-6.8 17.6-16 21-9.2-3.4-16-10.5-16-21V10Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="m16.5 24 5.2 5.2L32 19" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-copies" viewBox="0 0 48 48"><rect x="4" y="13" width="28" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M12 13V7h32v22h-12M4 19h28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M12 41h12M18 35v6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  <symbol id="i-review" viewBox="0 0 48 48"><circle cx="19" cy="15" r="7" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M5 41c0-8.3 6.3-14 14-14 3.4 0 6.5 1.1 8.9 3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="m29 37 4.5 4.5L43 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-place" viewBox="0 0 48 48"><path d="M24 44S11 30.5 11 20a13 13 0 0 1 26 0c0 10.5-13 24-13 24Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><circle cx="24" cy="20" r="5" fill="none" stroke="currentColor" stroke-width="2.2"/></symbol>
+  <symbol id="i-tick" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m7.6 12.3 2.9 2.9 5.9-6.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-rules" viewBox="0 0 24 24"><path d="M12 2.5 20 6v5.5c0 5-3.3 8.4-8 10-4.7-1.6-8-5-8-10V6Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 7.5v5.5M12 16.2v.1" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m7.5 9 1.5 1.5L12 7.5M7.5 15l1.5 1.5 3-3M14 9.5h3M14 15.5h3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M16 8V4H4v13h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+  <symbol id="i-print" viewBox="0 0 24 24"><path d="M6.5 9V3.5h11V9M6.5 17H3.5V9h17v8h-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><rect x="6.5" y="13.5" width="11" height="7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3.2-3.2a4.5 4.5 0 0 0-6.4-6.4l-1.4 1.4M14 10a4.5 4.5 0 0 0-6.4 0l-3.2 3.2a4.5 4.5 0 0 0 6.4 6.4l1.4-1.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m15.5 15.5 5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><path d="M12 2.5 21.5 12 12 21.5 2.5 12Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m7.25 7.25 9.5 9.5M16.75 7.25l-9.5 9.5" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+</svg>
+
+<a class="skip" href="#main">Skip to the guide</a>
 
 <header class="topbar">
-  <div class="wrap">
-    <a class="brand" href="#top"><strong>Energy Matrix Group</strong><span>How we build our app</span></a>
-    <nav class="nav" aria-label="Sections">
-      <a href="#stage">The map</a>
-      <a href="#using">Using the app</a>
-      <a href="#copies">Two copies</a>
-      <a href="#team">People and AI</a>
-      <a href="#checks">Safety checks</a>
+  <div class="bar">
+    <a class="brand" href="#top" aria-label="Energy Matrix Group, How we build software. Back to the top">
+      <svg class="logo" viewBox="0 0 245 93" role="img" aria-hidden="true"><use href="#emg-logo"/></svg>
+      <span class="brand-sep" aria-hidden="true"></span>
+      <span class="brand-product" aria-hidden="true">How we build<br>software</span>
+    </a>
+    <nav class="nav" aria-label="Chapters">
+      <a href="#briefing">Briefing</a>
+      <a href="#tour">Tour</a>
+      <a href="#using">How it works</a>
+      <a href="#playbook">Playbook</a>
       <a href="#questions">Questions</a>
       <a href="#words">Glossary</a>
     </nav>
-    <button class="theme-btn" id="themeBtn" type="button" aria-label="Switch to dark theme">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path id="themeIcon" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
-    </button>
+    <div class="tools">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path id="themeIcon" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </button>
+      <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="mnav" aria-label="Open the chapter menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path id="menuIcon" d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+    <a class="chev" href="#tour" data-story="0"><span>Take the</span><strong>guided tour</strong></a>
+    <div class="progress" aria-hidden="true"><i id="progress"></i></div>
   </div>
+  <nav class="mnav" id="mnav" aria-label="All chapters" hidden>
+    <ol>
+      <li><a href="#briefing"><span>01</span>The briefing<small>Board</small></a></li>
+      <li><a href="#tour"><span>02</span>The guided tour<small>Everyone</small></a></li>
+      <li><a href="#using"><span>03</span>Inside the app<small>Everyone</small></a></li>
+      <li><a href="#copies"><span>04</span>Two copies<small>Everyone</small></a></li>
+      <li><a href="#team"><span>05</span>People and AI<small>Everyone</small></a></li>
+      <li><a href="#checks"><span>06</span>Safety checks<small>Everyone</small></a></li>
+      <li><a href="#playbook"><span>07</span>Developer playbook<small>Developers</small></a></li>
+      <li><a href="#questions"><span>08</span>Questions<small>Everyone</small></a></li>
+      <li><a href="#words"><span>09</span>Glossary<small>Everyone</small></a></li>
+    </ol>
+  </nav>
 </header>
 
-<main id="top">
-<section class="hero">
-  <div class="wrap hero-grid">
-    <h1>From idea to live app, one safe step at a time</h1>
-    <div class="hero-copy">
-      <p>This is how our team of <strong>people and AI agents</strong> builds the Energy Matrix Group app: where the code lives, how every change is checked and rehearsed, and how it reaches the people who use it. No technical background needed.</p>
-      <div class="btns">
-        <button class="btn primary" id="heroStart" type="button">Start the tour</button>
-        <button class="btn" id="heroExplore" type="button">Explore the map yourself</button>
+<main id="main">
+<section class="hero" id="top" data-nav="">
+  <div class="deco" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">How we build software</p>
+        <h1>From idea to live app, <span class="hl">one safe step at a time</span></h1>
+        <p class="lede">Our developers work alongside AI agents to build the Energy Matrix Group app. This guide shows, in plain English, how every change is <strong>checked, rehearsed, approved and reversible</strong> before it reaches the people who use it.</p>
+        <div class="btns">
+          <a class="btn" href="#tour" data-story="0" id="heroStart">Start the guided tour<svg class="arr" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn-line" href="#briefing">Read the two-minute briefing</a>
+        </div>
+        <p class="hero-note">No technical background needed. Developers: the playbook is in chapter 07.</p>
       </div>
+      <div class="hero-art" aria-hidden="true">
+        <svg class="hero-mark" viewBox="-40 -40 380 380">
+          <defs>
+            <clipPath id="markClip"><path d="M150 0 300 150 150 300 0 150Z"/></clipPath>
+            <linearGradient id="sweepGrad" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+              <stop offset=".5" stop-color="#fff" stop-opacity=".5"/>
+              <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <g class="tiles">
+<path class="tile" d="M109.89 39.96L149.99 0L190.10 39.96L149.99 80.10L109.89 39.96Z" style="fill:#415A7E;--x:-14px;--y:-81px;--r:-41deg;--d:640ms"/>
+<path class="tile" d="M56.24 93.66L109.89 39.96L126.21 56.16L72.39 109.86L56.24 93.66Z" style="fill:#CCEBF7;--x:-53px;--y:-52px;--r:-38deg;--d:563ms"/>
+<path class="tile" d="M110.76 71.65L126.21 56.16L150.00 80.10L134.55 95.42L110.76 71.65Z" style="fill:#E47454;--x:-49px;--y:-60px;--r:40deg;--d:532ms"/>
+<path class="tile" d="M81.76 100.70L110.76 71.65L134.54 95.42L105.55 124.47L81.76 100.70Z" style="fill:var(--logo-dark,#2E3541);--x:-28px;--y:-117px;--r:-84deg;--d:454ms"/>
+<path class="tile" d="M72.39 109.85L81.77 100.70L118.75 137.67L109.55 147.00L72.39 109.85Z" style="fill:#9DC0D7;--x:-44px;--y:-59px;--r:-60deg;--d:366ms"/>
+<path class="tile" d="M51.21 122.18L68.05 105.45L109.54 147.00L92.70 163.73L51.21 122.18Z" style="fill:#415A7E;--x:-93px;--y:15px;--r:-44deg;--d:515ms"/>
+<path class="tile" d="M39.41 110.56L56.25 93.66L68.05 105.45L51.21 122.18L39.41 110.56Z" style="fill:#E47454;--x:-77px;--y:-8px;--r:-83deg;--d:645ms"/>
+<path class="tile" d="M19.78 130.28L39.39 110.56L51.20 122.18L31.58 142.07L19.78 130.28Z" style="fill:var(--logo-dark,#2E3541);--x:-110px;--y:-22px;--r:75deg;--d:765ms"/>
+<path class="tile" d="M0 150L19.79 130.28L31.59 142.07L11.80 161.79L0 150Z" style="fill:#415A7E;--x:-89px;--y:10px;--r:-94deg;--d:648ms"/>
+<path class="tile" d="M11.80 161.79L51.21 122.18L92.70 163.73L53.29 203.17L11.80 161.79Z" style="fill:#9DC0D7;--x:-112px;--y:6px;--r:97deg;--d:536ms"/>
+<path class="tile" d="M53.30 203.17L118.75 137.67L138.19 157.04L72.57 222.53L53.30 203.17Z" style="fill:var(--logo-dark,#2E3541);--x:-79px;--y:2px;--r:49deg;--d:424ms"/>
+<path class="tile" d="M72.57 222.53L126.04 169.19L149.65 192.95L96.35 246.30L72.57 222.53Z" style="fill:#CCEBF7;--x:-89px;--y:54px;--r:-100deg;--d:510ms"/>
+<path class="tile" d="M126.04 169.19L167.18 127.99L190.97 151.58L149.65 192.95L126.04 169.19Z" style="fill:#9DC0D7;--x:29px;--y:91px;--r:86deg;--d:317ms"/>
+<path class="tile" d="M105.56 124.47L134.55 95.42L167.19 127.99L138.2 157.04L105.56 124.47Z" style="fill:#CCEBF7;--x:-73px;--y:-116px;--r:75deg;--d:387ms"/>
+<path class="tile" d="M134.54 95.42L158.33 71.65L179.86 93.13L156.07 116.90L134.54 95.42Z" style="fill:#9DC0D7;--x:-39px;--y:-120px;--r:59deg;--d:415ms"/>
+<path class="tile" d="M158.33 71.65L190.10 39.96L211.45 61.44L179.85 93.13L158.33 71.65Z" style="fill:var(--logo-dark,#2E3541);--x:38px;--y:-61px;--r:65deg;--d:592ms"/>
+<path class="tile" d="M156.08 116.90L211.47 61.44L236.81 86.79L181.43 142.07L156.08 116.90Z" style="fill:#415A7E;--x:60px;--y:-63px;--r:46deg;--d:416ms"/>
+<path class="tile" d="M194.96 128.52L236.80 86.79L246.35 96.30L204.51 138.02L194.96 128.52Z" style="fill:#CCEBF7;--x:115px;--y:-79px;--r:-49deg;--d:501ms"/>
+<path class="tile" d="M204.51 138.02L246.35 96.30L280.72 130.63L238.88 172.36L204.51 138.02Z" style="fill:#9DC0D7;--x:75px;--y:-31px;--r:108deg;--d:518ms"/>
+<path class="tile" d="M190.97 151.58L204.51 138.02L238.89 172.36L225.35 186.09L190.97 151.58Z" style="fill:var(--logo-dark,#2E3541);--x:98px;--y:10px;--r:116deg;--d:388ms"/>
+<path class="tile" d="M181.42 142.07L194.96 128.52L204.51 138.02L190.97 151.58L181.42 142.07Z" style="fill:#E47454;--x:75px;--y:-46px;--r:-36deg;--d:488ms"/>
+<path class="tile" d="M149.65 192.96L190.97 151.58L225.34 186.09L184.02 227.29L149.65 192.96Z" style="fill:#CCEBF7;--x:82px;--y:44px;--r:-71deg;--d:404ms"/>
+<path class="tile" d="M141.14 201.40L149.65 192.95L184.03 227.28L175.52 235.74L141.14 201.40Z" style="fill:#E47454;--x:19px;--y:145px;--r:-74deg;--d:573ms"/>
+<path class="tile" d="M96.35 246.30L141.14 201.40L175.52 235.73L130.72 280.63L96.35 246.30Z" style="fill:#415A7E;--x:-71px;--y:102px;--r:69deg;--d:541ms"/>
+<path class="tile" d="M130.73 280.63L175.00 236.26L194.27 255.63L150.00 300L130.73 280.63Z" style="fill:var(--logo-dark,#2E3541);--x:13px;--y:101px;--r:-41deg;--d:586ms"/>
+<path class="tile" d="M175.00 236.26L193.06 218.13L212.50 237.49L194.27 255.63L175.00 236.26Z" style="fill:#415A7E;--x:70px;--y:67px;--r:-44deg;--d:604ms"/>
+<path class="tile" d="M193.05 218.13L238.88 172.35L258.15 191.72L212.49 237.49L193.05 218.13Z" style="fill:#9DC0D7;--x:115px;--y:90px;--r:-41deg;--d:498ms"/>
+<path class="tile" d="M238.89 172.36L251.74 159.50L271.18 178.87L258.16 191.72L238.89 172.36Z" style="fill:#E47454;--x:120px;--y:14px;--r:86deg;--d:617ms"/>
+<path class="tile" d="M251.73 159.50L280.73 130.63L300.00 149.99L271.18 178.87L251.73 159.50Z" style="fill:var(--logo-dark,#2E3541);--x:103px;--y:-37px;--r:76deg;--d:637ms"/>
+          </g>
+          <g clip-path="url(#markClip)"><g transform="rotate(24 150 150)"><rect class="sweep" x="-200" y="-80" width="80" height="460" fill="url(#sweepGrad)"/></g></g>
+        </svg>
+        <span class="tag"><b>1</b>Checked</span>
+        <span class="tag"><b>2</b>Rehearsed</span>
+        <span class="tag"><b>3</b>Approved</span>
+        <span class="tag"><b>4</b>Reversible</span>
+      </div>
+    </div>
+
+    <h2 class="paths-lbl" id="paths-h">Choose where to start</h2>
+    <div class="paths" role="list" aria-labelledby="paths-h">
+      <a class="path board reveal" href="#briefing" role="listitem">
+        <svg class="pi" aria-hidden="true"><use href="#i-brief"/></svg>
+        <span class="pa">Board and executives</span>
+        <span class="pt">The two-minute briefing</span>
+        <p>What we control, what could go wrong, and what stops it.</p>
+        <span class="pg"><span>Read the briefing<svg class="arr" aria-hidden="true"><use href="#i-arrow"/></svg></span><small>2 min read</small></span>
+      </a>
+      <a class="path reveal" href="#tour" role="listitem">
+        <svg class="pi" aria-hidden="true"><use href="#i-route"/></svg>
+        <span class="pa">Everyone</span>
+        <span class="pt">The guided tour</span>
+        <p>Watch a change travel from an idea to the live app, then see what happens when something goes wrong.</p>
+        <span class="pg"><span>Take the tour<svg class="arr" aria-hidden="true"><use href="#i-arrow"/></svg></span><small>3 short stories</small></span>
+      </a>
+      <a class="path dev reveal" href="#playbook" role="listitem">
+        <svg class="pi" aria-hidden="true"><use href="#i-code"/></svg>
+        <span class="pa">Developers</span>
+        <span class="pt">The developer playbook</span>
+        <p>The branching model, the commands and the rules every change follows.</p>
+        <span class="pg"><span>Open the playbook<svg class="arr" aria-hidden="true"><use href="#i-arrow"/></svg></span><small>Step by step</small></span>
+      </a>
     </div>
   </div>
 </section>
 
-<section class="stage-sec" aria-label="Interactive build and release map">
+<!-- 01 Briefing -->
+<section class="section alt" id="briefing" data-nav="briefing" aria-labelledby="briefing-h">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow"><span class="ch">01</span>The briefing<span class="aud board">Board and executives</span></p>
+      <h2 id="briefing-h">What leaders <span class="hl">need to know</span></h2>
+      <p class="lede">Each of our developers works with AI agents, which helps us move faster. The way we build is designed so that speed never comes at the expense of control.</p>
+    </div>
+    <ul class="numbers">
+      <li class="reveal"><svg class="ni" aria-hidden="true"><use href="#i-checks"/></svg><span class="nv" data-count="5">5</span><span class="nl">safety checks on every change</span></li>
+      <li class="reveal"><svg class="ni" aria-hidden="true"><use href="#i-copies"/></svg><span class="nv" data-count="2">2</span><span class="nl">complete copies of the app: a rehearsal and the real thing</span></li>
+      <li class="reveal"><svg class="ni" aria-hidden="true"><use href="#i-review"/></svg><span class="nv" data-count="100" data-suffix="%">100%</span><span class="nl">of changes reviewed by a person before they're merged</span></li>
+      <li class="reveal"><svg class="ni" aria-hidden="true"><use href="#i-place"/></svg><span class="nv" data-count="100" data-suffix="%">100%</span><span class="nl">of app data stored in Australia</span></li>
+    </ul>
+
+    <h3 class="risk-h reveal">What could go wrong, and what stops it</h3>
+    <div class="risks" role="table" aria-label="Risks and the controls that stop them">
+      <div class="risk-cols" role="row"><span role="columnheader">The risk</span><span role="columnheader">What stops it</span><span role="columnheader"><span class="sr-only">See it</span></span></div>
+      <div class="risk reveal" role="row">
+        <p class="risk-q" role="cell">A mistake reaches the people using the app</p>
+        <p class="risk-a" role="cell"><svg class="ic" aria-hidden="true"><use href="#i-tick"/></svg><span>Every change passes automated tests and a teammate's review, then a full rehearsal in the test app, before anyone can approve it for release.</span></p>
+        <span role="cell"><button class="risk-go" type="button" data-story="1">Watch a check stop one<svg class="arr" aria-hidden="true"><use href="#i-arrow"/></svg></button></span>
+      </div>
+      <div class="risk reveal" role="row">
+        <p class="risk-q" role="cell">Someone changes the live app without permission</p>
+        <p class="risk-a" role="cell"><svg class="ic" aria-hidden="true"><use href="#i-tick"/></svg><span>The live app's code is protected. It only changes through an approved merge, and nobody, person or AI, can go around it.</span></p>
+        <span role="cell"><button class="risk-go" type="button" data-explore="gate">See the approval step<svg class="arr" aria-hidden="true"><use href="#i-arrow"/></svg></button></span>
+      </div>
+      <div class="risk reveal" role="row">
+        <p class="risk-q" role="cell">An AI agent gets something wrong</p>
+        <p class="risk-a" role="cell"><svg class="ic" aria-hidden="true"><use href="#i-tick"/></svg><span>AI agents only work in private feature branches. A person reviews every change they draft, and people approve everything that goes live.</span></p>
+        <span role="cell"><button class="risk-go" type="button" data-explore="pair">See how people and AI pair<svg class="arr" aria-hidden="true"><use href="#i-arrow"/></svg></button></span>
+      </div>
+      <div class="risk reveal" role="row">
+        <p class="risk-q" role="cell">A release causes a problem</p>
+        <p class="risk-a" role="cell"><svg class="ic" aria-hidden="true"><use href="#i-tick"/></svg><span>Every release keeps the previous version as a save point. We can switch back quickly, then fix the problem through the normal route.</span></p>
+        <span role="cell"><button class="risk-go" type="button" data-story="2">Watch a release undone<svg class="arr" aria-hidden="true"><use href="#i-arrow"/></svg></button></span>
+      </div>
+      <div class="risk reveal" role="row">
+        <p class="risk-q" role="cell">Our data leaves Australia</p>
+        <p class="risk-a" role="cell"><svg class="ic" aria-hidden="true"><use href="#i-tick"/></svg><span>Databases and files for both copies of the app are stored in Microsoft Azure data centres in Australia.</span></p>
+        <span role="cell"><button class="risk-go" type="button" data-explore="dataP">See where data lives<svg class="arr" aria-hidden="true"><use href="#i-arrow"/></svg></button></span>
+      </div>
+      <div class="risk reveal" role="row">
+        <p class="risk-q" role="cell">People keep access after they leave</p>
+        <p class="risk-a" role="cell"><svg class="ic" aria-hidden="true"><use href="#i-tick"/></svg><span>People sign in with their Microsoft work account. When a work account is switched off, access to the app ends too.</span></p>
+        <span role="cell"><button class="risk-go" type="button" data-explore="sso">See how sign-in works<svg class="arr" aria-hidden="true"><use href="#i-arrow"/></svg></button></span>
+      </div>
+    </div>
+
+    <div class="summary reveal">
+      <div class="deco" aria-hidden="true"><i></i><i></i></div>
+      <span class="sl">In short</span>
+      <p>AI helps us move faster. People stay in charge. Every change is <em>checked, rehearsed, approved and reversible.</em></p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 Guided tour -->
+<section class="section" id="tour" data-nav="tour" aria-labelledby="tour-h">
  <div class="wrap">
+  <div class="sec-head reveal">
+    <p class="eyebrow"><span class="ch">02</span>The guided tour<span class="aud all">Everyone</span></p>
+    <h2 id="tour-h">Follow a change from idea to <span class="hl">live app</span></h2>
+    <p class="lede">Choose a story and press play, or select any part of the map to see what it does. Work moves left to right. The top row is where we rehearse; the bottom row is the live app people use.</p>
+  </div>
   <div class="stage" id="stage" tabindex="-1">
     <div class="stage-top">
-      <span class="lbl" id="storyLbl">Choose a story</span>
+      <span class="lbl" id="storyLbl">Stories</span>
       <div class="tabs" role="group" aria-labelledby="storyLbl">
         <button class="tab" type="button" data-s="0" aria-selected="false" style="--tone:var(--feature)"><i></i>Follow a new feature</button>
         <button class="tab" type="button" data-s="1" aria-selected="false" style="--tone:var(--trip)"><i></i>When a check fails</button>
         <button class="tab" type="button" data-s="2" aria-selected="false" style="--tone:var(--live)"><i></i>Undoing a release</button>
       </div>
       <span class="spacer"></span>
-      <button class="ov-btn" id="ovBtn" type="button">Show the whole map</button>
+      <button class="ov-btn" id="ovBtn" type="button"><svg aria-hidden="true"><use href="#i-grid"/></svg>Show the whole map</button>
     </div>
     <p class="swipe">Swipe sideways to see the whole map. It follows the story as it moves.</p>
     <div class="map-scroll">
@@ -376,18 +959,11 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
     <feGaussianBlur in="SourceGraphic" stdDeviation="3.4" result="b"/>
     <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
   </filter>
-  <symbol id="i-person" viewBox="0 0 32 32"><circle cx="16" cy="10.5" r="5.6" fill="none" stroke="currentColor" stroke-width="2.3"/><path d="M5.5 28.5c0-6.2 4.7-10.6 10.5-10.6s10.5 4.4 10.5 10.6" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></symbol>
-  <symbol id="i-ai" viewBox="0 0 32 32"><path d="M16 2.8 27.4 9.4v13.2L16 29.2 4.6 22.6V9.4Z" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"/><path d="M16 9.4l1.9 4.7 4.7 1.9-4.7 1.9L16 22.6l-1.9-4.7L9.4 16l4.7-1.9Z" fill="currentColor"/></symbol>
-  <symbol id="i-lock" viewBox="0 0 32 32"><rect x="7" y="14" width="18" height="13.5" rx="2.6" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M11 14v-3.4a5 5 0 0 1 10 0V14" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="16" cy="20.7" r="1.9" fill="currentColor"/></symbol>
-  <symbol id="i-shield" viewBox="0 0 32 32"><path d="M16 3 27 7.2V15c0 7-4.6 11.7-11 14-6.4-2.3-11-7-11-14V7.2Z" style="fill:var(--sheet)" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"/><path d="m11 16 3.6 3.6L21.4 12.6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-  <symbol id="i-cal" viewBox="0 0 32 32"><rect x="5" y="7" width="22" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2.3"/><path d="M5 13.5h22M11 4v6M21 4v6" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/><path d="M11 19h3M18 19h3M11 23h3" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></symbol>
-  <symbol id="i-pin" viewBox="0 0 32 32"><path d="M16 29s-9-9.6-9-16a9 9 0 0 1 18 0c0 6.4-9 16-9 16Z" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"/><circle cx="16" cy="13" r="3.3" fill="none" stroke="currentColor" stroke-width="2.3"/></symbol>
-  <symbol id="i-people" viewBox="0 0 48 32"><circle cx="18" cy="10" r="5.4" fill="none" stroke="currentColor" stroke-width="2.3"/><path d="M7 28.5c0-6.2 4.8-10.4 11-10.4s11 4.2 11 10.4" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/><circle cx="33.5" cy="11.5" r="4.6" fill="none" stroke="currentColor" stroke-width="2.3"/><path d="M31.5 18.6c.7-.1 1.3-.2 2-.2 5.3 0 9 3.6 9 9.1" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></symbol>
 </defs>
 
 <!-- Zones -->
-<rect class="band" x="630" y="86" width="542" height="132" rx="16" style="--tone:var(--test)"/>
-<rect class="band" x="630" y="326" width="542" height="132" rx="16" style="--tone:var(--live)"/>
+<rect class="band" x="630" y="86" width="542" height="132" rx="3" style="--tone:var(--test)"/>
+<rect class="band" x="630" y="326" width="542" height="132" rx="3" style="--tone:var(--live)"/>
 
 <!-- Column headings -->
 <g class="colhead">
@@ -418,29 +994,29 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 
 <!-- Task board -->
 <g class="part" data-info="task" tabindex="0" role="button" aria-label="Task board. Learn more">
-  <rect class="focus-ring" x="28" y="90" width="174" height="92" rx="13"/>
+  <rect class="focus-ring" x="28" y="90" width="174" height="92" rx="4"/>
   <g class="k m-box task" data-k="task" data-order="0" style="--tone:var(--feature)">
-    <rect class="frame" x="34" y="96" width="162" height="80" rx="10"/>
-    <rect class="tint" x="34" y="96" width="162" height="80" rx="10"/>
+    <rect class="frame" x="34" y="96" width="162" height="80" rx="3"/>
+    <rect class="tint" x="34" y="96" width="162" height="80" rx="3"/>
     <text class="t-title" x="48" y="119">Task board</text>
-    <rect class="tbox first" x="48" y="130" width="9" height="9" rx="2"/><rect class="tline first" x="63" y="132.5" width="96" height="4" rx="2"/>
-    <rect class="tbox" x="48" y="144" width="9" height="9" rx="2"/><rect class="tline" x="63" y="146.5" width="72" height="4" rx="2"/>
-    <rect class="tbox" x="48" y="158" width="9" height="9" rx="2"/><rect class="tline" x="63" y="160.5" width="108" height="4" rx="2"/>
+    <rect class="tbox first" x="48" y="130" width="9" height="9" rx="1"/><rect class="tline first" x="63" y="132.5" width="96" height="4" rx="1"/>
+    <rect class="tbox" x="48" y="144" width="9" height="9" rx="1"/><rect class="tline" x="63" y="146.5" width="72" height="4" rx="1"/>
+    <rect class="tbox" x="48" y="158" width="9" height="9" rx="1"/><rect class="tline" x="63" y="160.5" width="108" height="4" rx="1"/>
   </g>
 </g>
 
 <!-- Developer and AI agent pairs -->
 <g class="part" data-info="pair" tabindex="0" role="button" aria-label="Developers working with AI agents. Learn more">
-  <rect class="focus-ring" x="28" y="210" width="136" height="156" rx="12"/>
+  <rect class="focus-ring" x="28" y="210" width="146" height="156" rx="4"/>
   <g class="k" data-k="pair1" data-order="0.5" style="--tone:var(--feature)">
-    <rect class="hitbox" x="34" y="216" width="124" height="68"/>
+    <rect class="hitbox" x="34" y="216" width="134" height="68"/>
     <use class="human" href="#i-person" x="48" y="222" width="36" height="36"/>
     <text class="t-plus" x="92" y="246" text-anchor="middle">+</text>
     <use href="#i-ai" x="100" y="222" width="36" height="36"/>
     <text class="t-note" x="34" y="278">Developer + AI agent</text>
   </g>
   <g class="k" data-k="pair2" data-order="0.7" style="--tone:var(--feature)">
-    <rect class="hitbox" x="34" y="296" width="124" height="68"/>
+    <rect class="hitbox" x="34" y="296" width="134" height="68"/>
     <use class="human" href="#i-person" x="48" y="302" width="36" height="36"/>
     <text class="t-plus" x="92" y="326" text-anchor="middle">+</text>
     <use href="#i-ai" x="100" y="302" width="36" height="36"/>
@@ -460,7 +1036,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 
 <!-- Test branch -->
 <g class="part" data-info="testline" tabindex="0" role="button" aria-label="Test branch. Learn more">
-  <rect class="focus-ring" x="228" y="130" width="340" height="42" rx="10"/>
+  <rect class="focus-ring" x="228" y="130" width="340" height="42" rx="4"/>
   <path class="hit" d="M236 160H596"/>
   <path class="k m-line" data-k="testline" data-order="2" style="--tone:var(--test)" d="M236 160H640"/>
   <circle class="k dot" data-k="testline" data-order="2" style="--tone:var(--test)" cx="436" cy="160" r="5"/>
@@ -470,15 +1046,15 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 
 <!-- Tests and review breakers -->
 <g class="part" data-info="chk" tabindex="0" role="button" aria-label="Automated tests and review. Learn more">
-  <rect class="focus-ring" x="228" y="200" width="124" height="138" rx="10"/>
+  <rect class="focus-ring" x="222" y="200" width="136" height="138" rx="4"/>
   <text class="t-label" x="290" y="215" text-anchor="middle">Tests and review</text>
   <g class="k brk" data-k="chk1" data-order="1.5" transform="translate(290 240)" style="--tone:var(--feature)">
-    <rect class="brk-box" x="-13" y="-13" width="26" height="26" rx="4"/>
+    <rect class="brk-box" x="-13" y="-13" width="26" height="26" rx="2"/>
     <circle class="brk-pin" cx="-7" cy="0" r="2.2"/><circle class="brk-pin" cx="7.5" cy="0" r="2.2"/>
     <rect class="brk-blade" x="-7" y="-1.4" width="14.5" height="2.8" rx="1.4"/>
   </g>
   <g class="k brk" data-k="chk2" data-order="1.7" transform="translate(290 320)" style="--tone:var(--feature)">
-    <rect class="brk-box" x="-13" y="-13" width="26" height="26" rx="4"/>
+    <rect class="brk-box" x="-13" y="-13" width="26" height="26" rx="2"/>
     <circle class="brk-pin" cx="-7" cy="0" r="2.2"/><circle class="brk-pin" cx="7.5" cy="0" r="2.2"/>
     <rect class="brk-blade" x="-7" y="-1.4" width="14.5" height="2.8" rx="1.4"/>
   </g>
@@ -486,12 +1062,12 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 
 <!-- Approval gate, test into main -->
 <g class="part" data-info="gate" tabindex="0" role="button" aria-label="Approval to go live. Learn more">
-  <rect class="focus-ring" x="532" y="244" width="104" height="76" rx="10"/>
+  <rect class="focus-ring" x="532" y="244" width="110" height="76" rx="4"/>
   <path class="hit" d="M548 166V394"/>
   <path class="k m-line" data-k="connector" data-order="3" style="--tone:var(--live)" d="M548 160V400"/>
   <circle class="k dot" data-k="connector" data-order="3" style="--tone:var(--test)" cx="548" cy="160" r="5"/>
   <g class="k brk" data-k="gate" data-order="3.2" transform="translate(548 280) rotate(90)" style="--tone:var(--live)">
-    <rect class="brk-box" x="-13" y="-13" width="26" height="26" rx="4"/>
+    <rect class="brk-box" x="-13" y="-13" width="26" height="26" rx="2"/>
     <circle class="brk-pin" cx="-7" cy="0" r="2.2"/><circle class="brk-pin" cx="7.5" cy="0" r="2.2"/>
     <rect class="brk-blade" x="-7" y="-1.4" width="14.5" height="2.8" rx="1.4"/>
   </g>
@@ -502,30 +1078,30 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 
 <!-- Main branch -->
 <g class="part" data-info="mainline" tabindex="0" role="button" aria-label="Main branch, protected. Learn more">
-  <rect class="focus-ring" x="228" y="368" width="340" height="68" rx="10"/>
+  <rect class="focus-ring" x="228" y="368" width="340" height="68" rx="4"/>
   <path class="hit" d="M236 400H596"/>
   <path class="k m-line" data-k="mainline" data-order="3.5" style="--tone:var(--live)" d="M236 400H640"/>
   <circle class="k dot" data-k="mainline" data-order="3.5" style="--tone:var(--live)" cx="548" cy="400" r="5"/>
-  <text class="t-title" x="236" y="386">main branch</text>
-  <use class="k" data-k="mainline" data-order="3.5" href="#i-lock" x="328" y="371" width="19" height="19" style="--tone:var(--live)"/>
+  <text class="t-title" id="mainTitle" x="236" y="386">main branch</text>
+  <use class="k" id="mainLock" data-k="mainline" data-order="3.5" href="#i-lock" x="334" y="371" width="19" height="19" style="--tone:var(--live)"/>
   <text class="t-note" x="236" y="426">protected: changes need approval</text>
 </g>
 
 <!-- Auto-deploy breakers -->
 <g class="part" data-info="deployT" tabindex="0" role="button" aria-label="Automatic release to the test app. Learn more">
-  <rect class="focus-ring" x="552" y="130" width="78" height="46" rx="10"/>
-  <text class="t-note" x="626" y="138" text-anchor="end">auto-deploy</text>
+  <rect class="focus-ring" x="548" y="126" width="84" height="50" rx="4"/>
+  <text class="t-note" x="628" y="138" text-anchor="end">auto-deploy</text>
   <g class="k brk" data-k="deployT" data-order="4" transform="translate(612 160)" style="--tone:var(--test)">
-    <rect class="brk-box" x="-13" y="-13" width="26" height="26" rx="4"/>
+    <rect class="brk-box" x="-13" y="-13" width="26" height="26" rx="2"/>
     <circle class="brk-pin" cx="-7" cy="0" r="2.2"/><circle class="brk-pin" cx="7.5" cy="0" r="2.2"/>
     <rect class="brk-blade" x="-7" y="-1.4" width="14.5" height="2.8" rx="1.4"/>
   </g>
 </g>
 <g class="part" data-info="deployP" tabindex="0" role="button" aria-label="Automatic release to the live app. Learn more">
-  <rect class="focus-ring" x="552" y="370" width="78" height="46" rx="10"/>
-  <text class="t-note" x="626" y="378" text-anchor="end">auto-deploy</text>
+  <rect class="focus-ring" x="548" y="366" width="84" height="50" rx="4"/>
+  <text class="t-note" x="628" y="378" text-anchor="end">auto-deploy</text>
   <g class="k brk" data-k="deployP" data-order="4.2" transform="translate(612 400)" style="--tone:var(--live)">
-    <rect class="brk-box" x="-13" y="-13" width="26" height="26" rx="4"/>
+    <rect class="brk-box" x="-13" y="-13" width="26" height="26" rx="2"/>
     <circle class="brk-pin" cx="-7" cy="0" r="2.2"/><circle class="brk-pin" cx="7.5" cy="0" r="2.2"/>
     <rect class="brk-blade" x="-7" y="-1.4" width="14.5" height="2.8" rx="1.4"/>
   </g>
@@ -533,31 +1109,31 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 
 <!-- Apps on Render -->
 <g class="part" data-info="appT" tabindex="0" role="button" aria-label="Test app. Learn more">
-  <rect class="focus-ring" x="634" y="94" width="252" height="116" rx="15"/>
+  <rect class="focus-ring" x="634" y="94" width="252" height="116" rx="5"/>
   <g class="k m-box" data-k="appT" data-order="4.5" style="--tone:var(--test)">
-    <rect class="frame" x="640" y="100" width="240" height="104" rx="12"/>
-    <rect class="tint" x="640" y="100" width="240" height="104" rx="12"/>
+    <rect class="frame" x="640" y="100" width="240" height="104" rx="3"/>
+    <rect class="tint" x="640" y="100" width="240" height="104" rx="3"/>
     <text class="t-title" x="654" y="123">Test app</text>
     <text class="t-note" x="866" y="123" text-anchor="end">the rehearsal</text>
-    <rect class="chip" x="654" y="133" width="104" height="56" rx="7"/>
+    <rect class="chip" x="654" y="133" width="104" height="56" rx="2"/>
     <text class="t-chip" x="666" y="157">Website</text>
     <text class="t-chipsub" x="666" y="176">what you see</text>
-    <rect class="chip" x="768" y="133" width="98" height="56" rx="7"/>
+    <rect class="chip" x="768" y="133" width="98" height="56" rx="2"/>
     <text class="t-chip" x="780" y="157">Server</text>
     <text class="t-chipsub" x="780" y="176">the engine</text>
   </g>
 </g>
 <g class="part" data-info="appP" tabindex="0" role="button" aria-label="Live app. Learn more">
-  <rect class="focus-ring" x="634" y="334" width="252" height="116" rx="15"/>
+  <rect class="focus-ring" x="634" y="334" width="252" height="116" rx="5"/>
   <g class="k m-box" data-k="appP" data-order="4.7" style="--tone:var(--live)">
-    <rect class="frame" x="640" y="340" width="240" height="104" rx="12"/>
-    <rect class="tint" x="640" y="340" width="240" height="104" rx="12"/>
+    <rect class="frame" x="640" y="340" width="240" height="104" rx="3"/>
+    <rect class="tint" x="640" y="340" width="240" height="104" rx="3"/>
     <text class="t-title" x="654" y="363">Live app</text>
     <text class="t-note" x="866" y="363" text-anchor="end">the real show</text>
-    <rect class="chip" x="654" y="373" width="104" height="56" rx="7"/>
+    <rect class="chip" x="654" y="373" width="104" height="56" rx="2"/>
     <text class="t-chip" x="666" y="397">Website</text>
     <text class="t-chipsub" x="666" y="416">what you see</text>
-    <rect class="chip" x="768" y="373" width="98" height="56" rx="7"/>
+    <rect class="chip" x="768" y="373" width="98" height="56" rx="2"/>
     <text class="t-chip" x="780" y="397">Server</text>
     <text class="t-chipsub" x="780" y="416">the engine</text>
   </g>
@@ -565,37 +1141,37 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 
 <!-- Data in Azure, Australia -->
 <g class="part" data-info="dataT" tabindex="0" role="button" aria-label="Test data. Learn more">
-  <rect class="focus-ring" x="920" y="94" width="252" height="116" rx="15"/>
+  <rect class="focus-ring" x="920" y="94" width="252" height="116" rx="5"/>
   <g class="k m-box" data-k="dataT" data-order="5.5" style="--tone:var(--test)">
-    <rect class="frame" x="926" y="100" width="240" height="104" rx="12"/>
-    <rect class="tint" x="926" y="100" width="240" height="104" rx="12"/>
+    <rect class="frame" x="926" y="100" width="240" height="104" rx="3"/>
+    <rect class="tint" x="926" y="100" width="240" height="104" rx="3"/>
     <text class="t-title" x="940" y="123">Test data</text>
-    <rect class="chip" x="940" y="133" width="106" height="56" rx="7"/>
-    <text class="t-chip" x="951" y="157">SQL database</text>
-    <text class="t-chipsub" x="951" y="176">records</text>
-    <rect class="chip" x="1054" y="133" width="98" height="56" rx="7"/>
-    <text class="t-chip" x="1065" y="157">File storage</text>
-    <text class="t-chipsub" x="1065" y="176">documents</text>
+    <rect class="chip" x="938" y="133" width="112" height="56" rx="2"/>
+    <text class="t-chip" x="948" y="157">SQL database</text>
+    <text class="t-chipsub" x="948" y="176">records</text>
+    <rect class="chip" x="1058" y="133" width="94" height="56" rx="2"/>
+    <text class="t-chip" x="1067" y="157">File storage</text>
+    <text class="t-chipsub" x="1067" y="176">documents</text>
   </g>
 </g>
 <g class="part" data-info="dataP" tabindex="0" role="button" aria-label="Live data. Learn more">
-  <rect class="focus-ring" x="920" y="334" width="252" height="116" rx="15"/>
+  <rect class="focus-ring" x="920" y="334" width="252" height="116" rx="5"/>
   <g class="k m-box" data-k="dataP" data-order="5.8" style="--tone:var(--live)">
-    <rect class="frame" x="926" y="340" width="240" height="104" rx="12"/>
-    <rect class="tint" x="926" y="340" width="240" height="104" rx="12"/>
+    <rect class="frame" x="926" y="340" width="240" height="104" rx="3"/>
+    <rect class="tint" x="926" y="340" width="240" height="104" rx="3"/>
     <text class="t-title" x="940" y="363">Live data</text>
-    <rect class="chip" x="940" y="373" width="106" height="56" rx="7"/>
-    <text class="t-chip" x="951" y="397">SQL database</text>
-    <text class="t-chipsub" x="951" y="416">records</text>
-    <rect class="chip" x="1054" y="373" width="98" height="56" rx="7"/>
-    <text class="t-chip" x="1065" y="397">File storage</text>
-    <text class="t-chipsub" x="1065" y="416">documents</text>
+    <rect class="chip" x="938" y="373" width="112" height="56" rx="2"/>
+    <text class="t-chip" x="948" y="397">SQL database</text>
+    <text class="t-chipsub" x="948" y="416">records</text>
+    <rect class="chip" x="1058" y="373" width="94" height="56" rx="2"/>
+    <text class="t-chip" x="1067" y="397">File storage</text>
+    <text class="t-chipsub" x="1067" y="416">documents</text>
   </g>
 </g>
 
 <!-- Monthly copy -->
 <g class="part" data-info="sync" tabindex="0" role="button" aria-label="Monthly copy of live data into test. Learn more">
-  <rect class="focus-ring" x="966" y="226" width="170" height="80" rx="12"/>
+  <rect class="focus-ring" x="966" y="226" width="180" height="80" rx="4"/>
   <path class="hit" d="M990 336V210"/>
   <path class="k m-line" data-k="sync" data-order="6" style="--tone:var(--test)" d="M990 338V210"/>
   <path class="k m-line" data-k="sync" data-order="6" data-noflow="1" style="--tone:var(--test)" d="M981.5 219.5L990 208L998.5 219.5"/>
@@ -609,16 +1185,16 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 
 <!-- Sign-in and people -->
 <g class="part" data-info="sso" tabindex="0" role="button" aria-label="Microsoft work sign-in. Learn more">
-  <rect class="focus-ring" x="512" y="472" width="200" height="46" rx="10"/>
+  <rect class="focus-ring" x="496" y="472" width="216" height="46" rx="4"/>
   <path class="hit" d="M690 450V540"/>
   <use class="k" data-k="sso" data-order="6.4" href="#i-shield" x="674" y="479" width="32" height="32" style="--tone:var(--live)"/>
   <text class="t-label" x="662" y="492" text-anchor="end">Microsoft work sign-in</text>
   <text class="t-note" x="662" y="508" text-anchor="end">single sign-on</text>
 </g>
 <g class="part" data-info="users" tabindex="0" role="button" aria-label="People using the app. Learn more">
-  <rect class="focus-ring" x="614" y="540" width="152" height="66" rx="10"/>
+  <rect class="focus-ring" x="610" y="540" width="160" height="66" rx="4"/>
   <g class="k" data-k="users" data-order="7" style="--tone:var(--live)">
-    <rect class="hitbox" x="620" y="546" width="140" height="58"/>
+    <rect class="hitbox" x="616" y="546" width="148" height="58"/>
     <use class="human" href="#i-people" x="666" y="548" width="48" height="32"/>
     <text class="t-label" x="690" y="598" text-anchor="middle">People using the app</text>
   </g>
@@ -627,13 +1203,13 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 <!-- Save points -->
 <path class="k m-line only" data-k="rollpath" style="--tone:var(--live)" d="M880 520C906 520 906 424 880 424"/>
 <g class="part" data-info="saves" tabindex="0" role="button" aria-label="Save points for rolling back. Learn more">
-  <rect class="focus-ring" x="710" y="456" width="176" height="110" rx="11"/>
+  <rect class="focus-ring" x="710" y="456" width="176" height="110" rx="4"/>
   <g class="k save-table" data-k="saves" data-order="6.8" style="--tone:var(--live)">
-    <rect class="frame" x="716" y="462" width="164" height="98" rx="8"/>
+    <rect class="frame" x="716" y="462" width="164" height="98" rx="2"/>
     <text class="t-label" x="728" y="479">Save points</text>
-    <g class="save-row"><rect x="722" y="486" width="152" height="21" rx="4"/><text class="sv" x="731" y="501">Version 1.4</text><text class="ss" x="866" y="501" text-anchor="end"></text></g>
-    <g class="save-row"><rect x="722" y="510" width="152" height="21" rx="4"/><text class="sv" x="731" y="525">Version 1.5</text><text class="ss" x="866" y="525" text-anchor="end"></text></g>
-    <g class="save-row live"><rect x="722" y="534" width="152" height="21" rx="4"/><text class="sv" x="731" y="549">Version 1.6</text><text class="ss" x="866" y="549" text-anchor="end">Live</text></g>
+    <g class="save-row"><rect x="722" y="486" width="152" height="21" rx="1"/><text class="sv" x="731" y="501">Version 1.4</text><text class="ss" x="866" y="501" text-anchor="end"></text></g>
+    <g class="save-row"><rect x="722" y="510" width="152" height="21" rx="1"/><text class="sv" x="731" y="525">Version 1.5</text><text class="ss" x="866" y="525" text-anchor="end"></text></g>
+    <g class="save-row live"><rect x="722" y="534" width="152" height="21" rx="1"/><text class="sv" x="731" y="549">Version 1.6</text><text class="ss" x="866" y="549" text-anchor="end">Live</text></g>
   </g>
 </g>
 
@@ -641,19 +1217,21 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 <g class="legend" aria-hidden="true">
   <text class="t-label" x="34" y="480">Key to the map</text>
   <line class="lg" x1="34" x2="60" y1="503" y2="503" style="stroke:var(--feature)"/><text class="t-note" x="70" y="507">Work in progress</text>
-  <line class="lg" x1="190" x2="216" y1="503" y2="503" style="stroke:var(--test)"/><text class="t-note" x="226" y="507">Test copy</text>
-  <line class="lg" x1="346" x2="372" y1="503" y2="503" style="stroke:var(--live)"/><text class="t-note" x="382" y="507">Live copy</text>
-  <g class="brk" transform="translate(47 532) scale(.8)" style="--tone:var(--muted)"><rect class="brk-box" x="-13" y="-13" width="26" height="26" rx="4"/><circle class="brk-pin" cx="-7" cy="0" r="2.2"/><circle class="brk-pin" cx="7.5" cy="0" r="2.2"/><rect class="brk-blade" x="-7" y="-1.4" width="14.5" height="2.8" rx="1.4"/></g>
+  <line class="lg" x1="196" x2="222" y1="503" y2="503" style="stroke:var(--test)"/><text class="t-note" x="232" y="507">Test copy</text>
+  <line class="lg" x1="340" x2="366" y1="503" y2="503" style="stroke:var(--live)"/><text class="t-note" x="376" y="507">Live copy</text>
+  <g class="brk" transform="translate(47 532) scale(.8)" style="--tone:var(--muted)"><rect class="brk-box" x="-13" y="-13" width="26" height="26" rx="2"/><circle class="brk-pin" cx="-7" cy="0" r="2.2"/><circle class="brk-pin" cx="7.5" cy="0" r="2.2"/><rect class="brk-blade" x="-7" y="-1.4" width="14.5" height="2.8" rx="1.4"/></g>
   <text class="t-note" x="70" y="536">Safety check</text>
-  <g class="brk ok" transform="translate(203 532) scale(.8)" style="--tone:var(--ok)"><rect class="brk-box" x="-13" y="-13" width="26" height="26" rx="4"/><circle class="brk-pin" cx="-7" cy="0" r="2.2"/><circle class="brk-pin" cx="7.5" cy="0" r="2.2"/><rect class="brk-blade" x="-7" y="-1.4" width="14.5" height="2.8" rx="1.4"/></g>
-  <text class="t-note" x="226" y="536">Check passed</text>
-  <g class="brk trip" transform="translate(359 532) scale(.8)" style="--tone:var(--trip)"><rect class="brk-box" x="-13" y="-13" width="26" height="26" rx="4"/><circle class="brk-pin" cx="-7" cy="0" r="2.2"/><circle class="brk-pin" cx="7.5" cy="0" r="2.2"/><rect class="brk-blade" x="-7" y="-1.4" width="14.5" height="2.8" rx="1.4"/></g>
-  <text class="t-note" x="382" y="536">Check stopped it</text>
-  <rect class="tb" x="34" y="556" width="450" height="34" rx="4"/>
-  <line class="tb" x1="190" x2="190" y1="556" y2="590"/><line class="tb" x1="346" x2="346" y1="556" y2="590"/>
-  <text class="t-label" x="46" y="577">Energy Matrix Group</text>
-  <text class="t-note" x="202" y="577">Build and release map</text>
-  <text class="t-note" x="358" y="577">Revision 1, Sep 2026</text>
+  <g class="brk ok" transform="translate(209 532) scale(.8)" style="--tone:var(--ok)"><rect class="brk-box" x="-13" y="-13" width="26" height="26" rx="2"/><circle class="brk-pin" cx="-7" cy="0" r="2.2"/><circle class="brk-pin" cx="7.5" cy="0" r="2.2"/><rect class="brk-blade" x="-7" y="-1.4" width="14.5" height="2.8" rx="1.4"/></g>
+  <text class="t-note" x="232" y="536">Check passed</text>
+  <g class="brk trip" transform="translate(353 532) scale(.8)" style="--tone:var(--trip)"><rect class="brk-box" x="-13" y="-13" width="26" height="26" rx="2"/><circle class="brk-pin" cx="-7" cy="0" r="2.2"/><circle class="brk-pin" cx="7.5" cy="0" r="2.2"/><rect class="brk-blade" x="-7" y="-1.4" width="14.5" height="2.8" rx="1.4"/></g>
+  <text class="t-note" x="376" y="536">Check stopped it</text>
+  <rect class="tb tb-fill" x="34" y="556" width="560" height="36"/>
+  <rect class="tb" x="34" y="556" width="560" height="36"/>
+  <line class="tb" x1="236" x2="236" y1="556" y2="592"/><line class="tb" x1="420" x2="420" y1="556" y2="592"/>
+  <use href="#emg-mark" x="44" y="563" width="22" height="22"/>
+  <text class="t-label" x="74" y="578">Energy Matrix Group</text>
+  <text class="t-note" x="248" y="578">Build and release map</text>
+  <text class="t-note" x="432" y="578">Revision 2 · September 2026</text>
 </g>
 
 <!-- Motion guides (invisible) -->
@@ -678,28 +1256,30 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
     <div class="panel" id="panel">
       <div class="p-text" id="pText" aria-live="polite">
         <div class="p-meta"><i></i><span id="pMeta">Overview</span></div>
-        <h2 class="p-title" id="pTitle" style="max-width:none">The whole system on one page</h2>
+        <h3 class="p-title" id="pTitle">The whole system on one page</h3>
         <p class="p-body" id="pBody"></p>
         <p class="p-tech" id="pTech"></p>
       </div>
       <div class="p-ctrl">
         <div class="prog" id="pProg" hidden></div>
         <div class="ctrl-row">
-          <button class="btn" id="pPrev" type="button" hidden>Previous</button>
-          <button class="btn" id="pPlay" type="button" hidden aria-pressed="false">Pause</button>
-          <button class="btn primary" id="pNext" type="button">Start the tour</button>
+          <button class="btn btn-quiet btn-sm" id="pPrev" type="button" hidden>Previous</button>
+          <button class="btn btn-quiet btn-sm" id="pPlay" type="button" hidden aria-pressed="false">Pause</button>
+          <button class="btn btn-sm" id="pNext" type="button">Start the tour</button>
         </div>
       </div>
     </div>
   </div>
+  <p class="stage-hint">Tip: use <kbd>←</kbd> and <kbd>→</kbd> to move between steps while the map is on screen.</p>
  </div>
 </section>
 
-<!-- Using the app -->
-<section class="section" id="using" aria-labelledby="using-h">
+<!-- 03 Inside the app -->
+<section class="section alt" id="using" data-nav="using" aria-labelledby="using-h">
   <div class="wrap two-col">
-    <div>
-      <h2 id="using-h">What happens when someone uses the app</h2>
+    <div class="reveal">
+      <p class="eyebrow"><span class="ch">03</span>Inside the app<span class="aud all">Everyone</span></p>
+      <h2 id="using-h">What happens when someone <span class="hl">uses the app</span></h2>
       <p class="lede">The app has three layers, a bit like a shop: the shop front you walk into, the staff behind the counter, and the storeroom out the back.</p>
       <ol class="walk" id="walk">
         <li><div><strong>You sign in and ask for last month's usage report.</strong>You use your normal Microsoft work login, so there's no extra password.</div></li>
@@ -707,10 +1287,10 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
         <li><div><strong>Storage hands back the pieces.</strong>The numbers come from the SQL database; the PDF comes from file storage.</div></li>
         <li><div><strong>The report appears on your screen.</strong>All of this happens in the live app, the bottom row of the map.</div></li>
       </ol>
-      <button class="btn primary" id="playReq" type="button">Play the example</button>
+      <button class="btn" id="playReq" type="button">Play the example<svg class="arr" aria-hidden="true"><use href="#i-arrow"/></svg></button>
       <p class="tech-line"><b>In tech terms:</b> a web interface secured with single sign-on, a Node.js server, Azure SQL Database and Azure Blob Storage.</p>
     </div>
-    <figure class="sheet-fig">
+    <figure class="sheet-fig reveal">
       <svg id="req" viewBox="0 0 520 462" role="img" aria-labelledby="req-t">
         <title id="req-t">The three layers of the app: the website, the server, and storage in Microsoft Azure</title>
         <path class="r-line" id="r1" d="M260 42V74"/>
@@ -718,26 +1298,26 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
         <path class="r-line" id="r3a" d="M146 284V330"/>
         <path class="r-line" id="r3b" d="M374 284V330"/>
         <use class="r-you" href="#i-person" x="226" y="4" width="32" height="32"/>
-        <text class="r-desc" x="266" y="19" style="font-weight:600;fill:var(--ink)">You</text>
+        <text class="r-desc" x="266" y="19" style="font-weight:700;fill:var(--head)">You</text>
         <text class="r-small" x="266" y="36">signed in with your work account</text>
         <g class="r-box" data-r="web">
-          <rect class="rb" x="40" y="74" width="440" height="84" rx="12"/>
+          <rect class="rb" x="40" y="74" width="440" height="84" rx="2"/>
           <text class="r-name" x="64" y="110">Website</text>
           <text class="r-desc" x="64" y="136">The shop front: what you see and click</text>
-          <g class="r-done" id="rDone"><rect x="356" y="98" width="106" height="36" rx="8"/><text x="409" y="121" text-anchor="middle">Report ready</text></g>
+          <g class="r-done" id="rDone"><rect x="340" y="98" width="122" height="36"/><text x="401" y="121" text-anchor="middle">Report ready</text></g>
         </g>
         <g class="r-box" data-r="srv">
-          <rect class="rb" x="40" y="200" width="440" height="84" rx="12"/>
+          <rect class="rb" x="40" y="200" width="440" height="84" rx="2"/>
           <text class="r-name" x="64" y="236">Server</text>
           <text class="r-desc" x="64" y="262">Behind the counter: checks, rules, fetching</text>
         </g>
         <g class="r-box" data-r="sql">
-          <rect class="rb" x="40" y="330" width="212" height="84" rx="12"/>
+          <rect class="rb" x="40" y="330" width="212" height="84" rx="2"/>
           <text class="r-name" x="60" y="366">SQL database</text>
           <text class="r-desc" x="60" y="392">Records and numbers</text>
         </g>
         <g class="r-box" data-r="file">
-          <rect class="rb" x="268" y="330" width="212" height="84" rx="12"/>
+          <rect class="rb" x="268" y="330" width="212" height="84" rx="2"/>
           <text class="r-name" x="288" y="366">File storage</text>
           <text class="r-desc" x="288" y="392">Documents and files</text>
         </g>
@@ -750,12 +1330,15 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   </div>
 </section>
 
-<!-- Two copies -->
-<section class="section" id="copies" aria-labelledby="copies-h">
+<!-- 04 Two copies -->
+<section class="section" id="copies" data-nav="using" aria-labelledby="copies-h">
   <div class="wrap">
-    <h2 id="copies-h">Two complete copies: a rehearsal and the real show</h2>
-    <p class="lede">We run two separate copies of the app, each with its own website, server and databases. Every change plays in the rehearsal before it reaches the real show.</p>
-    <div class="table-wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow"><span class="ch">04</span>Two copies<span class="aud all">Everyone</span></p>
+      <h2 id="copies-h">Two complete copies: a rehearsal and <span class="hl">the real show</span></h2>
+      <p class="lede">We run two separate copies of the app, each with its own website, server and databases. Every change plays in the rehearsal before it reaches the real show.</p>
+    </div>
+    <div class="table-wrap reveal">
       <table class="compare">
         <thead>
           <tr><th scope="col"><span class="sr-only">Question</span></th><th scope="col" class="th-test">Test app<span>the rehearsal, top row of the map</span></th><th scope="col" class="th-live">Live app<span>the real show, bottom row of the map</span></th></tr>
@@ -769,26 +1352,26 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
         </tbody>
       </table>
     </div>
-    <div class="sync-note">
+    <div class="sync-note reveal">
       <svg class="sync-fig" viewBox="0 0 520 150" aria-hidden="true">
         <g style="color:var(--live)">
           <ellipse cx="90" cy="36" rx="58" ry="14" fill="none" stroke="currentColor" stroke-width="2.5"/>
           <path d="M32 36V98a58 14 0 0 0 116 0V36" fill="none" stroke="currentColor" stroke-width="2.5"/>
           <path d="M32 67a58 14 0 0 0 116 0" fill="none" stroke="currentColor" stroke-width="2" opacity=".5"/>
         </g>
-        <text x="90" y="140" text-anchor="middle" style="font-weight:600;font-size:16px;fill:var(--ink)">Live data</text>
+        <text x="90" y="140" text-anchor="middle" style="font-weight:700;font-size:15px;fill:var(--head)">Live data</text>
         <path d="M168 68H346" fill="none" style="stroke:var(--test)" stroke-width="3.5" stroke-linecap="round"/>
         <path class="sf-flow" d="M168 68H346"/>
         <path d="M336 58l12 10-12 10" fill="none" style="stroke:var(--test)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="257" cy="68" r="21" style="fill:var(--sheet);stroke:var(--test)" stroke-width="2"/>
+        <circle cx="257" cy="68" r="21" style="fill:var(--bg);stroke:var(--test)" stroke-width="2"/>
         <use href="#i-cal" x="244" y="55" width="26" height="26" style="color:var(--test)"/>
-        <text x="257" y="112" text-anchor="middle" style="font-size:15px;fill:var(--muted)">once a month</text>
+        <text x="257" y="112" text-anchor="middle" style="font-size:14px;fill:var(--muted)">once a month</text>
         <g style="color:var(--test)">
           <ellipse cx="430" cy="36" rx="58" ry="14" fill="none" stroke="currentColor" stroke-width="2.5"/>
           <path d="M372 36V98a58 14 0 0 0 116 0V36" fill="none" stroke="currentColor" stroke-width="2.5"/>
           <path d="M372 67a58 14 0 0 0 116 0" fill="none" stroke="currentColor" stroke-width="2" opacity=".5"/>
         </g>
-        <text x="430" y="140" text-anchor="middle" style="font-weight:600;font-size:16px;fill:var(--ink)">Test data</text>
+        <text x="430" y="140" text-anchor="middle" style="font-weight:700;font-size:15px;fill:var(--head)">Test data</text>
       </svg>
       <div>
         <h3>Why copy live data every month?</h3>
@@ -798,13 +1381,16 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   </div>
 </section>
 
-<!-- People and AI -->
-<section class="section" id="team" aria-labelledby="team-h">
+<!-- 05 People and AI -->
+<section class="section alt" id="team" data-nav="using" aria-labelledby="team-h">
   <div class="wrap">
-    <h2 id="team-h">AI agents propose. People decide.</h2>
-    <p class="lede">Every piece of work is done by a developer paired with an AI agent. The agent is fast and tireless. The developer brings judgement, context and accountability.</p>
+    <div class="sec-head reveal">
+      <p class="eyebrow"><span class="ch">05</span>People and AI<span class="aud all">Everyone</span></p>
+      <h2 id="team-h">AI agents propose. <span class="hl">People decide.</span></h2>
+      <p class="lede">Every piece of work is done by a developer paired with an AI agent. The agent is fast and tireless. The developer brings judgement, context and accountability.</p>
+    </div>
     <div class="duo">
-      <div class="duo-col ai">
+      <div class="duo-col ai reveal">
         <h3><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-ai" style="color:var(--feature)"/></svg>What AI agents do</h3>
         <ul>
           <li>Draft code from a clearly written task</li>
@@ -813,8 +1399,8 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
           <li>Take on repetitive work quickly, so people can focus on judgement</li>
         </ul>
       </div>
-      <div class="duo-col">
-        <h3><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-person" style="color:var(--ink)"/></svg>What people always do</h3>
+      <div class="duo-col people reveal">
+        <h3><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-person" style="color:var(--test)"/></svg>What people always do</h3>
         <ul>
           <li>Decide what to build, and why</li>
           <li>Review every change before it's merged</li>
@@ -823,23 +1409,26 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
         </ul>
       </div>
     </div>
-    <p class="rule-note">AI agents work only inside feature branches. Nothing they write reaches the live app without a person reviewing and approving it.</p>
+    <p class="rule-note reveal"><svg aria-hidden="true"><use href="#i-lock"/></svg><span>AI agents work only inside feature branches. Nothing they write reaches the live app without a person reviewing and approving it.</span></p>
   </div>
 </section>
 
-<!-- Safety checks -->
-<section class="section" id="checks" aria-labelledby="checks-h">
+<!-- 06 Safety checks -->
+<section class="section" id="checks" data-nav="using" aria-labelledby="checks-h">
   <div class="wrap">
-    <h2 id="checks-h">Five checks stand between an idea and our users</h2>
-    <p class="lede">Each check works like a circuit breaker. If something isn't right, it trips, and the change goes no further. They happen in this order, every time.</p>
+    <div class="sec-head reveal">
+      <p class="eyebrow"><span class="ch">06</span>Safety checks<span class="aud all">Everyone</span></p>
+      <h2 id="checks-h">Five checks stand between an idea and <span class="hl">our users</span></h2>
+      <p class="lede">Each check works like a circuit breaker. If something isn't right, it trips, and the change goes no further. They happen in this order, every time.</p>
+    </div>
     <ol class="checks">
-      <li style="--tone:var(--feature)"><svg class="glyph" viewBox="-26 -26 52 52" aria-hidden="true"><g class="brk"><rect class="brk-box" x="-20" y="-20" width="40" height="40" rx="7" style="stroke-width:2.5"/><circle class="brk-pin" cx="-10" cy="0" r="3.2"/><circle class="brk-pin" cx="10.5" cy="0" r="3.2"/><rect class="brk-blade" x="-10" y="-2" width="20.5" height="4" rx="2"/></g></svg><span class="n">1</span><h3>Automated tests</h3><p>Run on every change. A failing test stops the change straight away.</p></li>
-      <li style="--tone:var(--feature)"><svg class="glyph" viewBox="-26 -26 52 52" aria-hidden="true"><g class="brk"><rect class="brk-box" x="-20" y="-20" width="40" height="40" rx="7" style="stroke-width:2.5"/><circle class="brk-pin" cx="-10" cy="0" r="3.2"/><circle class="brk-pin" cx="10.5" cy="0" r="3.2"/><rect class="brk-blade" x="-10" y="-2" width="20.5" height="4" rx="2"/></g></svg><span class="n">2</span><h3>Peer review</h3><p>A teammate reads and approves every change before it joins the test branch.</p></li>
-      <li style="--tone:var(--test)"><svg class="glyph" viewBox="-26 -26 52 52" aria-hidden="true"><g class="brk"><rect class="brk-box" x="-20" y="-20" width="40" height="40" rx="7" style="stroke-width:2.5"/><circle class="brk-pin" cx="-10" cy="0" r="3.2"/><circle class="brk-pin" cx="10.5" cy="0" r="3.2"/><rect class="brk-blade" x="-10" y="-2" width="20.5" height="4" rx="2"/></g></svg><span class="n">3</span><h3>Rehearsal in the test app</h3><p>The team tries the feature in a full copy of the app, with realistic data.</p></li>
-      <li style="--tone:var(--live)"><svg class="glyph" viewBox="-26 -26 52 52" aria-hidden="true"><g class="brk"><rect class="brk-box" x="-20" y="-20" width="40" height="40" rx="7" style="stroke-width:2.5"/><circle class="brk-pin" cx="-10" cy="0" r="3.2"/><circle class="brk-pin" cx="10.5" cy="0" r="3.2"/><rect class="brk-blade" x="-10" y="-2" width="20.5" height="4" rx="2"/></g></svg><span class="n">4</span><h3>Approval to go live</h3><p>Main is protected. Nobody can change the live code without an approved merge.</p></li>
-      <li style="--tone:var(--live)"><svg class="glyph" viewBox="-26 -26 52 52" aria-hidden="true"><g class="brk"><rect class="brk-box" x="-20" y="-20" width="40" height="40" rx="7" style="stroke-width:2.5"/><circle class="brk-pin" cx="-10" cy="0" r="3.2"/><circle class="brk-pin" cx="10.5" cy="0" r="3.2"/><rect class="brk-blade" x="-10" y="-2" width="20.5" height="4" rx="2"/></g></svg><span class="n">5</span><h3>A save point on every release</h3><p>The previous version is kept ready, so we can switch back quickly.</p></li>
+      <li class="reveal" style="--tone:var(--feature)"><svg class="glyph" viewBox="-26 -26 52 52" aria-hidden="true"><g class="brk"><rect class="brk-box" x="-20" y="-20" width="40" height="40" rx="3" style="stroke-width:2.5"/><circle class="brk-pin" cx="-10" cy="0" r="3.2"/><circle class="brk-pin" cx="10.5" cy="0" r="3.2"/><rect class="brk-blade" x="-10" y="-2" width="20.5" height="4" rx="2"/></g></svg><span class="n">CHECK 01</span><h3>Automated tests</h3><p>Run on every change. A failing test stops the change straight away.</p></li>
+      <li class="reveal" style="--tone:var(--feature)"><svg class="glyph" viewBox="-26 -26 52 52" aria-hidden="true"><g class="brk"><rect class="brk-box" x="-20" y="-20" width="40" height="40" rx="3" style="stroke-width:2.5"/><circle class="brk-pin" cx="-10" cy="0" r="3.2"/><circle class="brk-pin" cx="10.5" cy="0" r="3.2"/><rect class="brk-blade" x="-10" y="-2" width="20.5" height="4" rx="2"/></g></svg><span class="n">CHECK 02</span><h3>Peer review</h3><p>A teammate reads and approves every change before it joins the test branch.</p></li>
+      <li class="reveal" style="--tone:var(--test)"><svg class="glyph" viewBox="-26 -26 52 52" aria-hidden="true"><g class="brk"><rect class="brk-box" x="-20" y="-20" width="40" height="40" rx="3" style="stroke-width:2.5"/><circle class="brk-pin" cx="-10" cy="0" r="3.2"/><circle class="brk-pin" cx="10.5" cy="0" r="3.2"/><rect class="brk-blade" x="-10" y="-2" width="20.5" height="4" rx="2"/></g></svg><span class="n">CHECK 03</span><h3>Rehearsal in the test app</h3><p>The team tries the feature in a full copy of the app, with realistic data.</p></li>
+      <li class="reveal" style="--tone:var(--live)"><svg class="glyph" viewBox="-26 -26 52 52" aria-hidden="true"><g class="brk"><rect class="brk-box" x="-20" y="-20" width="40" height="40" rx="3" style="stroke-width:2.5"/><circle class="brk-pin" cx="-10" cy="0" r="3.2"/><circle class="brk-pin" cx="10.5" cy="0" r="3.2"/><rect class="brk-blade" x="-10" y="-2" width="20.5" height="4" rx="2"/></g></svg><span class="n">CHECK 04</span><h3>Approval to go live</h3><p>Main is protected. Nobody can change the live code without an approved merge.</p></li>
+      <li class="reveal" style="--tone:var(--live)"><svg class="glyph" viewBox="-26 -26 52 52" aria-hidden="true"><g class="brk"><rect class="brk-box" x="-20" y="-20" width="40" height="40" rx="3" style="stroke-width:2.5"/><circle class="brk-pin" cx="-10" cy="0" r="3.2"/><circle class="brk-pin" cx="10.5" cy="0" r="3.2"/><rect class="brk-blade" x="-10" y="-2" width="20.5" height="4" rx="2"/></g></svg><span class="n">CHECK 05</span><h3>A save point on every release</h3><p>The previous version is kept ready, so we can switch back quickly.</p></li>
     </ol>
-    <div class="always">
+    <div class="always reveal">
       <h3>Always on</h3>
       <div><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-shield"/></svg><p><strong>Microsoft work sign-in</strong>People use the work login they already have. When a work account is switched off, access to the app ends too.</p></div>
       <div><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-pin"/></svg><p><strong>Data kept in Australia</strong>Databases and files for both copies are stored in Microsoft Azure data centres in Australia.</p></div>
@@ -847,12 +1436,178 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   </div>
 </section>
 
-<!-- Questions -->
-<section class="section" id="questions" aria-labelledby="q-h">
+<!-- 07 Developer playbook -->
+<section class="section band-dark" id="playbook" data-nav="playbook" aria-labelledby="playbook-h">
+  <div class="deco" aria-hidden="true"><i></i><i></i><i></i></div>
   <div class="wrap">
-    <h2 id="q-h">Questions people often ask</h2>
-    <div class="faq">
+    <div class="sec-head reveal">
+      <p class="eyebrow"><span class="ch">07</span>The developer playbook<span class="aud dev">Developers</span></p>
+      <h2 id="playbook-h">One route for every change, <span class="hl">step by step</span></h2>
+      <p class="lede">Whether a person or an AI agent drafted it, every change follows this route. Here's the branching model, the commands, and the rules we don't bend.</p>
+    </div>
+
+    <figure class="gg reveal">
+      <div class="gg-top">
+        <h3 id="gg-h">The branching model</h3>
+        <div class="gg-key" aria-hidden="true">
+          <span style="--k:var(--feature)"><i></i>feature branch</span>
+          <span style="--k:var(--test)"><i></i>test</span>
+          <span style="--k:var(--live)"><i></i>main</span>
+        </div>
+      </div>
+      <div class="gg-scroll">
+        <svg id="gitgraph" viewBox="0 0 1160 330" role="img" aria-labelledby="gg-h gg-d">
+          <desc id="gg-d">A feature branch is created from test. After commits, a pull request with tests and a teammate's review merges it back into test, which deploys the test app automatically. A second pull request, which needs approval, merges test into main. That deploys the live app automatically and keeps the previous version as a save point.</desc>
+          <text class="g-name" x="24" y="89" style="fill:var(--feature-ink)">feature/…</text>
+          <text class="g-name" x="24" y="189" style="fill:var(--test-ink)">test</text>
+          <text class="g-name" x="24" y="289" style="fill:var(--live-ink)">main</text>
+          <path class="g-lane" style="stroke:var(--test)" d="M150 184H920"/>
+          <path class="g-lane" style="stroke:var(--live)" d="M150 284H920"/>
+          <path class="g-lane" style="stroke:var(--feature)" d="M250 184C288 184 288 84 326 84H548C586 84 586 184 624 184"/>
+          <path class="g-lane" style="stroke:var(--live)" stroke-dasharray="1 9" d="M700 184C738 184 738 284 776 284"/>
+          <circle class="g-dot" style="stroke:var(--test)" cx="190" cy="184" r="7"/>
+          <circle class="g-dot" style="stroke:var(--test)" cx="250" cy="184" r="7"/>
+          <circle class="g-dot" style="stroke:var(--feature)" cx="370" cy="84" r="7"/>
+          <circle class="g-dot" style="stroke:var(--feature)" cx="436" cy="84" r="7"/>
+          <circle class="g-dot" style="stroke:var(--feature)" cx="502" cy="84" r="7"/>
+          <circle class="g-dot" style="stroke:var(--test);fill:var(--test)" cx="624" cy="184" r="8"/>
+          <circle class="g-dot" style="stroke:var(--test)" cx="700" cy="184" r="7"/>
+          <circle class="g-dot" style="stroke:var(--live)" cx="190" cy="284" r="7"/>
+          <circle class="g-dot" style="stroke:var(--live);fill:var(--live)" cx="776" cy="284" r="8"/>
+          <g class="g-num" transform="translate(250 224)"><rect x="-11" y="-11" width="22" height="22" transform="rotate(45)"/><text y="4" text-anchor="middle">2</text></g>
+          <text class="g-strong" x="272" y="229">Branch from test</text>
+          <g class="g-num" transform="translate(370 44)"><rect x="-11" y="-11" width="22" height="22" transform="rotate(45)"/><text y="4" text-anchor="middle">3</text></g>
+          <text class="g-strong" x="392" y="41">Build with your AI agent</text>
+          <text class="g-note" x="392" y="58">commit and push as you go</text>
+          <g class="g-num" transform="translate(652 128)"><rect x="-11" y="-11" width="22" height="22" transform="rotate(45)"/><text y="4" text-anchor="middle">4</text></g>
+          <text class="g-strong" x="674" y="125">Pull request into test</text>
+          <text class="g-note" x="674" y="142">tests pass + teammate approves</text>
+          <g class="g-num" transform="translate(700 226)"><rect x="-11" y="-11" width="22" height="22" transform="rotate(45)"/><text y="4" text-anchor="middle">6</text></g>
+          <text class="g-strong" x="678" y="231" text-anchor="end">Pull request into main</text>
+          <text class="g-note" x="678" y="248" text-anchor="end">needs approval: main is protected</text>
+          <path class="g-lane" style="stroke:var(--test);stroke-width:2.5" d="M920 184H958"/>
+          <path d="M952 177l8 7-8 7" fill="none" style="stroke:var(--test)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <g class="g-box"><rect x="966" y="158" width="170" height="52" style="stroke:var(--test)"/><text x="982" y="180">Test app</text><text class="g-sub" x="982" y="198">auto-deploy on merge</text></g>
+          <g class="g-num" transform="translate(1136 158)"><rect x="-11" y="-11" width="22" height="22" transform="rotate(45)"/><text y="4" text-anchor="middle">5</text></g>
+          <path class="g-lane" style="stroke:var(--live);stroke-width:2.5" d="M920 284H958"/>
+          <path d="M952 277l8 7-8 7" fill="none" style="stroke:var(--live)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <g class="g-box"><rect x="966" y="258" width="170" height="52" style="stroke:var(--live)"/><text x="982" y="280">Live app</text><text class="g-sub" x="982" y="298">auto-deploy + save point</text></g>
+          <g class="g-num" transform="translate(1136 258)"><rect x="-11" y="-11" width="22" height="22" transform="rotate(45)"/><text y="4" text-anchor="middle">7</text></g>
+        </svg>
+      </div>
+    </figure>
+
+    <div class="pb-grid">
+      <ol class="steps">
+        <li class="step reveal" style="--s:var(--feature)">
+          <span class="step-n" aria-hidden="true"><i>1</i></span>
+          <div>
+            <h3>Start from a clear task</h3>
+            <p>Every piece of work begins as a small task on the task board. It spells out what "done" looks like, so you and your AI agent build the same thing.</p>
+          </div>
+        </li>
+        <li class="step reveal" style="--s:var(--feature)">
+          <span class="step-n" aria-hidden="true"><i>2</i></span>
+          <div>
+            <h3>Branch from <code>test</code></h3>
+            <p>Create a feature branch for the task. It's your private working copy: nothing you do here can affect the team or the live app.</p>
+            <div class="code"><div class="code-top"><span>Terminal</span><button class="copy" type="button" aria-label="Copy the commands to create a feature branch"><svg aria-hidden="true"><use href="#i-copy"/></svg><span>Copy</span></button></div>
+<pre><code><span class="pr" aria-hidden="true">$ </span>git switch test
+<span class="pr" aria-hidden="true">$ </span>git pull
+<span class="pr" aria-hidden="true">$ </span>git switch -c <span class="br">feature/monthly-usage-report</span></code></pre></div>
+            <p class="cap">Branch names in these examples are illustrative.</p>
+          </div>
+        </li>
+        <li class="step reveal" style="--s:var(--feature)">
+          <span class="step-n" aria-hidden="true"><i>3</i></span>
+          <div>
+            <h3>Build it with your AI agent</h3>
+            <p>The agent drafts the code and the unit tests that prove it works. You steer, review every line and correct it: you're accountable for the result. Commit as you go and push your branch.</p>
+            <div class="code"><div class="code-top"><span>Terminal</span><button class="copy" type="button" aria-label="Copy the commands to commit and push"><svg aria-hidden="true"><use href="#i-copy"/></svg><span>Copy</span></button></div>
+<pre><code><span class="pr" aria-hidden="true">$ </span>git add .
+<span class="pr" aria-hidden="true">$ </span>git commit -m "Add monthly usage report"
+<span class="pr" aria-hidden="true">$ </span>git push -u origin <span class="br">feature/monthly-usage-report</span></code></pre></div>
+          </div>
+        </li>
+        <li class="step reveal" style="--s:var(--test)">
+          <span class="step-n" aria-hidden="true"><i>4</i></span>
+          <div>
+            <h3>Open a pull request into <code>test</code></h3>
+            <p>Unit tests run on the pull request, and a teammate reviews it. It can only merge once the tests pass and the teammate approves.</p>
+            <div class="code"><div class="code-top"><span>Terminal</span><button class="copy" type="button" aria-label="Copy the command to open a pull request into test"><svg aria-hidden="true"><use href="#i-copy"/></svg><span>Copy</span></button></div>
+<pre><code><span class="pr" aria-hidden="true">$ </span>gh pr create --base test --fill</code></pre></div>
+            <p class="cap">Prefer the website? Open the pull request on GitHub and choose <code>test</code> as the base branch.</p>
+          </div>
+        </li>
+        <li class="step reveal" style="--s:var(--test)">
+          <span class="step-n" aria-hidden="true"><i>5</i></span>
+          <div>
+            <h3>Merge, and the test app updates itself</h3>
+            <p>Merging into <code>test</code> triggers an automatic deployment on Render. Try your change in the test app, which runs on a monthly copy of live data.</p>
+          </div>
+        </li>
+        <li class="step reveal" style="--s:var(--live)">
+          <span class="step-n" aria-hidden="true"><i>6</i></span>
+          <div>
+            <h3>Release through an approved pull request into <code>main</code></h3>
+            <p>When the work is ready to go live, open a pull request from <code>test</code> into <code>main</code>. Branch protection means it can't merge without approval. Merging it triggers the production deployment.</p>
+            <div class="code"><div class="code-top"><span>Terminal</span><button class="copy" type="button" aria-label="Copy the command to open a release pull request into main"><svg aria-hidden="true"><use href="#i-copy"/></svg><span>Copy</span></button></div>
+<pre><code><span class="pr" aria-hidden="true">$ </span>gh pr create --base main --head test</code></pre></div>
+          </div>
+        </li>
+        <li class="step reveal" style="--s:var(--live)">
+          <span class="step-n" aria-hidden="true"><i>7</i></span>
+          <div>
+            <h3>Live, with a save point</h3>
+            <p>Render keeps the previous deploy ready. If something goes wrong, roll the live app back to it in Render, then fix forward on a new branch from <code>test</code>, through this same route. There are no shortcuts.</p>
+          </div>
+        </li>
+      </ol>
+
+      <aside class="pb-aside" aria-label="Rules and checklists">
+        <div class="card reveal">
+          <h3><svg aria-hidden="true"><use href="#i-rules"/></svg>The rules we don't bend</h3>
+          <ol class="rules">
+            <li><span><code>main</code> is protected. It only changes through an approved pull request from <code>test</code>.</span></li>
+            <li><span>Branch from <code>test</code>, and merge back into <code>test</code> through a pull request.</span></li>
+            <li><span>Every pull request needs passing tests and a teammate's approval.</span></li>
+            <li><span>Write the tests with the code. They run on every change.</span></li>
+            <li><span>AI agents work only in feature branches. You review everything they write, and you own the result.</span></li>
+            <li><span>Fixes follow the same route. There are no shortcuts to live.</span></li>
+            <li><span>Test data is a copy of real data. Treat it with the same care.</span></li>
+          </ol>
+        </div>
+        <div class="card reveal">
+          <h3><svg aria-hidden="true"><use href="#i-list"/></svg>Before you merge</h3>
+          <h4>Ready for <code>test</code> when</h4>
+          <ul class="check-list">
+            <li><svg aria-hidden="true"><use href="#i-tick"/></svg><span>It does what the task says "done" looks like</span></li>
+            <li><svg aria-hidden="true"><use href="#i-tick"/></svg><span>Unit tests are written and passing</span></li>
+            <li><svg aria-hidden="true"><use href="#i-tick"/></svg><span>You've reviewed everything your AI agent drafted</span></li>
+            <li><svg aria-hidden="true"><use href="#i-tick"/></svg><span>A teammate has reviewed and approved it</span></li>
+          </ul>
+          <h4>Ready for <code>main</code> when</h4>
+          <ul class="check-list">
+            <li><svg aria-hidden="true"><use href="#i-tick"/></svg><span>The team has tried it in the test app</span></li>
+            <li><svg aria-hidden="true"><use href="#i-tick"/></svg><span>The pull request from <code>test</code> into <code>main</code> is approved</span></li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- 08 Questions -->
+<section class="section" id="questions" data-nav="questions" aria-labelledby="q-h">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow"><span class="ch">08</span>Questions<span class="aud all">Everyone</span></p>
+      <h2 id="q-h">Questions people <span class="hl">often ask</span></h2>
+    </div>
+    <div class="faq reveal">
       <details><summary>Can an AI agent put something live on its own?<span class="pm" aria-hidden="true"></span></summary><p>No. AI agents only work inside feature branches. Every change they draft is checked by automated tests and reviewed by a person before it can join the test branch. Going live needs a further approval to merge into main, which is protected.</p></details>
+      <details><summary>Do AI agents follow the same rules as people?<span class="pm" aria-hidden="true"></span></summary><p>Yes. Every change takes the same route, whoever drafted it: automated tests, a teammate's review, a rehearsal in the test app and approval to go live. A person is accountable for everything an AI agent produces.</p></details>
+      <details><summary>How do we know a change works before it goes live?<span class="pm" aria-hidden="true"></span></summary><p>Automated tests prove the code does what it should, and a teammate reviews it. Then the team tries it in the test app, a complete copy of the app running on a recent copy of real data. Only then can it be approved into main.</p></details>
       <details><summary>What happens if a release goes wrong?<span class="pm" aria-hidden="true"></span></summary><p>Render keeps the previous version ready as a save point, so we can switch the live app back to it quickly. The fix then follows the normal route: its own branch, automated tests, a rehearsal in the test app, and approval to go live.</p></details>
       <details><summary>Why not make changes directly in the live app?<span class="pm" aria-hidden="true"></span></summary><p>Because one mistake would reach everyone at once. Working this way means every change has been tested and rehearsed before anyone relies on it, and there's always a way back.</p></details>
       <details><summary>Where is our data kept?<span class="pm" aria-hidden="true"></span></summary><p>In Microsoft Azure data centres in Australia. Records such as accounts and usage figures live in SQL databases. Documents and files live in Blob Storage. The test and live copies are kept separate.</p></details>
@@ -862,17 +1617,26 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   </div>
 </section>
 
-<!-- Glossary -->
-<section class="section" id="words" aria-labelledby="w-h">
+<!-- 09 Glossary -->
+<section class="section alt" id="words" data-nav="words" aria-labelledby="w-h">
   <div class="wrap">
-    <h2 id="w-h">Words you'll hear, in plain English</h2>
-    <dl class="gloss">
+    <div class="sec-head reveal">
+      <p class="eyebrow"><span class="ch">09</span>Glossary<span class="aud all">Everyone</span></p>
+      <h2 id="w-h">Words you'll hear, <span class="hl">in plain English</span></h2>
+    </div>
+    <div class="gloss-tools">
+      <label class="search"><span class="sr-only">Filter the glossary</span><svg aria-hidden="true"><use href="#i-search"/></svg><input id="glossFilter" type="search" placeholder="Filter terms, for example branch" autocomplete="off" aria-describedby="glossCount"></label>
+      <span class="gloss-count" id="glossCount" aria-live="polite"></span>
+    </div>
+    <dl class="gloss" id="gloss">
       <div><dt>AI agent</dt><dd>Software that writes and changes code when given a task. On our team it works alongside a developer, who reviews everything it produces.</dd></div>
       <div><dt>Branch</dt><dd>A separate working copy of the code. Changes on a branch don't affect anyone else until they're merged.</dd></div>
       <div><dt>Feature branch</dt><dd>A short-lived branch for one piece of work, such as a new report.</dd></div>
       <div><dt>Test branch</dt><dd>The shared branch for finished work that isn't live yet. It feeds the test app.</dd></div>
       <div><dt>Main branch</dt><dd>The branch that holds the live app's code. It's protected.</dd></div>
       <div><dt>Protected branch</dt><dd>A branch nobody can change directly. Changes need review and approval.</dd></div>
+      <div><dt>Commit</dt><dd>A saved set of changes to the code, with a short note describing what changed.</dd></div>
+      <div><dt>Pull request</dt><dd>A request to merge one branch into another. It's where changes are tested, reviewed and approved before they're combined.</dd></div>
       <div><dt>Merge</dt><dd>Combining the changes from one branch into another.</dd></div>
       <div><dt>Unit test</dt><dd>A small automated check that confirms one piece of code does what it should.</dd></div>
       <div><dt>Deployment</dt><dd>Installing a new version of the app so people can use it.</dd></div>
@@ -885,15 +1649,47 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
       <div><dt>SQL database</dt><dd>Stores structured records, like accounts and usage figures, in tables.</dd></div>
       <div><dt>Blob storage</dt><dd>Stores files, like PDFs and images.</dd></div>
       <div><dt>Single sign-on (SSO)</dt><dd>Signing in with an existing work account instead of a separate password.</dd></div>
+      <div><dt>Microsoft Entra ID</dt><dd>Microsoft's service for work accounts and sign-in. It powers our single sign-on.</dd></div>
     </dl>
+    <p class="gloss-empty" id="glossEmpty" hidden>No terms match. Try a shorter word, or clear the filter.</p>
   </div>
 </section>
 </main>
 
-<footer>
-  <div class="wrap">
-    <span>Energy Matrix Group. How we build our app, revision 1, September 2026.</span>
-    <a href="#top">Back to the top</a>
+<footer class="foot">
+  <div class="deco" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  <div class="wrap foot-grid">
+    <div>
+      <svg class="logo" viewBox="0 0 245 93" role="img" aria-label="Energy Matrix Group"><use href="#emg-logo"/></svg>
+      <p>How we build software: a guide to how Energy Matrix Group plans, builds, checks and releases its app. Written for the board, executives and everyone who builds with us.</p>
+    </div>
+    <nav aria-label="All chapters, footer">
+      <h2>Chapters</h2>
+      <ol>
+        <li><a href="#briefing">01 The briefing</a></li>
+        <li><a href="#tour">02 The guided tour</a></li>
+        <li><a href="#using">03 Inside the app</a></li>
+        <li><a href="#copies">04 Two copies</a></li>
+        <li><a href="#team">05 People and AI</a></li>
+        <li><a href="#checks">06 Safety checks</a></li>
+        <li><a href="#playbook">07 Playbook</a></li>
+        <li><a href="#questions">08 Questions</a></li>
+        <li><a href="#words">09 Glossary</a></li>
+      </ol>
+    </nav>
+    <div>
+      <h2>Share this guide</h2>
+      <div class="foot-actions">
+        <button class="foot-btn" id="printBtn" type="button"><svg aria-hidden="true"><use href="#i-print"/></svg>Print or save as PDF</button>
+        <button class="foot-btn" id="copyLink" type="button"><svg aria-hidden="true"><use href="#i-link"/></svg><span>Copy a link to this guide</span></button>
+      </div>
+    </div>
+  </div>
+  <div class="foot-base">
+    <div class="wrap">
+      <span>© 2026 Energy Matrix Group. How we build software, revision 2, September 2026.</span>
+      <a href="#top">Back to the top</a>
+    </div>
   </div>
 </footer>
 
@@ -902,6 +1698,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   'use strict';
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const root = document.documentElement;
   const mqReduce = matchMedia('(prefers-reduced-motion: reduce)');
   let reduced = mqReduce.matches;
   if (mqReduce.addEventListener) mqReduce.addEventListener('change', e => { reduced = e.matches; });
@@ -910,7 +1707,6 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   const sleep = ms => new Promise(r => setTimeout(r, ms));
 
   /* ---------- Theme ---------- */
-  const root = document.documentElement;
   const themeBtn = $('#themeBtn'), themeIcon = $('#themeIcon');
   const MOON = 'M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z';
   const SUN = 'M12 4V2M12 22v-2M4.9 4.9 3.5 3.5M20.5 20.5l-1.4-1.4M4 12H2M22 12h-2M4.9 19.1l-1.4 1.4M20.5 3.5l-1.4 1.4M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z';
@@ -921,7 +1717,6 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
     themeIcon.setAttribute('d', dark ? SUN : MOON);
     themeBtn.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
   }
-  try { const t = localStorage.getItem('emg-theme'); if (t === 'dark' || t === 'light') root.setAttribute('data-theme', t); } catch (e) {}
   syncThemeBtn();
   themeBtn.addEventListener('click', () => {
     const next = theme() === 'dark' ? 'light' : 'dark';
@@ -929,6 +1724,41 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
     try { localStorage.setItem('emg-theme', next); } catch (e) {}
     syncThemeBtn();
   });
+
+  /* ---------- Header: reading progress, chapter menu, current chapter ---------- */
+  const progress = $('#progress');
+  let ticking = false;
+  function paintProgress() {
+    ticking = false;
+    const max = root.scrollHeight - root.clientHeight;
+    progress.style.transform = `scaleX(${max > 0 ? Math.min(1, root.scrollTop / max) : 0})`;
+  }
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(paintProgress); } }, { passive: true });
+  paintProgress();
+
+  const menuBtn = $('#menuBtn'), mnav = $('#mnav'), menuIcon = $('#menuIcon');
+  function setMenu(open) {
+    menuBtn.setAttribute('aria-expanded', String(open));
+    menuBtn.setAttribute('aria-label', open ? 'Close the chapter menu' : 'Open the chapter menu');
+    menuIcon.setAttribute('d', open ? 'M6 6l12 12M18 6 6 18' : 'M4 7h16M4 12h16M4 17h16');
+    mnav.hidden = !open;
+  }
+  menuBtn.addEventListener('click', () => setMenu(mnav.hidden));
+  mnav.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !mnav.hidden) { setMenu(false); menuBtn.focus(); } });
+  document.addEventListener('click', e => { if (!mnav.hidden && !e.target.closest('.topbar')) setMenu(false); });
+
+  const navLinks = $$('.nav a');
+  if ('IntersectionObserver' in window) {
+    const spy = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (!en.isIntersecting) return;
+        const key = en.target.dataset.nav;
+        navLinks.forEach(a => a.classList.toggle('active', !!key && a.getAttribute('href') === '#' + key));
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    $$('main [data-nav]').forEach(s => spy.observe(s));
+  }
 
   /* ---------- Map setup ---------- */
   const svg = $('#map');
@@ -943,6 +1773,14 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
     f.removeAttribute('data-order');
     p.after(f);
   });
+
+  // Keep the padlock just after the "main branch" label, whatever font loads.
+  const placeLock = () => {
+    const t = $('#mainTitle'), lock = $('#mainLock');
+    try { lock.setAttribute('x', (236 + t.getComputedTextLength() + 8).toFixed(1)); } catch (e) {}
+  };
+  placeLock();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeLock);
 
   const K = {};
   $$('[data-k]', svg).forEach(el => { (K[el.dataset.k] = K[el.dataset.k] || []).push(el); });
@@ -1158,10 +1996,10 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   }
 
   function renderPanel() {
-    let tone = 'ink', meta, t;
+    let tone = 'head', meta, t;
     if (mode === 'overview') { meta = 'Overview'; t = OVERVIEW; }
     else if (mode === 'explore') { t = INFO[infoKey]; tone = t.tone; meta = 'About this part'; }
-    else { const S = SCEN[scen]; t = S.steps[step]; tone = S.tone; meta = `${S.name}, step ${step + 1} of ${S.steps.length}`; }
+    else { const S = SCEN[scen]; t = S.steps[step]; tone = S.tone; meta = `${S.name} · step ${step + 1} of ${S.steps.length}`; }
     panel.style.setProperty('--tone', `var(--${tone})`);
     pMeta.textContent = meta;
     pTitle.textContent = t.title;
@@ -1239,7 +2077,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   }
 
   function startStory(i, autoplay = true) {
-    scen = i; step = 0; playing = autoplay && !reduced ? true : autoplay;
+    scen = i; step = 0; playing = autoplay;
     runStep();
   }
   function showOverview() {
@@ -1251,6 +2089,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
     hideP();
     applyState({ on: INFO[key].keys });
     renderPanel();
+    focusMap(INFO[key].focus);
   }
 
   pNext.addEventListener('click', () => {
@@ -1282,12 +2121,18 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
     g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
   });
 
+  // Links from the rest of the guide into the map: start a story or explain a part.
   function toStage() { stage.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' }); }
-  $('#heroStart').addEventListener('click', () => { toStage(); startStory(0); });
-  $('#heroExplore').addEventListener('click', () => {
-    toStage(); lastTour = null; showOverview();
-    setTimeout(() => { const first = $('.part', svg); if (first) first.focus({ preventScroll: true }); }, reduced ? 0 : 600);
-  });
+  $$('[data-story]').forEach(el => el.addEventListener('click', e => {
+    e.preventDefault();
+    toStage(); startStory(+el.dataset.story);
+    history.replaceState(null, '', '#tour');
+  }));
+  $$('[data-explore]').forEach(el => el.addEventListener('click', e => {
+    e.preventDefault();
+    toStage(); explore(el.dataset.explore);
+    history.replaceState(null, '', '#tour');
+  }));
 
   let stageVisible = false;
   document.addEventListener('keydown', e => {
@@ -1306,9 +2151,9 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 
   /* ---------- Energise on first view ---------- */
   let energised = false;
-  function energise() {
+  function energise(instant) {
     if (energised) return; energised = true;
-    if (reduced) { stage.classList.remove('pre'); stage.classList.add('powered'); return; }
+    if (reduced || instant) { stage.classList.remove('pre'); stage.classList.add('powered'); return; }
     const STEP = 190;
     const orderOf = el => parseFloat(el.dataset.order || '0');
     let maxEnd = 0;
@@ -1346,6 +2191,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   const walk = $$('#walk li');
   const rp1 = $('#rp1'), rp2 = $('#rp2'), rDone = $('#rDone');
   const playReq = $('#playReq');
+  const playReqLabel = playReq.firstChild;
   let reqTok = 0;
   function rMove(pk, id, rev, t, dur = 650) {
     const p = document.getElementById(id), L = p.getTotalLength();
@@ -1372,7 +2218,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
     const t = ++reqTok;
     const wait = async ms => { await sleep(reduced ? Math.min(ms, 900) : ms); if (t !== reqTok) throw CANCEL; };
     rDone.classList.remove('show');
-    playReq.textContent = 'Playing the example';
+    playReqLabel.textContent = 'Playing the example';
     try {
       rp1.setAttribute('transform', 'translate(260 42)');
       rActive(0, ['web'], ['r1']); await rMove(rp1, 'r1', false, t); await wait(1300);
@@ -1382,9 +2228,110 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
       await Promise.all([rMove(rp1, 'r3a', true, t), rMove(rp2, 'r3b', true, t)]); rp2.classList.remove('show'); await wait(300);
       rActive(3, ['web'], ['r2']); await rMove(rp1, 'r2', true, t); rp1.classList.remove('show');
       rDone.classList.add('show');
-      playReq.textContent = 'Play it again';
+      playReqLabel.textContent = 'Play it again';
     } catch (e) { if (e !== CANCEL) console.error(e); }
   });
+
+  /* ---------- Numbers, scroll reveal ---------- */
+  const counters = $$('[data-count]');
+  function countUp(el) {
+    const end = +el.dataset.count, suf = el.dataset.suffix || '';
+    if (reduced) { el.textContent = end + suf; return; }
+    const t0 = performance.now(), dur = 1200;
+    const f = now => {
+      const k = Math.min(1, (now - t0) / dur);
+      el.textContent = Math.round(end * ease(k)) + suf;
+      if (k < 1) requestAnimationFrame(f);
+    };
+    requestAnimationFrame(f);
+  }
+  if ('IntersectionObserver' in window && !reduced) {
+    const reveals = $$('.reveal');
+    reveals.forEach(el => {
+      const sibs = Array.from(el.parentElement.children).filter(c => c.classList.contains('reveal'));
+      const i = sibs.indexOf(el);
+      if (i > 0) el.style.transitionDelay = Math.min(i, 6) * 70 + 'ms';
+    });
+    const rio = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (!en.isIntersecting) return;
+        en.target.classList.add('in');
+        rio.unobserve(en.target);
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: .08 });
+    root.classList.add('reveal-on');
+    reveals.forEach(el => rio.observe(el));
+
+    counters.forEach(el => { el.textContent = '0' + (el.dataset.suffix || ''); });
+    const cio = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (!en.isIntersecting) return;
+        cio.unobserve(en.target);
+        countUp(en.target);
+      });
+    }, { threshold: .6 });
+    counters.forEach(el => cio.observe(el));
+  }
+
+  /* ---------- Copy buttons ---------- */
+  async function copyText(text) {
+    try { await navigator.clipboard.writeText(text); return true; }
+    catch (e) {
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.append(ta); ta.select();
+      let ok = false;
+      try { ok = document.execCommand('copy'); } catch (e2) {}
+      ta.remove();
+      return ok;
+    }
+  }
+  function flashLabel(btn, label, text) {
+    const old = label.textContent;
+    label.textContent = text; btn.classList.add('done');
+    setTimeout(() => { label.textContent = old; btn.classList.remove('done'); }, 1800);
+  }
+  $$('.copy').forEach(btn => btn.addEventListener('click', async () => {
+    const pre = btn.closest('.code').querySelector('pre').cloneNode(true);
+    pre.querySelectorAll('.pr').forEach(n => n.remove());
+    const ok = await copyText(pre.textContent.trim());
+    flashLabel(btn, btn.querySelector('span'), ok ? 'Copied' : 'Press Ctrl+C');
+  }));
+  const copyLink = $('#copyLink');
+  copyLink.addEventListener('click', async () => {
+    const ok = await copyText(location.href.split('#')[0]);
+    flashLabel(copyLink, copyLink.querySelector('span'), ok ? 'Link copied' : 'Copy the address bar link');
+  });
+
+  /* ---------- Glossary filter ---------- */
+  const gf = $('#glossFilter'), gItems = $$('#gloss > div'), gEmpty = $('#glossEmpty'), gCount = $('#glossCount');
+  function filterGloss() {
+    const q = gf.value.trim().toLowerCase();
+    let n = 0;
+    gItems.forEach(d => { const hit = !q || d.textContent.toLowerCase().includes(q); d.hidden = !hit; if (hit) n++; });
+    gEmpty.hidden = n > 0;
+    gCount.textContent = q ? `${n} of ${gItems.length} terms` : `${gItems.length} terms`;
+  }
+  gf.addEventListener('input', filterGloss);
+  filterGloss();
+
+  /* ---------- Print ---------- */
+  let openState = null;
+  addEventListener('beforeprint', () => {
+    const det = $$('details');
+    openState = det.map(d => d.open);
+    det.forEach(d => { d.open = true; });
+    gf.value = ''; filterGloss();
+    counters.forEach(el => { el.textContent = el.dataset.count + (el.dataset.suffix || ''); });
+    energise(true);
+    showOverview();
+    document.getAnimations().forEach(a => { try { if (a.effect && a.effect.getComputedTiming().endTime !== Infinity) a.finish(); } catch (e) {} });
+  });
+  addEventListener('afterprint', () => {
+    if (openState) $$('details').forEach((d, i) => { d.open = openState[i]; });
+    openState = null;
+  });
+  $('#printBtn').addEventListener('click', () => window.print());
 })();
 </script>
 </body>

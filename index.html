@@ -146,7 +146,7 @@ h3{font-size:19px;line-height:1.3;letter-spacing:-.005em;margin-bottom:6px}
 .mnav a{display:flex;align-items:center;gap:16px;padding:14px 4px;border-bottom:1px solid var(--rule);text-decoration:none;font-weight:600;color:var(--head)}
 .mnav a span{font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--accent-ink);min-width:24px}
 .mnav small{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-@media (max-width:1180px){.nav{display:none}.menu-btn{display:grid}.tools{margin-left:auto}}
+@media (max-width:1360px){.nav{display:none}.menu-btn{display:grid}.tools{margin-left:auto}}
 @media (max-width:720px){.chev{display:none}.bar{padding-right:clamp(16px,3vw,32px)}}
 @media (max-width:520px){:root{--header-h:66px}.brand .logo{height:42px}.brand-sep,.brand-product{display:none}}
 
@@ -239,10 +239,10 @@ h3{font-size:19px;line-height:1.3;letter-spacing:-.005em;margin-bottom:6px}
 .stage-top .lbl{font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:0 6px 16px}
 .tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
-.tab{display:inline-flex;align-items:center;gap:10px;white-space:nowrap;min-height:48px;padding:10px 16px 11px;border:0;border-bottom:3px solid transparent;background:transparent;color:var(--muted);font-weight:600;font-size:15px;cursor:pointer;transition:color .2s,border-color .2s}
-.tab i{width:9px;height:9px;background:var(--tone);transform:rotate(45deg);flex:none}
-.tab:hover{color:var(--head)}
-.tab[aria-selected="true"]{color:var(--head);border-bottom-color:var(--tone)}
+.tab,.etab{display:inline-flex;align-items:center;gap:10px;white-space:nowrap;min-height:48px;padding:10px 16px 11px;border:0;border-bottom:3px solid transparent;background:transparent;color:var(--muted);font-weight:600;font-size:15px;cursor:pointer;transition:color .2s,border-color .2s}
+.tab i,.etab i{width:9px;height:9px;background:var(--tone);transform:rotate(45deg);flex:none}
+.tab:hover,.etab:hover{color:var(--head)}
+.tab[aria-selected="true"],.etab[aria-pressed="true"]{color:var(--head);border-bottom-color:var(--tone)}
 .stage-top .spacer{flex:1}
 .ov-btn{display:inline-flex;align-items:center;gap:8px;margin-bottom:8px;background:none;border:0;color:var(--muted);font-weight:600;font-size:14.5px;cursor:pointer;padding:8px 10px}
 .ov-btn:hover{color:var(--head)}
@@ -514,6 +514,87 @@ h3{font-size:19px;line-height:1.3;letter-spacing:-.005em;margin-bottom:6px}
 .card h4{margin:18px 0 4px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .card h4:first-of-type{margin-top:0}
 
+/* ---------- The database (entity relationship diagram) ---------- */
+.wrap.wide{max-width:1560px}
+.erd-stage::before{background:linear-gradient(90deg,var(--test) 0 25%,var(--feature) 25% 50%,var(--live) 50% 75%,var(--slate) 75%)}
+.erd-scroll{overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.dbpick{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin:0 0 clamp(28px,3.4vw,44px)}
+.dbcard{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 20px;align-items:center;text-align:left;padding:22px 26px;border:2px solid var(--rule-strong);background:var(--panel);color:var(--ink);cursor:pointer;transition:border-color .2s,transform .25s,box-shadow .25s}
+.dbcard:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.dbcard[aria-pressed="true"]{border-color:var(--accent)}
+.dbc-i{grid-row:span 3;width:44px;height:44px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linejoin:round;color:var(--faint);transition:color .2s}
+.dbcard[aria-pressed="true"] .dbc-i{color:var(--accent)}
+.dbc-n{font-size:21px;font-weight:700;line-height:1.2;letter-spacing:-.01em;color:var(--head)}
+.dbc-d{font-size:15.5px;line-height:1.5;color:var(--muted)}
+.dbc-m{font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.dbcard[aria-pressed="true"] .dbc-m{color:var(--accent-ink)}
+.dbblock-h{display:none}
+@media (max-width:760px){.dbpick{grid-template-columns:1fr}}
+.erd-svg{display:block;width:100%;min-width:1120px;height:auto}
+.erd-svg text{font-family:var(--font)}
+.erd-svg text.e-type{font-family:var(--mono)}
+.e-bg{fill:transparent}
+.e-tbl{cursor:pointer;outline:none;transition:opacity .35s}
+.e-tbl.dim{opacity:.28}
+.e-card{fill:var(--panel);stroke:var(--rule-strong);stroke-width:1.5;transition:stroke .3s}
+.e-head{fill:var(--tone);fill-opacity:.16}
+.e-bar{fill:var(--tone)}
+.e-tbl:hover .e-card,.e-tbl.is-sel .e-card{stroke:var(--tone);stroke-width:2.4}
+.e-ring{fill:none;stroke:var(--focus);stroke-width:2.5;stroke-dasharray:5 4;opacity:0;pointer-events:none}
+.e-tbl:focus-visible .e-ring{opacity:1}
+.e-name{font-size:16px;font-weight:700;fill:var(--head);letter-spacing:-.005em}
+.e-div{stroke:var(--rule);stroke-width:1}
+.rbg{fill:transparent;transition:fill .3s}
+.e-row.on .rbg{fill:var(--accent);fill-opacity:.17}
+.e-col{font-size:13px;font-weight:500;fill:var(--ink)}
+.e-row.on .e-col{font-weight:700}
+.e-type{font-size:11px;fill:var(--muted)}
+.e-badge rect{stroke-width:1.2}
+.e-badge text{font-size:9.5px;font-weight:800;letter-spacing:.04em;text-anchor:middle}
+.e-badge.pk rect{fill:var(--accent);stroke:var(--accent)}
+.e-badge.pk text{fill:#1B1310}
+.e-badge.fk rect{fill:none;stroke:var(--test)}
+.e-badge.fk text{fill:var(--test-ink)}
+.e-badge.uq rect{fill:var(--raised);stroke:var(--rule-strong)}
+.e-badge.uq text{fill:var(--muted)}
+.e-badge.ref rect{fill:none;stroke:var(--faint);stroke-dasharray:3 2}
+.e-badge.ref text{fill:var(--muted)}
+.e-rel{fill:none;stroke:var(--tone);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:opacity .35s}
+.e-rel.hot{stroke-width:3.2}
+.e-rel.dim{opacity:.1}
+.e-rel.soft .ln{stroke-dasharray:6 5}
+.e-rel .hit{stroke:transparent;stroke-width:14;pointer-events:stroke}
+.e-rel .opt{fill:var(--sheet)}
+.e-rel .casc{fill:var(--accent);stroke:var(--sheet);stroke-width:1.5}
+.erd-key{list-style:none;margin:0;padding:12px 20px 14px;display:flex;flex-wrap:wrap;gap:8px 28px;border-top:1px solid var(--rule);background:var(--panel);font-size:13px;line-height:1.4;color:var(--muted)}
+.erd-key li{display:inline-flex;align-items:center;gap:10px}
+.erd-key svg{width:36px;height:18px;flex:none;overflow:visible;fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round}
+.erd-key .edge{stroke-width:3}
+.erd-key .o{fill:var(--panel)}
+.erd-key .d{fill:var(--accent);stroke:var(--panel);stroke-width:1.5}
+.kb{display:inline-grid;place-items:center;min-width:24px;height:16px;padding:0 4px;border:1.2px solid var(--faint);font-size:9.5px;font-weight:800;letter-spacing:.04em;line-height:1;color:var(--muted)}
+.kb.pk{background:var(--accent);border-color:var(--accent);color:#1B1310}
+.kb.fk{border-color:var(--test);color:var(--test-ink)}
+.kb.uq{background:var(--raised);border-color:var(--rule-strong)}
+.kb.ref{border-style:dashed}
+.kbs{display:inline-flex;gap:4px}
+.rel{display:grid;gap:8px;margin:14px 0 0}
+.rel-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.rel-lbl{min-width:118px;font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.rel-chip{display:inline-flex;align-items:center;min-height:32px;padding:3px 12px;border:1.5px solid var(--rule-strong);background:var(--panel);color:var(--ink);font-weight:600;font-size:13.5px;cursor:pointer;transition:background .2s,border-color .2s}
+.rel-chip:hover{background:var(--raised);border-color:var(--tone)}
+.rel-chip.soft{border-style:dashed}
+.dbnotes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 40px;margin:0}
+.dbnote{padding:20px 0 24px;border-top:1px solid var(--rule-strong)}
+.dbnote h3{display:flex;align-items:flex-start;gap:12px;margin:0 0 6px;font-size:17.5px}
+.dbnote h3::before{content:"";flex:none;width:9px;height:9px;margin-top:8px;background:var(--accent);transform:rotate(45deg)}
+.dbnote p{margin:0;color:var(--muted);font-size:15.5px}
+.sql-faq{margin-top:clamp(36px,4vw,52px)}
+.sql-faq .code{max-width:none;margin:0 0 24px}
+.sql-faq pre{max-height:560px;overflow:auto}
+@media (max-width:1000px){.dbnotes{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.dbnotes{grid-template-columns:1fr}.rel-lbl{min-width:100%}}
+
 /* ---------- Questions ---------- */
 .faq{border-top:2px solid var(--head);max-width:920px}
 .faq details{border-bottom:1px solid var(--rule-strong)}
@@ -613,6 +694,13 @@ h3{font-size:19px;line-height:1.3;letter-spacing:-.005em;margin-bottom:6px}
   .pb-aside{position:static}
   .gg-scroll{overflow:visible}
   #gitgraph{min-width:0}
+  .erd-scroll{overflow:visible}
+  .erd-svg{min-width:0}
+  .rel,.sql-faq,.dbpick,.erd-stage .swipe{display:none!important}
+  .dbblock[hidden]{display:block!important}
+  .dbblock + .dbblock{break-before:page}
+  .dbblock-h{display:block;margin:0 0 14px;font-size:18pt}
+  .dbnote{break-inside:avoid}
   .risk,.step,.card,.duo-col,.checks li,.gloss div,.faq details,.compare tr,.numbers li,.summary,figure{break-inside:avoid}
   .summary{background:#F4F7FA;color:#2B3340;border-left:4px solid #E06C4B}
   .summary .sl{color:#415A7E}
@@ -751,6 +839,7 @@ h3{font-size:19px;line-height:1.3;letter-spacing:-.005em;margin-bottom:6px}
       <a href="#tour">Tour</a>
       <a href="#using">How it works</a>
       <a href="#playbook">Playbook</a>
+      <a href="#database">Databases</a>
       <a href="#questions">Questions</a>
       <a href="#words">Glossary</a>
     </nav>
@@ -774,8 +863,9 @@ h3{font-size:19px;line-height:1.3;letter-spacing:-.005em;margin-bottom:6px}
       <li><a href="#team"><span>05</span>People and AI<small>Everyone</small></a></li>
       <li><a href="#checks"><span>06</span>Safety checks<small>Everyone</small></a></li>
       <li><a href="#playbook"><span>07</span>Developer playbook<small>Developers</small></a></li>
-      <li><a href="#questions"><span>08</span>Questions<small>Everyone</small></a></li>
-      <li><a href="#words"><span>09</span>Glossary<small>Everyone</small></a></li>
+      <li><a href="#database"><span>08</span>The databases<small>Developers</small></a></li>
+      <li><a href="#questions"><span>09</span>Questions<small>Everyone</small></a></li>
+      <li><a href="#words"><span>10</span>Glossary<small>Everyone</small></a></li>
     </ol>
   </nav>
 </header>
@@ -1597,11 +1687,494 @@ h3{font-size:19px;line-height:1.3;letter-spacing:-.005em;margin-bottom:6px}
   </div>
 </section>
 
-<!-- 08 Questions -->
+<!-- 08 The databases -->
+<section class="section alt" id="database" data-nav="database" aria-labelledby="db-h">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow"><span class="ch">08</span>The databases<span class="aud dev">Developers</span></p>
+      <h2 id="db-h">Two databases, <span class="hl">one picture each</span></h2>
+      <p class="lede">Our systems keep their records in SQL databases. Choose one, then select a table to see what it holds and how it connects to the rest.</p>
+      <p class="tech-line"><b>In tech terms:</b> both are T-SQL databases in schema dbo, with GUID keys generated by NEWSEQUENTIALID() and UTC timestamps.</p>
+    </div>
+    <div class="dbpick reveal" role="group" aria-label="Choose a database">
+      <button class="dbcard" type="button" data-db="core" aria-pressed="true">
+        <svg class="dbc-i" viewBox="0 0 32 32" aria-hidden="true"><ellipse cx="16" cy="8" rx="11" ry="4.5"/><path d="M5 8v16c0 2.5 4.9 4.5 11 4.5s11-2 11-4.5V8"/><path d="M5 16c0 2.5 4.9 4.5 11 4.5s11-2 11-4.5"/></svg>
+        <span class="dbc-n">EMG Company App Core</span>
+        <span class="dbc-d">Accounts, applets, roles and permissions</span>
+        <span class="dbc-m">11 tables</span>
+      </button>
+      <button class="dbcard" type="button" data-db="tickets" aria-pressed="false">
+        <svg class="dbc-i" viewBox="0 0 32 32" aria-hidden="true"><ellipse cx="16" cy="8" rx="11" ry="4.5"/><path d="M5 8v16c0 2.5 4.9 4.5 11 4.5s11-2 11-4.5V8"/><path d="M5 16c0 2.5 4.9 4.5 11 4.5s11-2 11-4.5"/></svg>
+        <span class="dbc-n">EMG Ticketing System</span>
+        <span class="dbc-d">The help desk: tickets, teams, categories and audit</span>
+        <span class="dbc-m">8 tables</span>
+      </button>
+    </div>
+  </div>
+
+<!-- EMG Company App Core -->
+<div class="dbblock" id="db-core" data-db="core">
+  <div class="wrap wide">
+    <h3 class="dbblock-h">EMG Company App Core</h3>
+    <div class="stage erd-stage reveal">
+      <div class="stage-top">
+        <span class="lbl erd-lbl">Show</span>
+        <div class="tabs" role="group"></div>
+      </div>
+      <p class="swipe">Swipe sideways to see the whole diagram.</p>
+      <div class="erd-scroll"><svg class="erd-svg" xmlns="http://www.w3.org/2000/svg" role="group"></svg></div>
+      <ul class="erd-key" aria-label="How to read the diagram">
+        <li><svg viewBox="0 0 36 18" aria-hidden="true"><path d="M2 9H19M19 9 34 3M19 9H34M19 9 34 15"/><path class="edge" d="M34 1V17"/></svg>Many rows can point at one row</li>
+        <li><svg viewBox="0 0 36 18" aria-hidden="true"><path d="M2 9H34M24 3V15"/><path class="edge" d="M34 1V17"/></svg>Exactly one</li>
+        <li><svg viewBox="0 0 36 18" aria-hidden="true"><path d="M2 9H34M24 3V15"/><circle class="o" cx="14" cy="9" r="4.5"/><path class="edge" d="M34 1V17"/></svg>Optional: the column can be empty</li>
+        <li><svg viewBox="0 0 36 18" aria-hidden="true"><path d="M2 9H34"/><rect class="d" x="13" y="4" width="10" height="10" transform="rotate(45 18 9)"/></svg>Cascade: deleting the parent deletes these rows</li>
+        <li><svg viewBox="0 0 36 18" aria-hidden="true"><path d="M2 9H34" stroke-dasharray="5 4"/></svg>Plain reference, no foreign key</li>
+        <li><span class="kbs"><span class="kb pk">PK</span><span class="kb fk">FK</span><span class="kb uq">UQ</span><span class="kb ref">REF</span></span>Primary key, foreign key, unique, plain reference</li>
+        <li><span><b>?</b> after a type</span> can be empty</li>
+      </ul>
+      <div class="panel db-panel">
+        <div class="p-text db-text" aria-live="polite">
+          <div class="p-meta"><i></i><span class="db-meta">Overview</span></div>
+          <h3 class="p-title db-title"></h3>
+          <p class="p-body db-body"></p>
+          <p class="p-tech db-tech"></p>
+          <div class="rel db-rel" hidden></div>
+        </div>
+        <div class="p-ctrl">
+          <button class="btn btn-quiet btn-sm db-clear" type="button" hidden>Clear selection</button>
+        </div>
+      </div>
+    </div>
+    <p class="stage-hint">Tip: select a table, then use the buttons in the panel to move to the tables it connects to. Press <kbd>Esc</kbd> to clear.</p>
+  </div>
+
+  <div class="wrap">
+    <h3 class="risk-h reveal">What the database enforces for you</h3>
+    <div class="dbnotes">
+      <div class="dbnote reveal"><h3>Roles stay inside their applet</h3><p>Roles and permissions are linked by pairs of keys, (AppletId, id). The database itself refuses to give a role a permission from another applet, or to give a person a role from the wrong applet.</p></div>
+      <div class="dbnote reveal"><h3>One role per person per applet</h3><p>UserAppletAccess is keyed on (UserId, AppletId), so nobody can hold two roles in the same applet. IsActive switches access off without losing the record.</p></div>
+      <div class="dbnote reveal"><h3>Deleting a user clears their own data</h3><p>Their settings, applet access and applet preferences go with them. Rows that record history do not cascade, so a user who created, granted or audited anything is switched off with IsActive instead.</p></div>
+      <div class="dbnote reveal"><h3>The audit trail outlives people</h3><p>AuditLog.TargetUserId has no foreign key on purpose, so an entry stays even after the person it concerns is deleted.</p></div>
+      <div class="dbnote reveal"><h3>Preferences are always valid JSON</h3><p>A check constraint on UserAppletPreferences.Prefs rejects anything ISJSON() says is not JSON. The default is an empty object.</p></div>
+      <div class="dbnote reveal"><h3>Common lookups are indexed</h3><p>Six indexes cover who has access to an applet or role, which roles hold a permission, which pages need a permission, and recent audit entries by actor or target.</p></div>
+    </div>
+
+    <div class="faq sql-faq reveal">
+      <details>
+        <summary>See the full SQL script for EMG Company App Core<span class="pm" aria-hidden="true"></span></summary>
+        <div class="code"><div class="code-top"><span>T-SQL</span><button class="copy" type="button" aria-label="Copy the SQL script for EMG Company App Core"><svg aria-hidden="true"><use href="#i-copy"/></svg><span>Copy</span></button></div>
+<pre tabindex="0"><code>CREATE TABLE dbo.Users (
+    UserId             UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_Users_UserId DEFAULT NEWSEQUENTIALID(),
+    Username           NVARCHAR(100)    NOT NULL,
+    Email              NVARCHAR(256)    NOT NULL,
+    PasswordHash       NVARCHAR(255)    NOT NULL,  -- bcrypt / Argon2 / PBKDF2 string, never plain text
+    MustChangePassword BIT              NOT NULL CONSTRAINT DF_Users_MustChange DEFAULT 1,
+    IsAdmin            BIT              NOT NULL CONSTRAINT DF_Users_IsAdmin DEFAULT 0,
+    IsActive           BIT              NOT NULL CONSTRAINT DF_Users_IsActive DEFAULT 1,
+    FailedLoginCount   INT              NOT NULL CONSTRAINT DF_Users_Failed DEFAULT 0,
+    LockoutUntil       DATETIME2(0)     NULL,
+    CreatedBy          UNIQUEIDENTIFIER NULL,
+    CreatedAt          DATETIME2(0)     NOT NULL CONSTRAINT DF_Users_CreatedAt DEFAULT SYSUTCDATETIME(),
+    LastLoginAt        DATETIME2(0)     NULL,
+    CONSTRAINT PK_Users PRIMARY KEY (UserId),
+    CONSTRAINT UQ_Users_Username UNIQUE (Username),
+    CONSTRAINT UQ_Users_Email    UNIQUE (Email),
+    CONSTRAINT FK_Users_CreatedBy FOREIGN KEY (CreatedBy) REFERENCES dbo.Users (UserId)
+);
+GO
+
+CREATE TABLE dbo.AppSettings (
+    SettingKey   NVARCHAR(100)    NOT NULL,
+    SettingValue NVARCHAR(MAX)    NULL,
+    UpdatedBy    UNIQUEIDENTIFIER NULL,
+    UpdatedAt    DATETIME2(0)     NOT NULL CONSTRAINT DF_AppSettings_UpdatedAt DEFAULT SYSUTCDATETIME(),
+    CONSTRAINT PK_AppSettings PRIMARY KEY (SettingKey),
+    CONSTRAINT FK_AppSettings_UpdatedBy FOREIGN KEY (UpdatedBy) REFERENCES dbo.Users (UserId)
+);
+GO
+
+CREATE TABLE dbo.UserSettings (
+    UserId   UNIQUEIDENTIFIER NOT NULL,
+    Theme    NVARCHAR(20)     NULL,   -- NULL = use the app-wide default
+    Language NVARCHAR(10)     NULL,
+    CONSTRAINT PK_UserSettings PRIMARY KEY (UserId),
+    CONSTRAINT FK_UserSettings_Users FOREIGN KEY (UserId) REFERENCES dbo.Users (UserId) ON DELETE CASCADE
+);
+GO
+
+/* ---------- Applet registry ---------- */
+
+CREATE TABLE dbo.Applets (
+    AppletId  UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_Applets_AppletId DEFAULT NEWSEQUENTIALID(),
+    Code      NVARCHAR(50)     NOT NULL,   -- e.g. 'applet1'
+    Name      NVARCHAR(100)    NOT NULL,
+    IsEnabled BIT              NOT NULL CONSTRAINT DF_Applets_IsEnabled DEFAULT 1,
+    CONSTRAINT PK_Applets PRIMARY KEY (AppletId),
+    CONSTRAINT UQ_Applets_Code UNIQUE (Code)
+);
+GO
+
+/* ---------- Applet roles and permissions ---------- */
+
+CREATE TABLE dbo.AppletRoles (
+    AppletRoleId UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_AppletRoles_Id DEFAULT NEWSEQUENTIALID(),
+    AppletId     UNIQUEIDENTIFIER NOT NULL,
+    Name         NVARCHAR(100)    NOT NULL,
+    CONSTRAINT PK_AppletRoles PRIMARY KEY (AppletRoleId),
+    CONSTRAINT FK_AppletRoles_Applets FOREIGN KEY (AppletId) REFERENCES dbo.Applets (AppletId),
+    CONSTRAINT UQ_AppletRoles_Name UNIQUE (AppletId, Name),
+    CONSTRAINT UQ_AppletRoles_Applet_Role UNIQUE (AppletId, AppletRoleId)  -- target for composite FKs
+);
+GO
+
+CREATE TABLE dbo.AppletPermissions (
+    PermissionId UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_AppletPermissions_Id DEFAULT NEWSEQUENTIALID(),
+    AppletId     UNIQUEIDENTIFIER NOT NULL,
+    Code         NVARCHAR(100)    NOT NULL,   -- e.g. 'reports.view'
+    CONSTRAINT PK_AppletPermissions PRIMARY KEY (PermissionId),
+    CONSTRAINT FK_AppletPermissions_Applets FOREIGN KEY (AppletId) REFERENCES dbo.Applets (AppletId),
+    CONSTRAINT UQ_AppletPermissions_Code UNIQUE (AppletId, Code),
+    CONSTRAINT UQ_AppletPermissions_Applet_Perm UNIQUE (AppletId, PermissionId)  -- target for composite FKs
+);
+GO
+
+-- AppletId is repeated here so both composite FKs force role and permission
+-- to belong to the same applet.
+CREATE TABLE dbo.AppletRolePermissions (
+    AppletRoleId UNIQUEIDENTIFIER NOT NULL,
+    PermissionId UNIQUEIDENTIFIER NOT NULL,
+    AppletId     UNIQUEIDENTIFIER NOT NULL,
+    CONSTRAINT PK_AppletRolePermissions PRIMARY KEY (AppletRoleId, PermissionId),
+    CONSTRAINT FK_ARP_Role FOREIGN KEY (AppletId, AppletRoleId)
+        REFERENCES dbo.AppletRoles (AppletId, AppletRoleId) ON DELETE CASCADE,
+    CONSTRAINT FK_ARP_Permission FOREIGN KEY (AppletId, PermissionId)
+        REFERENCES dbo.AppletPermissions (AppletId, PermissionId)
+);
+GO
+
+/* ---------- Which applets a user can open (set by admin) ---------- */
+
+CREATE TABLE dbo.UserAppletAccess (
+    UserId       UNIQUEIDENTIFIER NOT NULL,
+    AppletId     UNIQUEIDENTIFIER NOT NULL,
+    AppletRoleId UNIQUEIDENTIFIER NOT NULL,
+    IsActive     BIT              NOT NULL CONSTRAINT DF_UAA_IsActive DEFAULT 1,
+    GrantedBy    UNIQUEIDENTIFIER NULL,
+    GrantedAt    DATETIME2(0)     NOT NULL CONSTRAINT DF_UAA_GrantedAt DEFAULT SYSUTCDATETIME(),
+    CONSTRAINT PK_UserAppletAccess PRIMARY KEY (UserId, AppletId),  -- one role per user per applet
+    CONSTRAINT FK_UAA_Users FOREIGN KEY (UserId) REFERENCES dbo.Users (UserId) ON DELETE CASCADE,
+    CONSTRAINT FK_UAA_Role FOREIGN KEY (AppletId, AppletRoleId)
+        REFERENCES dbo.AppletRoles (AppletId, AppletRoleId),         -- role must belong to the same applet
+    CONSTRAINT FK_UAA_GrantedBy FOREIGN KEY (GrantedBy) REFERENCES dbo.Users (UserId)
+);
+GO
+
+/* ---------- Page access ---------- */
+
+CREATE TABLE dbo.AppletPages (
+    PageId       UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_AppletPages_Id DEFAULT NEWSEQUENTIALID(),
+    AppletId     UNIQUEIDENTIFIER NOT NULL,
+    Route        NVARCHAR(200)    NOT NULL,
+    PermissionId UNIQUEIDENTIFIER NULL,   -- NULL = any user with applet access can open it
+    CONSTRAINT PK_AppletPages PRIMARY KEY (PageId),
+    CONSTRAINT FK_AppletPages_Applets FOREIGN KEY (AppletId) REFERENCES dbo.Applets (AppletId),
+    CONSTRAINT FK_AppletPages_Permission FOREIGN KEY (AppletId, PermissionId)
+        REFERENCES dbo.AppletPermissions (AppletId, PermissionId),
+    CONSTRAINT UQ_AppletPages_Route UNIQUE (AppletId, Route)
+);
+GO
+
+/* ---------- Per-user, per-applet preferences ---------- */
+
+CREATE TABLE dbo.UserAppletPreferences (
+    UserId    UNIQUEIDENTIFIER NOT NULL,
+    AppletId  UNIQUEIDENTIFIER NOT NULL,
+    Prefs     NVARCHAR(MAX)    NOT NULL CONSTRAINT DF_UAP_Prefs DEFAULT N'{}',
+    UpdatedAt DATETIME2(0)     NOT NULL CONSTRAINT DF_UAP_UpdatedAt DEFAULT SYSUTCDATETIME(),
+    CONSTRAINT PK_UserAppletPreferences PRIMARY KEY (UserId, AppletId),
+    CONSTRAINT FK_UAP_Users FOREIGN KEY (UserId) REFERENCES dbo.Users (UserId) ON DELETE CASCADE,
+    CONSTRAINT FK_UAP_Applets FOREIGN KEY (AppletId) REFERENCES dbo.Applets (AppletId),
+    CONSTRAINT CK_UAP_PrefsJson CHECK (ISJSON(Prefs) = 1)
+);
+GO
+
+/* ---------- Audit ---------- */
+
+CREATE TABLE dbo.AuditLog (
+    AuditId      UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_AuditLog_Id DEFAULT NEWSEQUENTIALID(),
+    ActorUserId  UNIQUEIDENTIFIER NOT NULL,
+    TargetUserId UNIQUEIDENTIFIER NULL,   -- no FK: audit rows must outlive deleted users
+    AppletId     UNIQUEIDENTIFIER NULL,
+    Action       NVARCHAR(100)    NOT NULL,  -- 'user.create', 'applet.grant', ...
+    Details      NVARCHAR(MAX)    NULL,
+    CreatedAt    DATETIME2(0)     NOT NULL CONSTRAINT DF_AuditLog_CreatedAt DEFAULT SYSUTCDATETIME(),
+    CONSTRAINT PK_AuditLog PRIMARY KEY (AuditId),
+    CONSTRAINT FK_AuditLog_Actor FOREIGN KEY (ActorUserId) REFERENCES dbo.Users (UserId)
+);
+GO
+
+/* ---------- Indexes ---------- */
+
+CREATE INDEX IX_UserAppletAccess_Applet ON dbo.UserAppletAccess (AppletId, UserId);
+CREATE INDEX IX_UserAppletAccess_Role   ON dbo.UserAppletAccess (AppletId, AppletRoleId);
+CREATE INDEX IX_AppletRolePerm_Perm     ON dbo.AppletRolePermissions (AppletId, PermissionId);
+CREATE INDEX IX_AppletPages_Permission  ON dbo.AppletPages (AppletId, PermissionId);
+CREATE INDEX IX_AuditLog_Actor          ON dbo.AuditLog (ActorUserId, CreatedAt DESC);
+CREATE INDEX IX_AuditLog_Target         ON dbo.AuditLog (TargetUserId, CreatedAt DESC);
+GO</code></pre></div>
+      </details>
+    </div>
+  </div>
+</div>
+
+<!-- EMG Ticketing System -->
+<div class="dbblock" id="db-tickets" data-db="tickets" hidden>
+  <div class="wrap wide">
+    <h3 class="dbblock-h">EMG Ticketing System</h3>
+    <div class="stage erd-stage reveal">
+      <div class="stage-top">
+        <span class="lbl erd-lbl">Show</span>
+        <div class="tabs" role="group"></div>
+      </div>
+      <p class="swipe">Swipe sideways to see the whole diagram.</p>
+      <div class="erd-scroll"><svg class="erd-svg" xmlns="http://www.w3.org/2000/svg" role="group"></svg></div>
+      <ul class="erd-key" aria-label="How to read the diagram">
+        <li><svg viewBox="0 0 36 18" aria-hidden="true"><path d="M2 9H19M19 9 34 3M19 9H34M19 9 34 15"/><path class="edge" d="M34 1V17"/></svg>Many rows can point at one row</li>
+        <li><svg viewBox="0 0 36 18" aria-hidden="true"><path d="M2 9H34M24 3V15"/><path class="edge" d="M34 1V17"/></svg>Exactly one</li>
+        <li><svg viewBox="0 0 36 18" aria-hidden="true"><path d="M2 9H34M24 3V15"/><circle class="o" cx="14" cy="9" r="4.5"/><path class="edge" d="M34 1V17"/></svg>Optional: the column can be empty</li>
+        <li><svg viewBox="0 0 36 18" aria-hidden="true"><path d="M2 9H34" stroke-dasharray="5 4"/></svg>Plain reference, no foreign key</li>
+        <li><span class="kbs"><span class="kb pk">PK</span><span class="kb fk">FK</span><span class="kb uq">UQ</span><span class="kb ref">REF</span></span>Primary key, foreign key, unique, plain reference</li>
+        <li><span><b>?</b> after a type</span> can be empty</li>
+      </ul>
+      <div class="panel db-panel">
+        <div class="p-text db-text" aria-live="polite">
+          <div class="p-meta"><i></i><span class="db-meta">Overview</span></div>
+          <h3 class="p-title db-title"></h3>
+          <p class="p-body db-body"></p>
+          <p class="p-tech db-tech"></p>
+          <div class="rel db-rel" hidden></div>
+        </div>
+        <div class="p-ctrl">
+          <button class="btn btn-quiet btn-sm db-clear" type="button" hidden>Clear selection</button>
+        </div>
+      </div>
+    </div>
+    <p class="stage-hint">Tip: select a table, then use the buttons in the panel to move to the tables it connects to. Press <kbd>Esc</kbd> to clear.</p>
+  </div>
+
+  <div class="wrap">
+    <h3 class="risk-h reveal">What the database enforces for you</h3>
+    <div class="dbnotes">
+      <div class="dbnote reveal"><h3>Status and priority are checked</h3><p>CHECK constraints on Tickets allow only Low, Medium, High or Urgent for Priority, and Open, In Progress, Closed, On Hold or Resolved for Status.</p></div>
+      <div class="dbnote reveal"><h3>Nearly every link is optional</h3><p>Every foreign key can be empty except TicketReassignments.TicketId, so a reassignment always belongs to a ticket.</p></div>
+      <div class="dbnote reveal"><h3>People are plain IDs</h3><p>RequesterId, AssignedPersonId and CommentedById hold a person’s GUID but are not foreign keys, so the database does not check them.</p></div>
+      <div class="dbnote reveal"><h3>Category is stored as text</h3><p>Tickets.Category holds the category name, not its key, so the database cannot tell whether a ticket’s category still exists or has been renamed.</p></div>
+      <div class="dbnote reveal"><h3>Audit entries can point anywhere</h3><p>AuditLogs records an EntityType and EntityId for any table, so neither column is a foreign key.</p></div>
+      <div class="dbnote reveal"><h3>Common filters are indexed</h3><p>Nine indexes cover ticket status, requester, assigned person and assigned team, comments and reassignments by ticket, subcategories by category, and audit entries by date and by entity.</p></div>
+    </div>
+
+    <div class="faq sql-faq reveal">
+      <details>
+        <summary>See the full SQL script for EMG Ticketing System<span class="pm" aria-hidden="true"></span></summary>
+        <div class="code"><div class="code-top"><span>T-SQL</span><button class="copy" type="button" aria-label="Copy the SQL script for EMG Ticketing System"><svg aria-hidden="true"><use href="#i-copy"/></svg><span>Copy</span></button></div>
+<pre tabindex="0"><code>/* =====================================================================
+   Help Desk Ticket System - SQL Server (T-SQL) equivalent of the
+   Dataverse tables used by the app (emg_* tables in src/generated).
+
+   Naming:   PascalCase for tables, columns, constraints and indexes.
+             Dataverse emg_/cr005_ prefixes dropped, plural table names.
+             Lookup columns end in Id.  Dataverse primary GUID -&gt; &lt;Singular&gt;Id.
+   Types:    Text -&gt; NVARCHAR(n) using the Dataverse max length
+             Memo -&gt; NVARCHAR(MAX)      Yes/No -&gt; BIT
+             DateTime -&gt; DATETIME2(0), stored in UTC
+             Choice (option set) -&gt; NVARCHAR + CHECK using the Dataverse labels
+   Omitted:  Dataverse system plumbing (ownerid, owningbusinessunit, statecode,
+             statuscode, versionnumber, importsequencenumber, timezone cols,
+             createdby/modifiedby).  RowCreatedOn / RowModifiedOn kept.
+   ===================================================================== */
+
+-- CREATE DATABASE HelpDesk;  GO
+-- USE HelpDesk;              GO
+
+/* ---------------------------------------------------------------------
+   Teams  (emg_teams)
+   --------------------------------------------------------------------- */
+CREATE TABLE dbo.Teams (
+    TeamId             UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_Teams_Id        DEFAULT NEWSEQUENTIALID(),
+    Name               NVARCHAR(850)    NOT NULL,
+    Description        NVARCHAR(100)    NULL,
+    Email              NVARCHAR(100)    NULL,
+    Active             BIT              NULL     CONSTRAINT DF_Teams_Active    DEFAULT 1,
+    IsExternalParty    BIT              NULL     CONSTRAINT DF_Teams_External  DEFAULT 0,
+    RowCreatedOn       DATETIME2(0)     NOT NULL CONSTRAINT DF_Teams_Created   DEFAULT SYSUTCDATETIME(),
+    RowModifiedOn      DATETIME2(0)     NOT NULL CONSTRAINT DF_Teams_Modified  DEFAULT SYSUTCDATETIME(),
+    CONSTRAINT PK_Teams PRIMARY KEY (TeamId)
+);
+GO
+
+/* ---------------------------------------------------------------------
+   TeamMembers  (emg_teammembers)
+   NOTE: Dataverse has no link between teams and team members.
+   --------------------------------------------------------------------- */
+CREATE TABLE dbo.TeamMembers (
+    TeamMemberId       UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_TeamMembers_Id       DEFAULT NEWSEQUENTIALID(),
+    Name               NVARCHAR(850)    NOT NULL,   -- emg_teammembername
+    Email              NVARCHAR(100)    NULL,
+    RowCreatedOn       DATETIME2(0)     NOT NULL CONSTRAINT DF_TeamMembers_Created  DEFAULT SYSUTCDATETIME(),
+    RowModifiedOn      DATETIME2(0)     NOT NULL CONSTRAINT DF_TeamMembers_Modified DEFAULT SYSUTCDATETIME(),
+    CONSTRAINT PK_TeamMembers PRIMARY KEY (TeamMemberId)
+);
+GO
+
+/* ---------------------------------------------------------------------
+   Categories  (emg_categories)
+   --------------------------------------------------------------------- */
+CREATE TABLE dbo.Categories (
+    CategoryId              UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_Categories_Id       DEFAULT NEWSEQUENTIALID(),
+    Name                    NVARCHAR(850)    NOT NULL,
+    Description             NVARCHAR(100)    NULL,
+    Active                  BIT              NULL     CONSTRAINT DF_Categories_Active   DEFAULT 1,
+    DefaultSlaHours         INT              NULL,
+    DefaultAssigneeTeamId   UNIQUEIDENTIFIER NULL,
+    RowCreatedOn            DATETIME2(0)     NOT NULL CONSTRAINT DF_Categories_Created  DEFAULT SYSUTCDATETIME(),
+    RowModifiedOn           DATETIME2(0)     NOT NULL CONSTRAINT DF_Categories_Modified DEFAULT SYSUTCDATETIME(),
+    CONSTRAINT PK_Categories PRIMARY KEY (CategoryId),
+    CONSTRAINT FK_Categories_DefaultTeam FOREIGN KEY (DefaultAssigneeTeamId) REFERENCES dbo.Teams (TeamId)
+);
+GO
+
+/* ---------------------------------------------------------------------
+   Subcategories  (emg_subcategories)
+   --------------------------------------------------------------------- */
+CREATE TABLE dbo.Subcategories (
+    SubcategoryId           UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_Subcategories_Id       DEFAULT NEWSEQUENTIALID(),
+    Name                    NVARCHAR(850)    NOT NULL,
+    Description             NVARCHAR(100)    NULL,
+    Active                  BIT              NULL     CONSTRAINT DF_Subcategories_Active   DEFAULT 1,
+    SlaHours                INT              NULL,
+    CategoryId              UNIQUEIDENTIFIER NULL,
+    DefaultAssigneeTeamId   UNIQUEIDENTIFIER NULL,   -- emg_DefaultAssigneeTeam
+    RowCreatedOn            DATETIME2(0)     NOT NULL CONSTRAINT DF_Subcategories_Created  DEFAULT SYSUTCDATETIME(),
+    RowModifiedOn           DATETIME2(0)     NOT NULL CONSTRAINT DF_Subcategories_Modified DEFAULT SYSUTCDATETIME(),
+    CONSTRAINT PK_Subcategories PRIMARY KEY (SubcategoryId),
+    CONSTRAINT FK_Subcategories_Category    FOREIGN KEY (CategoryId)             REFERENCES dbo.Categories (CategoryId),
+    CONSTRAINT FK_Subcategories_DefaultTeam FOREIGN KEY (DefaultAssigneeTeamId)  REFERENCES dbo.Teams (TeamId)
+);
+GO
+
+/* ---------------------------------------------------------------------
+   Tickets  (emg_tickets)  - central table
+   Category is the category NAME as free text (not a FK) in Dataverse.
+   RequesterId AND AssignedPersonId are plain GUID columns (no FK).
+   --------------------------------------------------------------------- */
+CREATE TABLE dbo.Tickets (
+    TicketId            UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_Tickets_Id       DEFAULT NEWSEQUENTIALID(),
+    TicketNumber        NVARCHAR(850)    NOT NULL,   -- e.g. TKT-00001
+    Subject             NVARCHAR(100)    NOT NULL,
+    Description         NVARCHAR(4000)   NULL,
+    Category            NVARCHAR(100)    NULL,
+    Priority            NVARCHAR(10)     NULL,       -- 787670000..3
+    Status              NVARCHAR(20)     NULL,       -- 787670000..4
+    RequesterId         UNIQUEIDENTIFIER NOT NULL,
+    AssignedPersonId    UNIQUEIDENTIFIER NULL,
+    AssignedTeamId      UNIQUEIDENTIFIER NULL,
+    CreatedOn           DATETIME2(0)     NULL,       -- emg_created_on (business date)
+    DueDate             DATETIME2(0)     NULL,
+    FirstResponseOn     DATETIME2(0)     NULL,
+    ResolvedOn          DATETIME2(0)     NULL,
+    ResolutionNotes     NVARCHAR(4000)   NULL,
+    TicketUrl           NVARCHAR(500)    NULL,
+    RowCreatedOn        DATETIME2(0)     NOT NULL CONSTRAINT DF_Tickets_Created  DEFAULT SYSUTCDATETIME(),
+    RowModifiedOn       DATETIME2(0)     NOT NULL CONSTRAINT DF_Tickets_Modified DEFAULT SYSUTCDATETIME(),
+    CONSTRAINT PK_Tickets PRIMARY KEY (TicketId),
+    CONSTRAINT UQ_Tickets_TicketNumber UNIQUE (TicketNumber),
+    CONSTRAINT CK_Tickets_Priority CHECK (Priority IN ('Low', 'Medium', 'High', 'Urgent')),
+    CONSTRAINT CK_Tickets_Status   CHECK (Status   IN ('Open', 'In Progress', 'Closed', 'On Hold', 'Resolved')),
+    CONSTRAINT FK_Tickets_AssignedTeam   FOREIGN KEY (AssignedTeamId)   REFERENCES dbo.Teams (TeamId)
+);
+GO
+
+/* ---------------------------------------------------------------------
+   TicketComments  (emg_ticketcomments)
+   --------------------------------------------------------------------- */
+CREATE TABLE dbo.TicketComments (
+    TicketCommentId    UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_TicketComments_Id       DEFAULT NEWSEQUENTIALID(),
+    CommentSummary     NVARCHAR(850)    NOT NULL,
+    Comment            NVARCHAR(100)    NULL,       -- Dataverse caps this at 100 chars
+    CommentDate        DATETIME2(0)     NULL,
+    InternalOnly       BIT              NULL     CONSTRAINT DF_TicketComments_Internal DEFAULT 0,
+    TicketId           UNIQUEIDENTIFIER NULL,
+    CommentedById      UNIQUEIDENTIFIER NULL,
+    RowCreatedOn       DATETIME2(0)     NOT NULL CONSTRAINT DF_TicketComments_Created  DEFAULT SYSUTCDATETIME(),
+    RowModifiedOn      DATETIME2(0)     NOT NULL CONSTRAINT DF_TicketComments_Modified DEFAULT SYSUTCDATETIME(),
+    CONSTRAINT PK_TicketComments PRIMARY KEY (TicketCommentId),
+    CONSTRAINT FK_TicketComments_Ticket FOREIGN KEY (TicketId) REFERENCES dbo.Tickets (TicketId)
+);
+GO
+
+/* ---------------------------------------------------------------------
+   TicketReassignments  (emg_ticketreassignments)
+   TicketId links each reassignment to its ticket (added; not in Dataverse).
+   TicketNumber is free text in Dataverse (the app also packs
+   "TKT-00001 -&gt; Person (Team)" into it) and is kept as-is, but is NOT the FK.
+   AssignedTeamMemberId target is inferred from the column name.
+   --------------------------------------------------------------------- */
+CREATE TABLE dbo.TicketReassignments (
+    TicketReassignmentId   UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_TicketReassignments_Id       DEFAULT NEWSEQUENTIALID(),
+    TicketId               UNIQUEIDENTIFIER NOT NULL,
+    TicketNumber           NVARCHAR(850)    NOT NULL,
+    ReassignmentDate       DATETIME2(0)     NULL,
+    AssignedTeamMemberId   UNIQUEIDENTIFIER NULL,
+    RowCreatedOn           DATETIME2(0)     NOT NULL CONSTRAINT DF_TicketReassignments_Created  DEFAULT SYSUTCDATETIME(),
+    RowModifiedOn          DATETIME2(0)     NOT NULL CONSTRAINT DF_TicketReassignments_Modified DEFAULT SYSUTCDATETIME(),
+    CONSTRAINT PK_TicketReassignments PRIMARY KEY (TicketReassignmentId),
+    CONSTRAINT FK_TicketReassignments_Ticket FOREIGN KEY (TicketId)             REFERENCES dbo.Tickets (TicketId),
+    CONSTRAINT FK_TicketReassignments_Member FOREIGN KEY (AssignedTeamMemberId) REFERENCES dbo.TeamMembers (TeamMemberId)
+);
+GO
+
+/* ---------------------------------------------------------------------
+   AuditLogs  (emg_auditlogs)
+   EntityType + EntityId point at any table, so no FK.
+   --------------------------------------------------------------------- */
+CREATE TABLE dbo.AuditLogs (
+    AuditLogId         UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_AuditLogs_Id       DEFAULT NEWSEQUENTIALID(),
+    Name               NVARCHAR(850)    NOT NULL,
+    Action             NVARCHAR(100)    NULL,
+    EntityType         NVARCHAR(100)    NULL,
+    EntityId           NVARCHAR(100)    NULL,
+    Changes            NVARCHAR(MAX)    NULL,
+    PerformedOn        DATETIME2(0)     NULL,
+    RowCreatedOn       DATETIME2(0)     NOT NULL CONSTRAINT DF_AuditLogs_Created  DEFAULT SYSUTCDATETIME(),
+    RowModifiedOn      DATETIME2(0)     NOT NULL CONSTRAINT DF_AuditLogs_Modified DEFAULT SYSUTCDATETIME(),
+    CONSTRAINT PK_AuditLogs PRIMARY KEY (AuditLogId)
+);
+GO
+
+/* ---------------------------------------------------------------------
+   Indexes (foreign keys + the app's common filters). Not in Dataverse.
+   --------------------------------------------------------------------- */
+CREATE INDEX IX_Tickets_Status             ON dbo.Tickets (Status);
+CREATE INDEX IX_Tickets_Requester          ON dbo.Tickets (RequesterId);
+CREATE INDEX IX_Tickets_AssignedPerson     ON dbo.Tickets (AssignedPersonId);
+CREATE INDEX IX_Tickets_AssignedTeam       ON dbo.Tickets (AssignedTeamId);
+CREATE INDEX IX_TicketComments_Ticket      ON dbo.TicketComments (TicketId);
+CREATE INDEX IX_TicketReassignments_Ticket ON dbo.TicketReassignments (TicketId);
+CREATE INDEX IX_Subcategories_Category     ON dbo.Subcategories (CategoryId);
+CREATE INDEX IX_AuditLogs_PerformedOn      ON dbo.AuditLogs (PerformedOn DESC);
+CREATE INDEX IX_AuditLogs_Entity           ON dbo.AuditLogs (EntityType, EntityId);
+GO</code></pre></div>
+      </details>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 09 Questions -->
 <section class="section" id="questions" data-nav="questions" aria-labelledby="q-h">
   <div class="wrap">
     <div class="sec-head reveal">
-      <p class="eyebrow"><span class="ch">08</span>Questions<span class="aud all">Everyone</span></p>
+      <p class="eyebrow"><span class="ch">09</span>Questions<span class="aud all">Everyone</span></p>
       <h2 id="q-h">Questions people <span class="hl">often ask</span></h2>
     </div>
     <div class="faq reveal">
@@ -1617,11 +2190,11 @@ h3{font-size:19px;line-height:1.3;letter-spacing:-.005em;margin-bottom:6px}
   </div>
 </section>
 
-<!-- 09 Glossary -->
+<!-- 10 Glossary -->
 <section class="section alt" id="words" data-nav="words" aria-labelledby="w-h">
   <div class="wrap">
     <div class="sec-head reveal">
-      <p class="eyebrow"><span class="ch">09</span>Glossary<span class="aud all">Everyone</span></p>
+      <p class="eyebrow"><span class="ch">10</span>Glossary<span class="aud all">Everyone</span></p>
       <h2 id="w-h">Words you'll hear, <span class="hl">in plain English</span></h2>
     </div>
     <div class="gloss-tools">
@@ -1630,6 +2203,7 @@ h3{font-size:19px;line-height:1.3;letter-spacing:-.005em;margin-bottom:6px}
     </div>
     <dl class="gloss" id="gloss">
       <div><dt>AI agent</dt><dd>Software that writes and changes code when given a task. On our team it works alongside a developer, who reviews everything it produces.</dd></div>
+      <div><dt>Applet</dt><dd>One of the separate tools inside the app. An admin chooses which applets each person can open, and with which role.</dd></div>
       <div><dt>Branch</dt><dd>A separate working copy of the code. Changes on a branch don't affect anyone else until they're merged.</dd></div>
       <div><dt>Feature branch</dt><dd>A short-lived branch for one piece of work, such as a new report.</dd></div>
       <div><dt>Test branch</dt><dd>The shared branch for finished work that isn't live yet. It feeds the test app.</dd></div>
@@ -1647,6 +2221,10 @@ h3{font-size:19px;line-height:1.3;letter-spacing:-.005em;margin-bottom:6px}
       <div><dt>Render</dt><dd>The cloud service that runs our website and server, and releases new versions automatically.</dd></div>
       <div><dt>Node.js</dt><dd>The technology our server, the app's engine, is built with.</dd></div>
       <div><dt>SQL database</dt><dd>Stores structured records, like accounts and usage figures, in tables.</dd></div>
+      <div><dt>Primary key</dt><dd>The column, or columns, that uniquely identify each row in a table.</dd></div>
+      <div><dt>Foreign key</dt><dd>A column that holds the key of a row in another table. The database uses it to keep the two tables consistent.</dd></div>
+      <div><dt>Cascade delete</dt><dd>When a row is deleted, the rows that depend on it are deleted automatically.</dd></div>
+      <div><dt>ERD</dt><dd>Entity relationship diagram: a picture of a database's tables and how they connect.</dd></div>
       <div><dt>Blob storage</dt><dd>Stores files, like PDFs and images.</dd></div>
       <div><dt>Single sign-on (SSO)</dt><dd>Signing in with an existing work account instead of a separate password.</dd></div>
       <div><dt>Microsoft Entra ID</dt><dd>Microsoft's service for work accounts and sign-in. It powers our single sign-on.</dd></div>
@@ -1673,8 +2251,9 @@ h3{font-size:19px;line-height:1.3;letter-spacing:-.005em;margin-bottom:6px}
         <li><a href="#team">05 People and AI</a></li>
         <li><a href="#checks">06 Safety checks</a></li>
         <li><a href="#playbook">07 Playbook</a></li>
-        <li><a href="#questions">08 Questions</a></li>
-        <li><a href="#words">09 Glossary</a></li>
+        <li><a href="#database">08 Databases</a></li>
+        <li><a href="#questions">09 Questions</a></li>
+        <li><a href="#words">10 Glossary</a></li>
       </ol>
     </nav>
     <div>
@@ -2231,6 +2810,380 @@ h3{font-size:19px;line-height:1.3;letter-spacing:-.005em;margin-bottom:6px}
       playReqLabel.textContent = 'Play it again';
     } catch (e) { if (e !== CANCEL) console.error(e); }
   });
+
+  /* ---------- Database diagrams ---------- */
+  // Columns are 'name|type|keys'. A trailing ? on the type means the column can be empty.
+  // keys: pk, fk, uq, ref (a plain column that points at something but has no foreign key).
+  // Relationships: c/cols are the child table and its foreign-key columns, p/pcols the parent and
+  // the key it points at. The line attaches at the last column listed. mode 'v' joins stacked tables.
+  const DATABASES = {
+    core: {
+      name: 'EMG Company App Core', width: 1472, height: 806,
+      summary: 'Eleven tables: accounts, applets, roles and permissions, plus an audit trail.',
+      groups: {
+        people:  { name: 'Accounts and settings', tone: 'var(--test)', body: 'Who can sign in, and the settings that follow them: one row per person, their own display choices, and settings for the whole app.', tech: 'Users, UserSettings, AppSettings.' },
+        applets: { name: 'Applets and permissions', tone: 'var(--feature)', body: 'What there is to open, and what can be done in it: the applet list, the roles and permissions each applet defines, which permissions each role holds, and the pages that need them.', tech: 'Applets, AppletRoles, AppletPermissions, AppletRolePermissions, AppletPages.' },
+        access:  { name: 'Access and preferences', tone: 'var(--live)', body: 'Where people meet applets. An admin gives a person access to an applet with one role, and each person keeps their own preferences for each applet.', tech: 'UserAppletAccess, UserAppletPreferences.' },
+        audit:   { name: 'Audit trail', tone: 'var(--slate)', body: 'A record of who did what to whom. Entries about the person acted on are kept even if that account is later deleted.', tech: 'AuditLog.' }
+      },
+      overview: {
+        title: 'Eleven tables in four groups',
+        body: 'Each line is a link between tables: a column in one table holds the key of a row in another. Select a table to see what it holds and what it connects to, or pick a group above.',
+        label: 'Reading the lines', tech: 'Dashed lines are plain references with no foreign key. Diamonds mark cascading deletes.'
+      },
+      tables: [
+        { id: 'Users', g: 'people', x: 48, y: 206, cols: ['UserId|guid|pk', 'Username|nvarchar(100)|uq', 'Email|nvarchar(256)|uq', 'PasswordHash|nvarchar(255)', 'MustChangePassword|bit', 'IsAdmin|bit', 'IsActive|bit', 'FailedLoginCount|int', 'LockoutUntil|datetime2?', 'CreatedBy|guid?|fk', 'CreatedAt|datetime2', 'LastLoginAt|datetime2?'],
+          body: 'Everyone who can sign in. Each row holds the account details, whether the person is an admin or switched off, and the counters that lock an account after failed sign-ins.',
+          tech: 'PK UserId. Username and Email are unique. PasswordHash holds a bcrypt, Argon2 or PBKDF2 string, never the password itself. Defaults: MustChangePassword on, IsActive on, IsAdmin off. CreatedBy points back at Users.' },
+        { id: 'UserSettings', g: 'people', x: 48, y: 24, cols: ['UserId|guid|pk fk', 'Theme|nvarchar(20)?', 'Language|nvarchar(10)?'],
+          body: 'One person’s own display choices, such as theme and language. An empty value means use the app-wide default.',
+          tech: 'PK and FK UserId → Users, ON DELETE CASCADE, so deleting a user deletes their settings. At most one row per user.' },
+        { id: 'AppSettings', g: 'people', x: 48, y: 622, cols: ['SettingKey|nvarchar(100)|pk', 'SettingValue|nvarchar(max)?', 'UpdatedBy|guid?|fk', 'UpdatedAt|datetime2'],
+          body: 'Settings that apply to the whole app, stored as a name and a value. Each row also records who last changed it, and when.',
+          tech: 'PK SettingKey. SettingValue is NVARCHAR(MAX) and can be empty. UpdatedBy is an optional FK → Users.' },
+        { id: 'Applets', g: 'applets', x: 776, y: 316, cols: ['AppletId|guid|pk', 'Code|nvarchar(50)|uq', 'Name|nvarchar(100)', 'IsEnabled|bit'],
+          body: 'The list of applets in the app. Each has a short code, a name and an on/off switch.',
+          tech: 'PK AppletId. Code is unique, for example applet1. IsEnabled defaults to on.' },
+        { id: 'AppletRoles', g: 'applets', x: 776, y: 130, cols: ['AppletRoleId|guid|pk', 'AppletId|guid|fk', 'Name|nvarchar(100)'],
+          body: 'The roles an applet offers. A role belongs to one applet, and its name is unique within that applet.',
+          tech: 'FK AppletId → Applets. Unique on (AppletId, Name). A second unique key on (AppletId, AppletRoleId) lets other tables point at the pair and stay inside one applet.' },
+        { id: 'AppletPermissions', g: 'applets', x: 776, y: 524, cols: ['PermissionId|guid|pk', 'AppletId|guid|fk', 'Code|nvarchar(100)'],
+          body: 'The individual things an applet lets people do, such as reports.view. A permission belongs to one applet.',
+          tech: 'FK AppletId → Applets. Unique on (AppletId, Code) and on (AppletId, PermissionId); the second is the target for composite foreign keys.' },
+        { id: 'AppletRolePermissions', g: 'applets', x: 1140, y: 130, cols: ['AppletRoleId|guid|pk fk', 'PermissionId|guid|pk fk', 'AppletId|guid|fk'],
+          body: 'Which permissions each role is given. The database refuses to link a role to a permission from a different applet.',
+          tech: 'PK (AppletRoleId, PermissionId). AppletId is repeated so both composite FKs, (AppletId, AppletRoleId) and (AppletId, PermissionId), force the same applet. Deleting a role deletes its links.' },
+        { id: 'AppletPages', g: 'applets', x: 1140, y: 446, cols: ['PageId|guid|pk', 'AppletId|guid|fk', 'Route|nvarchar(200)', 'PermissionId|guid?|fk'],
+          body: 'The pages inside each applet, and the permission needed to open each one. With no permission set, anyone with access to the applet can open the page.',
+          tech: 'Unique on (AppletId, Route). PermissionId is optional, and the composite FK (AppletId, PermissionId) keeps it inside the same applet.' },
+        { id: 'UserAppletAccess', g: 'access', x: 412, y: 40, cols: ['UserId|guid|pk fk', 'AppletId|guid|pk fk', 'AppletRoleId|guid|fk', 'IsActive|bit', 'GrantedBy|guid?|fk', 'GrantedAt|datetime2'],
+          body: 'Which applets each person can open, and with which role. An admin sets it. A person has at most one role in each applet.',
+          tech: 'PK (UserId, AppletId). Composite FK (AppletId, AppletRoleId) → AppletRoles makes the role belong to the same applet. Deleting a user deletes their access. GrantedBy is an optional FK → Users. IsActive switches access off without deleting it.' },
+        { id: 'UserAppletPreferences', g: 'access', x: 412, y: 300, cols: ['UserId|guid|pk fk', 'AppletId|guid|pk fk', 'Prefs|nvarchar(max)', 'UpdatedAt|datetime2'],
+          body: 'A person’s own preferences inside one applet, stored as JSON.',
+          tech: 'PK (UserId, AppletId). Prefs defaults to {} and a CHECK constraint (ISJSON) rejects anything that is not valid JSON. Deleting a user deletes their preferences.' },
+        { id: 'AuditLog', g: 'audit', x: 412, y: 508, cols: ['AuditId|guid|pk', 'ActorUserId|guid|fk', 'TargetUserId|guid?|ref', 'AppletId|guid?|ref', 'Action|nvarchar(100)', 'Details|nvarchar(max)?', 'CreatedAt|datetime2'],
+          body: 'A record of who did what: the person who acted, who it was done to, which applet, and the action, such as user.create or applet.grant.',
+          tech: 'ActorUserId is a real FK → Users, so a user with audit history can’t simply be deleted; switch them off with IsActive. TargetUserId has no FK on purpose, so entries outlive deleted users, and AppletId is a plain column too. Indexed by actor and by target, newest first.' }
+      ],
+      rels: [
+        { c: 'Users', cols: ['CreatedBy'], p: 'Users', pcols: ['UserId'], opt: true },
+        { c: 'AppSettings', cols: ['UpdatedBy'], p: 'Users', pcols: ['UserId'], opt: true, mode: 'v' },
+        { c: 'UserSettings', cols: ['UserId'], p: 'Users', pcols: ['UserId'], one: true, cascade: true, mode: 'v' },
+        { c: 'UserAppletAccess', cols: ['UserId'], p: 'Users', pcols: ['UserId'], cascade: true },
+        { c: 'UserAppletAccess', cols: ['GrantedBy'], p: 'Users', pcols: ['UserId'], opt: true },
+        { c: 'UserAppletPreferences', cols: ['UserId'], p: 'Users', pcols: ['UserId'], cascade: true },
+        { c: 'AuditLog', cols: ['ActorUserId'], p: 'Users', pcols: ['UserId'] },
+        { c: 'AuditLog', cols: ['TargetUserId'], p: 'Users', pcols: ['UserId'], soft: true },
+        { c: 'UserAppletAccess', cols: ['AppletId', 'AppletRoleId'], p: 'AppletRoles', pcols: ['AppletId', 'AppletRoleId'] },
+        { c: 'UserAppletPreferences', cols: ['AppletId'], p: 'Applets', pcols: ['AppletId'] },
+        { c: 'AuditLog', cols: ['AppletId'], p: 'Applets', pcols: ['AppletId'], soft: true },
+        { c: 'AppletRoles', cols: ['AppletId'], p: 'Applets', pcols: ['AppletId'], mode: 'v' },
+        { c: 'AppletPermissions', cols: ['AppletId'], p: 'Applets', pcols: ['AppletId'], mode: 'v' },
+        { c: 'AppletRolePermissions', cols: ['AppletId', 'AppletRoleId'], p: 'AppletRoles', pcols: ['AppletId', 'AppletRoleId'], cascade: true },
+        { c: 'AppletRolePermissions', cols: ['AppletId', 'PermissionId'], p: 'AppletPermissions', pcols: ['AppletId', 'PermissionId'] },
+        { c: 'AppletPages', cols: ['AppletId'], p: 'Applets', pcols: ['AppletId'] },
+        { c: 'AppletPages', cols: ['AppletId', 'PermissionId'], p: 'AppletPermissions', pcols: ['AppletId', 'PermissionId'], opt: true }
+      ]
+    },
+
+    tickets: {
+      name: 'EMG Ticketing System', width: 1472, height: 874,
+      summary: 'Eight tables: the help desk’s tickets, teams, categories and audit log.',
+      groups: {
+        people:     { name: 'People and teams', tone: 'var(--test)', body: 'Who tickets can be assigned to: the teams, and the individual team members that tickets are reassigned to.', tech: 'Teams, TeamMembers.' },
+        categories: { name: 'Categories and SLAs', tone: 'var(--feature)', body: 'How tickets are sorted: categories and subcategories, each with a service-level (SLA) target in hours and a default team.', tech: 'Categories, Subcategories.' },
+        tickets:    { name: 'Tickets and activity', tone: 'var(--live)', body: 'The tickets themselves, the comments on them, and the history of who they were reassigned to.', tech: 'Tickets, TicketComments, TicketReassignments.' },
+        audit:      { name: 'Audit trail', tone: 'var(--slate)', body: 'A log of changes made in the help desk: what was done, to which kind of record, and what changed.', tech: 'AuditLogs.' }
+      },
+      overview: {
+        title: 'Eight tables in four groups',
+        body: 'Each line is a link between tables: a column in one table holds the key of a row in another. Select a table to see what it holds and what it connects to, or pick a group above.',
+        label: 'Reading the lines', tech: 'Dashed lines match by name or number with no foreign key. Columns tagged REF with no line hold an ID that the database does not check.'
+      },
+      tables: [
+        { id: 'Tickets', g: 'tickets', x: 776, y: 287, cols: ['TicketId|guid|pk', 'TicketNumber|nvarchar(850)|uq', 'Subject|nvarchar(100)', 'Description|nvarchar(4000)?', 'Category|nvarchar(100)?|ref', 'Priority|nvarchar(10)?', 'Status|nvarchar(20)?', 'RequesterId|guid|ref', 'AssignedPersonId|guid?|ref', 'AssignedTeamId|guid?|fk', 'CreatedOn|datetime2?', 'DueDate|datetime2?', 'FirstResponseOn|datetime2?', 'ResolvedOn|datetime2?', 'ResolutionNotes|nvarchar(4000)?', 'TicketUrl|nvarchar(500)?', 'RowCreatedOn|datetime2', 'RowModifiedOn|datetime2'],
+          body: 'The central table: one row per help desk ticket, with its subject, priority and status, who raised it, who it is assigned to, and the key dates.',
+          tech: 'PK TicketId. TicketNumber is unique, for example TKT-00001. CHECK constraints allow only Low, Medium, High or Urgent for Priority, and Open, In Progress, Closed, On Hold or Resolved for Status. AssignedTeamId is an optional FK → Teams. RequesterId and AssignedPersonId are plain GUIDs with no foreign key, and Category holds the category name as free text. CreatedOn is the business date; RowCreatedOn is when the row was written.' },
+        { id: 'TicketComments', g: 'tickets', x: 1140, y: 40, cols: ['TicketCommentId|guid|pk', 'CommentSummary|nvarchar(850)', 'Comment|nvarchar(100)?', 'CommentDate|datetime2?', 'InternalOnly|bit?', 'TicketId|guid?|fk', 'CommentedById|guid?|ref', 'RowCreatedOn|datetime2', 'RowModifiedOn|datetime2'],
+          body: 'Comments on a ticket, each with a date and a flag for internal-only comments.',
+          tech: 'PK TicketCommentId. TicketId is an optional FK → Tickets. CommentedById is a plain GUID with no foreign key. Comment is capped at 100 characters, as it is in Dataverse; CommentSummary allows 850.' },
+        { id: 'TicketReassignments', g: 'tickets', x: 1140, y: 378, cols: ['TicketReassignmentId|guid|pk', 'TicketId|guid|fk', 'TicketNumber|nvarchar(850)|ref', 'ReassignmentDate|datetime2?', 'AssignedTeamMemberId|guid?|fk', 'RowCreatedOn|datetime2', 'RowModifiedOn|datetime2'],
+          body: 'The history of reassignments: which ticket, when, and which team member it went to.',
+          tech: 'PK TicketReassignmentId. TicketId → Tickets is required and AssignedTeamMemberId → TeamMembers is optional. TicketNumber is kept as free text, as in Dataverse, and is not the foreign key.' },
+        { id: 'TeamMembers', g: 'people', x: 1140, y: 664, cols: ['TeamMemberId|guid|pk', 'Name|nvarchar(850)', 'Email|nvarchar(100)?', 'RowCreatedOn|datetime2', 'RowModifiedOn|datetime2'],
+          body: 'The people tickets can be reassigned to: just a name and an email address. Nothing in the database links a member to a team.',
+          tech: 'PK TeamMemberId. Dataverse has no link between teams and team members, so this schema has none either.' },
+        { id: 'Teams', g: 'people', x: 412, y: 482, cols: ['TeamId|guid|pk', 'Name|nvarchar(850)', 'Description|nvarchar(100)?', 'Email|nvarchar(100)?', 'Active|bit?', 'IsExternalParty|bit?', 'RowCreatedOn|datetime2', 'RowModifiedOn|datetime2'],
+          body: 'The teams tickets can be assigned to. Each has a name, an optional contact email, an active flag, and a flag for teams outside the company.',
+          tech: 'PK TeamId. Active defaults to on and IsExternalParty to off. Categories, Subcategories and Tickets all point at Teams.' },
+        { id: 'Categories', g: 'categories', x: 412, y: 170, cols: ['CategoryId|guid|pk', 'Name|nvarchar(850)', 'Description|nvarchar(100)?', 'Active|bit?', 'DefaultSlaHours|int?', 'DefaultAssigneeTeamId|guid?|fk', 'RowCreatedOn|datetime2', 'RowModifiedOn|datetime2'],
+          body: 'The top-level ticket categories, each with a default service-level (SLA) target in hours and a default team to handle it.',
+          tech: 'PK CategoryId. DefaultSlaHours is optional. DefaultAssigneeTeamId is an optional FK → Teams.' },
+        { id: 'Subcategories', g: 'categories', x: 48, y: 40, cols: ['SubcategoryId|guid|pk', 'Name|nvarchar(850)', 'Description|nvarchar(100)?', 'Active|bit?', 'SlaHours|int?', 'CategoryId|guid?|fk', 'DefaultAssigneeTeamId|guid?|fk', 'RowCreatedOn|datetime2', 'RowModifiedOn|datetime2'],
+          body: 'The finer types within a category, each with its own SLA target in hours and default team.',
+          tech: 'PK SubcategoryId. CategoryId → Categories and DefaultAssigneeTeamId → Teams are both optional FKs.' },
+        { id: 'AuditLogs', g: 'audit', x: 48, y: 378, cols: ['AuditLogId|guid|pk', 'Name|nvarchar(850)', 'Action|nvarchar(100)?', 'EntityType|nvarchar(100)?|ref', 'EntityId|nvarchar(100)?|ref', 'Changes|nvarchar(max)?', 'PerformedOn|datetime2?', 'RowCreatedOn|datetime2', 'RowModifiedOn|datetime2'],
+          body: 'A log of changes made in the help desk: what was done, to which kind of record, and what changed.',
+          tech: 'PK AuditLogId. EntityType and EntityId can point at any table, so there is no foreign key. Changes is NVARCHAR(MAX). Indexed by PerformedOn, newest first, and by entity.' }
+      ],
+      rels: [
+        { c: 'Categories', cols: ['DefaultAssigneeTeamId'], p: 'Teams', pcols: ['TeamId'], opt: true, mode: 'v' },
+        { c: 'Subcategories', cols: ['CategoryId'], p: 'Categories', pcols: ['CategoryId'], opt: true },
+        { c: 'Subcategories', cols: ['DefaultAssigneeTeamId'], p: 'Teams', pcols: ['TeamId'], opt: true },
+        { c: 'Tickets', cols: ['AssignedTeamId'], p: 'Teams', pcols: ['TeamId'], opt: true },
+        { c: 'Tickets', cols: ['Category'], p: 'Categories', pcols: ['Name'], soft: true },
+        { c: 'TicketComments', cols: ['TicketId'], p: 'Tickets', pcols: ['TicketId'], opt: true },
+        { c: 'TicketReassignments', cols: ['TicketId'], p: 'Tickets', pcols: ['TicketId'] },
+        { c: 'TicketReassignments', cols: ['TicketNumber'], p: 'Tickets', pcols: ['TicketNumber'], soft: true },
+        { c: 'TicketReassignments', cols: ['AssignedTeamMemberId'], p: 'TeamMembers', pcols: ['TeamMemberId'], opt: true, mode: 'v' }
+      ]
+    }
+  };
+
+  function initErd(block, db) {
+    const q = s => $(s, block);
+    const svgEl = q('.erd-svg');
+    const NS = 'http://www.w3.org/2000/svg';
+    const W = 300, HEAD = 40, ROW = 26, PAD = 8;
+    const mk = (name, attrs, parent) => {
+      const n = document.createElementNS(NS, name);
+      for (const k in attrs) n.setAttribute(k, attrs[k]);
+      if (parent) parent.append(n);
+      return n;
+    };
+    const GROUPS = db.groups, RELS = db.rels;
+    const col = s => {
+      const [name, type, keys] = s.split('|');
+      return { name, type: type.replace('?', ''), nullable: type.endsWith('?'), keys: keys ? keys.split(' ') : [] };
+    };
+    const TABLES = db.tables.map(t => ({ ...t, cols: t.cols.map(col), h: HEAD + ROW * t.cols.length + PAD }));
+    const byId = new Map(TABLES.map(t => [t.id, t]));
+    const rowY = (t, name) => {
+      const i = t.cols.findIndex(c => c.name === name);
+      if (i < 0) console.error('ERD: no column', t.id + '.' + name);
+      return t.y + HEAD + ROW * i + ROW / 2;
+    };
+
+    svgEl.setAttribute('viewBox', `0 0 ${db.width} ${db.height}`);
+    svgEl.setAttribute('aria-labelledby', `${block.id}-t ${block.id}-d`);
+    mk('title', { id: block.id + '-t' }, svgEl).textContent = `Entity relationship diagram of ${db.name}`;
+    mk('desc', { id: block.id + '-d' }, svgEl).textContent = `${db.summary} Select a table to see its details and connections.`;
+
+    // Line ends. (dx, dy) points away from the table edge, along the line; k shrinks the marker.
+    function endMark(parent, x, y, dx, dy, kind, k = 1) {
+      const nx = -dy, ny = dx;
+      const P = (a, b) => `${(x + dx * a * k + nx * b * k).toFixed(1)} ${(y + dy * a * k + ny * b * k).toFixed(1)}`;
+      if (kind === 'many') mk('path', { d: `M${P(0, -7)}L${P(13, 0)}L${P(0, 7)}M${P(0, 0)}L${P(13, 0)}` }, parent);
+      else mk('path', { d: `M${P(10, -7)}L${P(10, 7)}` }, parent);
+      if (kind === 'opt') mk('circle', { class: 'opt', cx: x + dx * 19 * k, cy: y + dy * 19 * k, r: 4.5 * k }, parent);
+    }
+
+    // Several lines can end at the same key (everything that points at Users.UserId, for one).
+    // Spread their ends apart, in the order of the tables they come from, so each keeps its own marker.
+    const fanKey = r => {
+      const c = byId.get(r.c), p = byId.get(r.p);
+      return c === p || r.mode === 'v' ? null : `${r.p}.${r.pcols[r.pcols.length - 1]}.${p.x > c.x}`;
+    };
+    const fans = new Map();
+    RELS.forEach(r => {
+      const key = fanKey(r);
+      if (key) fans.set(key, (fans.get(key) || []).concat(r));
+    });
+    const childY = r => rowY(byId.get(r.c), r.cols[r.cols.length - 1]);
+    fans.forEach(list => list.sort((a, b) => childY(a) - childY(b)));
+
+    mk('rect', { class: 'e-bg', width: db.width, height: db.height }, svgEl);
+    const relLayer = mk('g', {}, svgEl), tblLayer = mk('g', {}, svgEl);
+
+    const rels = RELS.map(r => {
+      const c = byId.get(r.c), p = byId.get(r.p);
+      const g = mk('g', { class: 'e-rel' + (r.soft ? ' soft' : ''), style: `--tone:${GROUPS[c.g].tone}` }, relLayer);
+      const fan = fans.get(fanKey(r)) || [r], pk = fan.length > 1 ? .7 : 1;
+      const cy = rowY(c, r.cols[r.cols.length - 1]);
+      const py = rowY(p, r.pcols[r.pcols.length - 1]) + (fan.indexOf(r) - (fan.length - 1) / 2) * 10;
+      let d, cx, px, cdx, cdy, mx, my;
+      if (c === p) {                                    // a table pointing at itself: loop out of the left edge
+        cx = px = c.x; cdx = -1; cdy = 0;
+        d = `M${cx} ${cy}C${cx - 40} ${cy} ${cx - 40} ${py} ${px} ${py}`;
+        mx = cx - 30; my = (cy + py) / 2;
+      } else if (r.mode === 'v') {                      // stacked tables: straight line, edge to edge
+        const below = p.y > c.y;
+        cx = px = c.x + W / 2;
+        const y1 = below ? c.y + c.h : c.y, y2 = below ? p.y : p.y + p.h;
+        cdx = 0; cdy = below ? 1 : -1;
+        d = `M${cx} ${y1}V${y2}`;
+        mx = cx; my = (y1 + y2) / 2;
+      } else {                                          // neighbouring columns: S-curve between facing edges
+        const right = p.x > c.x, s = right ? 1 : -1;
+        cx = right ? c.x + W : c.x; px = right ? p.x : p.x + W;
+        const k = Math.max(28, Math.abs(px - cx) * .5);
+        cdx = s; cdy = 0;
+        d = `M${cx} ${cy}C${cx + s * k} ${cy} ${px - s * k} ${py} ${px} ${py}`;
+        mx = (cx + px) / 2; my = (cy + py) / 2;
+      }
+      mk('path', { class: 'ln', d }, g);
+      mk('path', { class: 'hit', d }, g);
+      if (r.mode === 'v') {
+        const below = p.y > c.y;
+        endMark(g, cx, below ? c.y + c.h : c.y, 0, cdy, r.one ? 'one' : 'many');
+        if (!r.soft) endMark(g, px, below ? p.y : p.y + p.h, 0, -cdy, r.opt ? 'opt' : 'one');
+      } else {
+        endMark(g, cx, cy, cdx, cdy, r.one ? 'one' : 'many');
+        if (!r.soft) endMark(g, px, py, c === p ? cdx : -cdx, 0, r.opt ? 'opt' : 'one', pk);
+      }
+      if (r.cascade) mk('rect', { class: 'casc', x: -5, y: -5, width: 10, height: 10, transform: `translate(${mx} ${my}) rotate(45)` }, g);
+      mk('title', {}, g).textContent = `${r.c}.${r.cols.join(', ')} → ${r.p}.${r.pcols.join(', ')}`
+        + (r.soft ? ' (a plain column, no foreign key)' : '') + (r.opt ? ' (optional)' : '') + (r.cascade ? ' (deleting the parent deletes these rows)' : '');
+      return { r, g };
+    });
+
+    const tblEls = new Map(), rowEls = new Map();
+    TABLES.forEach(t => {
+      const g = mk('g', { class: 'e-tbl', 'data-t': t.id, tabindex: 0, role: 'button', 'aria-pressed': 'false', 'aria-label': `${t.id} table, ${GROUPS[t.g].name}. Show details`, style: `--tone:${GROUPS[t.g].tone}` }, tblLayer);
+      mk('rect', { class: 'e-ring', x: t.x - 6, y: t.y - 6, width: W + 12, height: t.h + 12 }, g);
+      mk('rect', { class: 'e-card', x: t.x, y: t.y, width: W, height: t.h }, g);
+      mk('rect', { class: 'e-head', x: t.x, y: t.y, width: W, height: HEAD }, g);
+      mk('rect', { class: 'e-bar', x: t.x, y: t.y, width: W, height: 4 }, g);
+      mk('text', { class: 'e-name', x: t.x + 14, y: t.y + 27 }, g).textContent = t.id;
+      // Column names start after the widest run of key badges in this table.
+      const badgeW = k => (k === 'ref' ? 28 : 22) + 3;
+      const nameX = t.x + 10 + Math.max(0, ...t.cols.map(c => c.keys.reduce((s, k) => s + badgeW(k), 0))) + 6;
+      t.cols.forEach((c, i) => {
+        const ry = t.y + HEAD + ROW * i;
+        const row = mk('g', { class: 'e-row' }, g);
+        rowEls.set(t.id + '.' + c.name, row);
+        mk('rect', { class: 'rbg', x: t.x + 1, y: ry, width: W - 2, height: ROW }, row);
+        if (i > 0) mk('line', { class: 'e-div', x1: t.x + 10, x2: t.x + W - 10, y1: ry, y2: ry }, row);
+        let bx = t.x + 10;
+        c.keys.forEach(k => {
+          const bw = badgeW(k) - 3;
+          const b = mk('g', { class: 'e-badge ' + k }, row);
+          mk('rect', { x: bx, y: ry + 6, width: bw, height: 14, rx: 2 }, b);
+          mk('text', { x: bx + bw / 2, y: ry + 16.2 }, b).textContent = k.toUpperCase();
+          bx += bw + 3;
+        });
+        mk('text', { class: 'e-col', x: nameX, y: ry + 18 }, row).textContent = c.name;
+        mk('text', { class: 'e-type', x: t.x + W - 12, y: ry + 17.5, 'text-anchor': 'end' }, row).textContent = c.type + (c.nullable ? '?' : '');
+      });
+      tblEls.set(t.id, g);
+    });
+
+    /* ----- Group tabs, state and painting ----- */
+    let sel = null, grp = 'all', hov = null;
+    const stageEl = q('.erd-stage'), tabsEl = q('.tabs');
+    const panel = q('.db-panel'), pText = q('.db-text'), pMeta = q('.db-meta'), pTitle = q('.db-title'), pBody = q('.db-body'), pTech = q('.db-tech'), pRel = q('.db-rel'), clearBtn = q('.db-clear');
+    q('.erd-lbl').id = block.id + '-lbl';
+    tabsEl.setAttribute('aria-labelledby', block.id + '-lbl');
+    [['all', 'All tables', 'var(--head)']].concat(Object.entries(GROUPS).map(([k, G]) => [k, G.name, G.tone])).forEach(([k, label, tone]) => {
+      const b = document.createElement('button');
+      b.className = 'etab'; b.type = 'button'; b.dataset.g = k; b.setAttribute('aria-pressed', 'false'); b.style.setProperty('--tone', tone);
+      b.append(document.createElement('i'), label);
+      tabsEl.append(b);
+    });
+    const tabs = $$('.etab', block);
+
+    function paint() {
+      const focus = hov || sel;
+      let live = null, hot = null;
+      if (focus) {
+        live = new Set([focus]); hot = new Set();
+        rels.forEach((x, i) => { if (x.r.c === focus || x.r.p === focus) { hot.add(i); live.add(x.r.c); live.add(x.r.p); } });
+      } else if (grp !== 'all') {
+        live = new Set(TABLES.filter(t => t.g === grp).map(t => t.id));
+      }
+      tblEls.forEach((g, id) => {
+        g.classList.toggle('dim', !!live && !live.has(id));
+        g.classList.toggle('is-sel', id === sel);
+        g.setAttribute('aria-pressed', String(id === sel));
+      });
+      rowEls.forEach(n => n.classList.remove('on'));
+      rels.forEach((x, i) => {
+        const isHot = !!hot && hot.has(i);
+        const show = !live || (hot ? isHot : live.has(x.r.c) && live.has(x.r.p));
+        x.g.classList.toggle('hot', isHot);
+        x.g.classList.toggle('dim', !show);
+        if (isHot) {
+          x.r.cols.forEach(n => rowEls.get(x.r.c + '.' + n).classList.add('on'));
+          x.r.pcols.forEach(n => rowEls.get(x.r.p + '.' + n).classList.add('on'));
+        }
+      });
+    }
+
+    function relRow(label, list) {
+      if (!list.size) return null;
+      const row = document.createElement('div'); row.className = 'rel-row';
+      const l = document.createElement('span'); l.className = 'rel-lbl'; l.textContent = label; row.append(l);
+      list.forEach((soft, id) => {
+        const b = document.createElement('button');
+        b.type = 'button'; b.className = 'rel-chip' + (soft ? ' soft' : ''); b.dataset.t = id; b.textContent = id;
+        b.setAttribute('aria-label', `Show the ${id} table`);
+        row.append(b);
+      });
+      return row;
+    }
+
+    function showPanel() {
+      let meta, title, body, label, tech, tone = 'var(--head)', related = [];
+      if (sel) {
+        const t = byId.get(sel);
+        tone = GROUPS[t.g].tone; meta = GROUPS[t.g].name; title = t.id; body = t.body; label = 'In tech terms'; tech = t.tech;
+        // Dashed chips are plain references; a table that is reached both ways counts as a real link.
+        const to = new Map(), from = new Map();
+        const add = (m, id, soft) => m.set(id, m.has(id) ? m.get(id) && soft : soft);
+        RELS.forEach(r => {
+          if (r.c === r.p) return;
+          if (r.c === sel) add(to, r.p, !!r.soft);
+          if (r.p === sel) add(from, r.c, !!r.soft);
+        });
+        related = [relRow('Refers to', to), relRow('Referred to by', from)].filter(Boolean);
+      } else if (grp !== 'all') {
+        const G = GROUPS[grp];
+        tone = G.tone; meta = 'Group'; title = G.name; body = G.body; label = 'Tables'; tech = G.tech;
+      } else {
+        const O = db.overview;
+        meta = db.name; title = O.title; body = O.body; label = O.label; tech = O.tech;
+      }
+      panel.style.setProperty('--tone', tone);
+      pMeta.textContent = meta; pTitle.textContent = title; pBody.textContent = body;
+      const b = document.createElement('b'); b.textContent = label + ':';
+      pTech.replaceChildren(b, ' ' + tech);
+      pRel.replaceChildren(...related);
+      pRel.hidden = !related.length;
+      clearBtn.hidden = !sel && grp === 'all';
+      if (!reduced) { pText.classList.remove('swap'); void pText.offsetWidth; pText.classList.add('swap'); }
+    }
+
+    function sync() {
+      tabs.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.g === grp)));
+      paint(); showPanel();
+    }
+    const select = id => { sel = sel === id ? null : id; if (sel) grp = 'all'; sync(); };
+    const clear = () => { sel = null; grp = 'all'; hov = null; sync(); };
+
+    tblEls.forEach((g, id) => {
+      g.addEventListener('click', () => select(id));
+      g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(id); } });
+      g.addEventListener('mouseenter', () => { hov = id; paint(); });
+      g.addEventListener('mouseleave', () => { hov = null; paint(); });
+      g.addEventListener('focus', () => { if (g.matches(':focus-visible')) { hov = id; paint(); } });
+      g.addEventListener('blur', () => { hov = null; paint(); });
+    });
+    tabs.forEach(b => b.addEventListener('click', () => { grp = b.dataset.g === grp ? 'all' : b.dataset.g; sel = null; sync(); }));
+    pRel.addEventListener('click', e => { const b = e.target.closest('.rel-chip'); if (b) select(b.dataset.t); });
+    clearBtn.addEventListener('click', clear);
+    svgEl.addEventListener('click', e => { if (e.target.classList.contains('e-bg')) clear(); });
+    stageEl.addEventListener('keydown', e => { if (e.key === 'Escape' && (sel || grp !== 'all')) clear(); });
+    addEventListener('beforeprint', clear);
+    sync();
+  }
+
+  const dbBlocks = $$('.dbblock'), dbCards = $$('.dbcard');
+  dbBlocks.forEach(b => initErd(b, DATABASES[b.dataset.db]));
+  dbCards.forEach(card => card.addEventListener('click', () => {
+    dbCards.forEach(c => c.setAttribute('aria-pressed', String(c === card)));
+    dbBlocks.forEach(b => { b.hidden = b.dataset.db !== card.dataset.db; });
+  }));
 
   /* ---------- Numbers, scroll reveal ---------- */
   const counters = $$('[data-count]');

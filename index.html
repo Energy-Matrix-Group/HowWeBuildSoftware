@@ -1701,7 +1701,7 @@ h3{font-size:19px;line-height:1.3;letter-spacing:-.005em;margin-bottom:6px}
         <svg class="dbc-i" viewBox="0 0 32 32" aria-hidden="true"><ellipse cx="16" cy="8" rx="11" ry="4.5"/><path d="M5 8v16c0 2.5 4.9 4.5 11 4.5s11-2 11-4.5V8"/><path d="M5 16c0 2.5 4.9 4.5 11 4.5s11-2 11-4.5"/></svg>
         <span class="dbc-n">EMG Company App Core</span>
         <span class="dbc-d">Accounts, applets, roles and permissions</span>
-        <span class="dbc-m">11 tables</span>
+        <span class="dbc-m">12 tables</span>
       </button>
       <button class="dbcard" type="button" data-db="tickets" aria-pressed="false">
         <svg class="dbc-i" viewBox="0 0 32 32" aria-hidden="true"><ellipse cx="16" cy="8" rx="11" ry="4.5"/><path d="M5 8v16c0 2.5 4.9 4.5 11 4.5s11-2 11-4.5V8"/><path d="M5 16c0 2.5 4.9 4.5 11 4.5s11-2 11-4.5"/></svg>
@@ -1752,8 +1752,8 @@ h3{font-size:19px;line-height:1.3;letter-spacing:-.005em;margin-bottom:6px}
     <h3 class="risk-h reveal">What the database enforces for you</h3>
     <div class="dbnotes">
       <div class="dbnote reveal"><h3>Roles stay inside their applet</h3><p>Roles and permissions are linked by pairs of keys, (AppletId, id). The database itself refuses to give a role a permission from another applet, or to give a person a role from the wrong applet.</p></div>
-      <div class="dbnote reveal"><h3>One role per person per applet</h3><p>UserAppletAccess is keyed on (UserId, AppletId), so nobody can hold two roles in the same applet. IsActive switches access off without losing the record.</p></div>
-      <div class="dbnote reveal"><h3>Deleting a user clears their own data</h3><p>Their settings, applet access and applet preferences go with them. Rows that record history do not cascade, so a user who created, granted or audited anything is switched off with IsActive instead.</p></div>
+      <div class="dbnote reveal"><h3>One role per person per applet</h3><p>UserAppletAccess is keyed on (UserId, AppletId), so nobody can hold two roles in the same applet. IsActive switches access off without losing the record. A person’s own applet order is tied to the same row, so it can only list applets they have been given access to.</p></div>
+      <div class="dbnote reveal"><h3>Deleting a user clears their own data</h3><p>Their settings, applet access, applet order and applet preferences go with them. Rows that record history do not cascade, so a user who created, granted or audited anything is switched off with IsActive instead.</p></div>
       <div class="dbnote reveal"><h3>The audit trail outlives people</h3><p>AuditLog.TargetUserId has no foreign key on purpose, so an entry stays even after the person it concerns is deleted.</p></div>
       <div class="dbnote reveal"><h3>Preferences are always valid JSON</h3><p>A check constraint on UserAppletPreferences.Prefs rejects anything ISJSON() says is not JSON. The default is an empty object.</p></div>
       <div class="dbnote reveal"><h3>Common lookups are indexed</h3><p>Six indexes cover who has access to an applet or role, which roles hold a permission, which pages need a permission, and recent audit entries by actor or target.</p></div>
@@ -1809,6 +1809,7 @@ CREATE TABLE dbo.Applets (
     Code      NVARCHAR(50)     NOT NULL,   -- e.g. 'applet1'
     Name      NVARCHAR(100)    NOT NULL,
     IsEnabled BIT              NOT NULL CONSTRAINT DF_Applets_IsEnabled DEFAULT 1,
+    URL       NVARCHAR(500)    NULL,       -- where the applet is hosted, e.g. 'https://applet1.yourcompany.com'
     CONSTRAINT PK_Applets PRIMARY KEY (AppletId),
     CONSTRAINT UQ_Applets_Code UNIQUE (Code)
 );
@@ -1895,6 +1896,21 @@ CREATE TABLE dbo.UserAppletPreferences (
     CONSTRAINT FK_UAP_Users FOREIGN KEY (UserId) REFERENCES dbo.Users (UserId) ON DELETE CASCADE,
     CONSTRAINT FK_UAP_Applets FOREIGN KEY (AppletId) REFERENCES dbo.Applets (AppletId),
     CONSTRAINT CK_UAP_PrefsJson CHECK (ISJSON(Prefs) = 1)
+);
+GO
+
+/* ---------- Per-user sort order ---------- */
+
+CREATE TABLE dbo.[emg-applet-sort-order] (
+    UserId    UNIQUEIDENTIFIER NOT NULL,
+    AppletId  UNIQUEIDENTIFIER NOT NULL,
+    SortOrder INT              NOT NULL CONSTRAINT DF_EmgAppletSortOrder_SortOrder DEFAULT 0,
+    UpdatedAt DATETIME2(0)     NOT NULL CONSTRAINT DF_EmgAppletSortOrder_UpdatedAt DEFAULT SYSUTCDATETIME(),
+    CONSTRAINT [PK_emg-applet-sort-order] PRIMARY KEY (UserId, AppletId),
+    -- Only applets the user has access to can be ordered. If access is removed,
+    -- the sort row is removed automatically.
+    CONSTRAINT [FK_emg-applet-sort-order_Access] FOREIGN KEY (UserId, AppletId)
+        REFERENCES dbo.UserAppletAccess (UserId, AppletId) ON DELETE CASCADE
 );
 GO
 
@@ -2818,16 +2834,16 @@ GO</code></pre></div>
   // the key it points at. The line attaches at the last column listed. mode 'v' joins stacked tables.
   const DATABASES = {
     core: {
-      name: 'EMG Company App Core', width: 1472, height: 806,
-      summary: 'Eleven tables: accounts, applets, roles and permissions, plus an audit trail.',
+      name: 'EMG Company App Core', width: 1472, height: 858,
+      summary: 'Twelve tables: accounts, applets, roles and permissions, plus an audit trail.',
       groups: {
         people:  { name: 'Accounts and settings', tone: 'var(--test)', body: 'Who can sign in, and the settings that follow them: one row per person, their own display choices, and settings for the whole app.', tech: 'Users, UserSettings, AppSettings.' },
         applets: { name: 'Applets and permissions', tone: 'var(--feature)', body: 'What there is to open, and what can be done in it: the applet list, the roles and permissions each applet defines, which permissions each role holds, and the pages that need them.', tech: 'Applets, AppletRoles, AppletPermissions, AppletRolePermissions, AppletPages.' },
-        access:  { name: 'Access and preferences', tone: 'var(--live)', body: 'Where people meet applets. An admin gives a person access to an applet with one role, and each person keeps their own preferences for each applet.', tech: 'UserAppletAccess, UserAppletPreferences.' },
+        access:  { name: 'Access and preferences', tone: 'var(--live)', body: 'Where people meet applets. An admin gives a person access to an applet with one role, and each person keeps their own preferences for each applet and their own order for the applet list.', tech: 'UserAppletAccess, UserAppletPreferences, emg-applet-sort-order.' },
         audit:   { name: 'Audit trail', tone: 'var(--slate)', body: 'A record of who did what to whom. Entries about the person acted on are kept even if that account is later deleted.', tech: 'AuditLog.' }
       },
       overview: {
-        title: 'Eleven tables in four groups',
+        title: 'Twelve tables in four groups',
         body: 'Each line is a link between tables: a column in one table holds the key of a row in another. Select a table to see what it holds and what it connects to, or pick a group above.',
         label: 'Reading the lines', tech: 'Dashed lines are plain references with no foreign key. Diamonds mark cascading deletes.'
       },
@@ -2841,13 +2857,13 @@ GO</code></pre></div>
         { id: 'AppSettings', g: 'people', x: 48, y: 622, cols: ['SettingKey|nvarchar(100)|pk', 'SettingValue|nvarchar(max)?', 'UpdatedBy|guid?|fk', 'UpdatedAt|datetime2'],
           body: 'Settings that apply to the whole app, stored as a name and a value. Each row also records who last changed it, and when.',
           tech: 'PK SettingKey. SettingValue is NVARCHAR(MAX) and can be empty. UpdatedBy is an optional FK → Users.' },
-        { id: 'Applets', g: 'applets', x: 776, y: 316, cols: ['AppletId|guid|pk', 'Code|nvarchar(50)|uq', 'Name|nvarchar(100)', 'IsEnabled|bit'],
-          body: 'The list of applets in the app. Each has a short code, a name and an on/off switch.',
-          tech: 'PK AppletId. Code is unique, for example applet1. IsEnabled defaults to on.' },
-        { id: 'AppletRoles', g: 'applets', x: 776, y: 130, cols: ['AppletRoleId|guid|pk', 'AppletId|guid|fk', 'Name|nvarchar(100)'],
+        { id: 'Applets', g: 'applets', x: 776, y: 430, cols: ['AppletId|guid|pk', 'Code|nvarchar(50)|uq', 'Name|nvarchar(100)', 'IsEnabled|bit', 'URL|nvarchar(500)?'],
+          body: 'The list of applets in the app. Each has a short code, a name, an on/off switch and the web address where it lives.',
+          tech: 'PK AppletId. Code is unique, for example applet1. IsEnabled defaults to on. URL is optional, so an applet can be listed before its address is filled in.' },
+        { id: 'AppletRoles', g: 'applets', x: 776, y: 244, cols: ['AppletRoleId|guid|pk', 'AppletId|guid|fk', 'Name|nvarchar(100)'],
           body: 'The roles an applet offers. A role belongs to one applet, and its name is unique within that applet.',
           tech: 'FK AppletId → Applets. Unique on (AppletId, Name). A second unique key on (AppletId, AppletRoleId) lets other tables point at the pair and stay inside one applet.' },
-        { id: 'AppletPermissions', g: 'applets', x: 776, y: 524, cols: ['PermissionId|guid|pk', 'AppletId|guid|fk', 'Code|nvarchar(100)'],
+        { id: 'AppletPermissions', g: 'applets', x: 776, y: 664, cols: ['PermissionId|guid|pk', 'AppletId|guid|fk', 'Code|nvarchar(100)'],
           body: 'The individual things an applet lets people do, such as reports.view. A permission belongs to one applet.',
           tech: 'FK AppletId → Applets. Unique on (AppletId, Code) and on (AppletId, PermissionId); the second is the target for composite foreign keys.' },
         { id: 'AppletRolePermissions', g: 'applets', x: 1140, y: 130, cols: ['AppletRoleId|guid|pk fk', 'PermissionId|guid|pk fk', 'AppletId|guid|fk'],
@@ -2862,6 +2878,9 @@ GO</code></pre></div>
         { id: 'UserAppletPreferences', g: 'access', x: 412, y: 300, cols: ['UserId|guid|pk fk', 'AppletId|guid|pk fk', 'Prefs|nvarchar(max)', 'UpdatedAt|datetime2'],
           body: 'A person’s own preferences inside one applet, stored as JSON.',
           tech: 'PK (UserId, AppletId). Prefs defaults to {} and a CHECK constraint (ISJSON) rejects anything that is not valid JSON. Deleting a user deletes their preferences.' },
+        { id: 'emg-applet-sort-order', g: 'access', x: 776, y: 40, cols: ['UserId|guid|pk fk', 'AppletId|guid|pk fk', 'SortOrder|int', 'UpdatedAt|datetime2'],
+          body: 'The order in which each person sees their applets. One row per person per applet, with a number that sets its place in the list.',
+          tech: 'PK (UserId, AppletId). Composite FK (UserId, AppletId) → UserAppletAccess, ON DELETE CASCADE, so only applets the person has access to can be ordered, and removing access removes the sort row. SortOrder defaults to 0.' },
         { id: 'AuditLog', g: 'audit', x: 412, y: 508, cols: ['AuditId|guid|pk', 'ActorUserId|guid|fk', 'TargetUserId|guid?|ref', 'AppletId|guid?|ref', 'Action|nvarchar(100)', 'Details|nvarchar(max)?', 'CreatedAt|datetime2'],
           body: 'A record of who did what: the person who acted, who it was done to, which applet, and the action, such as user.create or applet.grant.',
           tech: 'ActorUserId is a real FK → Users, so a user with audit history can’t simply be deleted; switch them off with IsActive. TargetUserId has no FK on purpose, so entries outlive deleted users, and AppletId is a plain column too. Indexed by actor and by target, newest first.' }
@@ -2877,6 +2896,7 @@ GO</code></pre></div>
         { c: 'AuditLog', cols: ['TargetUserId'], p: 'Users', pcols: ['UserId'], soft: true },
         { c: 'UserAppletAccess', cols: ['AppletId', 'AppletRoleId'], p: 'AppletRoles', pcols: ['AppletId', 'AppletRoleId'] },
         { c: 'UserAppletPreferences', cols: ['AppletId'], p: 'Applets', pcols: ['AppletId'] },
+        { c: 'emg-applet-sort-order', cols: ['UserId', 'AppletId'], p: 'UserAppletAccess', pcols: ['UserId', 'AppletId'], cascade: true },
         { c: 'AuditLog', cols: ['AppletId'], p: 'Applets', pcols: ['AppletId'], soft: true },
         { c: 'AppletRoles', cols: ['AppletId'], p: 'Applets', pcols: ['AppletId'], mode: 'v' },
         { c: 'AppletPermissions', cols: ['AppletId'], p: 'Applets', pcols: ['AppletId'], mode: 'v' },
